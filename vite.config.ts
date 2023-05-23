@@ -8,6 +8,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         content: "src/chrome-services/content.ts",
+        serviceWorker: "src/chrome-services/serviceWorker.ts",
         main: "index.html",
       },
       output: {
