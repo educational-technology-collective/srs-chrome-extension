@@ -1,6 +1,39 @@
-import { TimeSegDatum, IvqDatum, handleErrorNullElement } from "../types";
+import { TimeSegDatum, IvqDatum, handleErrorNullElement, requestObject, responseObject } from "../types";
 
 const API_ENDPOINT = "https://fqtje2wqfl.execute-api.us-east-1.amazonaws.com/default/test";
+
+const listener = (
+  request: requestObject,
+  sender: chrome.runtime.MessageSender,
+  sendResponse: (response: responseObject) => void
+) => {
+  console.log("received:", request);
+  console.log(sender.tab ? "from a content script:" + sender.tab.url : "from an extension");
+
+  transcriptDetector.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+
+  videoDetector.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+
+  ivqDetector.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+
+  timeSegData = [];
+  ivqData = [];
+  fullTranscript = "";
+
+  sendResponse({ message: "bye" });
+  return true;
+};
+
+chrome.runtime.onMessage.addListener(listener);
 
 // generic POST request function
 // we use this to make POST request to the AWS Lambda instance.
@@ -114,8 +147,8 @@ const transcriptDetector = new MutationObserver(() => {
 // global observer to detect video
 // this allows us to track video progress to see when it's done.
 const videoDetector = new MutationObserver(() => {
-  if (document.querySelector("#video_player")) {
-    const video = document.querySelector("#video_player");
+  if (document.querySelector(".rc-VideoMiniPlayer")) {
+    const video = document.querySelector(".rc-VideoMiniPlayer");
     videoDetector.disconnect();
     console.log("video detected");
 
@@ -124,6 +157,7 @@ const videoDetector = new MutationObserver(() => {
     if (video) {
       videoObserver.observe(video, {
         attributes: true,
+        subtree: true,
       });
     } else {
       handleErrorNullElement("video");
@@ -178,11 +212,6 @@ const ivqDetector = new MutationObserver(() => {
   }
 });
 
-// console.log(chrome.tabs)
-// chrome.tabs.onUpdated.addEventListener((tabId, changeInfo, tab) => {
-//     console.log(tabId, changeInfo, tab);
-// });
-
 transcriptDetector.observe(document.body, {
   childList: true,
   subtree: true,
@@ -190,6 +219,7 @@ transcriptDetector.observe(document.body, {
 
 videoDetector.observe(document.body, {
   childList: true,
+  subtree: true,
 });
 
 ivqDetector.observe(document.body, {
@@ -200,6 +230,6 @@ ivqDetector.observe(document.body, {
 // on initial load of the page
 console.log("extension loaded");
 
-const timeSegData: TimeSegDatum[] = [];
-const ivqData: IvqDatum[] = [];
+let timeSegData: TimeSegDatum[] = [];
+let ivqData: IvqDatum[] = [];
 let fullTranscript = "";
