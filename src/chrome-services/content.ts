@@ -1,4 +1,4 @@
-import { TimeSegDatum, IvqDatum } from "../types/LoggingDataTypes";
+import { TimeSegDatum, IvqDatum, handleErrorNullElement } from "../types";
 
 const API_ENDPOINT = "https://fqtje2wqfl.execute-api.us-east-1.amazonaws.com/default/test";
 
@@ -41,7 +41,7 @@ const transcriptCallback: MutationCallback = (mutationList) => {
             segment = segmentElement.innerHTML;
             console.log(segment);
           } else {
-            console.log("error: segmentElement is null");
+            handleErrorNullElement("segmentElement");
           }
 
           const timestampElement = document.querySelector(".current-time-display");
@@ -50,7 +50,7 @@ const transcriptCallback: MutationCallback = (mutationList) => {
             timestamp = timestampElement.innerHTML;
             console.log(timestamp);
           } else {
-            console.log("error: timestampElement is null");
+            handleErrorNullElement("timestampElement");
           }
 
           timeSegData.push({ timestamp: timestamp, segment: segment });
@@ -106,7 +106,7 @@ const transcriptDetector = new MutationObserver(() => {
         subtree: true,
       });
     } else {
-      console.log("error: transcript is null");
+      handleErrorNullElement("transcript");
     }
   }
 });
@@ -126,7 +126,7 @@ const videoDetector = new MutationObserver(() => {
         attributes: true,
       });
     } else {
-      console.log("error: video is null");
+      handleErrorNullElement("video");
     }
   }
 });
@@ -150,10 +150,10 @@ const ivqDetector = new MutationObserver(() => {
       if (ivqQuestionElement.textContent) {
         ivqQuestion = ivqQuestionElement.textContent;
       } else {
-        console.log("error: ivqQuestion is null");
+        handleErrorNullElement("ivqQuestion");
       }
     } else {
-      console.log("error: ivqQuestionElement is null");
+      handleErrorNullElement("ivqQuestionElement");
     }
 
     // get ivq answer choices
@@ -163,7 +163,7 @@ const ivqDetector = new MutationObserver(() => {
       if (ivqAnswer.textContent) {
         ivqAnswers.push(ivqAnswer.textContent);
       } else {
-        console.log("error: ivqAnswer is null");
+        handleErrorNullElement("ivqAnswer");
       }
     });
 
