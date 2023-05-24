@@ -1,4 +1,4 @@
-import { handleErrorNullElement, TimeSegDatum } from "../types";
+import { handleErrorNullElement, TimeSegDatum, IvqDatum } from "../types";
 import { createTranscriptObserver, createVideoObserver } from "./observers";
 
 // creates a MutationObserver that detects transcript load.
@@ -53,4 +53,56 @@ export function createVideoDetector(
   });
 
   return videoDetector;
+}
+
+// creates a MutationObserver that detects Coursera's in-video quizzes.
+export function createIvqDetector(ivqData: IvqDatum[]) {
+  const ivqDetector = new MutationObserver(() => {
+    if (document.querySelector(".rc-VideoQuiz")) {
+      console.log("ivq found");
+      ivqDetector.disconnect();
+
+      // get current timestamp
+      const timestampElement = document.querySelector(".current-time-display");
+      let timestamp = "";
+      if (timestampElement) {
+        timestamp = timestampElement.innerHTML;
+      }
+
+      // get ivq question
+      const ivqQuestionElement = document.querySelector(".rc-CML");
+      let ivqQuestion = "";
+      if (ivqQuestionElement) {
+        if (ivqQuestionElement.textContent) {
+          ivqQuestion = ivqQuestionElement.textContent;
+        } else {
+          handleErrorNullElement("ivqQuestion");
+        }
+      } else {
+        handleErrorNullElement("ivqQuestionElement");
+      }
+
+      // get ivq answer choices
+      const ivqAnswersHtml = document.querySelectorAll(".rc-Option__input-text");
+      const ivqAnswers: string[] = [];
+      ivqAnswersHtml.forEach((ivqAnswer) => {
+        if (ivqAnswer.textContent) {
+          ivqAnswers.push(ivqAnswer.textContent);
+        } else {
+          handleErrorNullElement("ivqAnswer");
+        }
+      });
+
+      const ivqDatum = {
+        timestamp: timestamp,
+        question: ivqQuestion,
+        answers: ivqAnswers,
+      };
+
+      ivqData.push(ivqDatum);
+      console.log(ivqData);
+    }
+  });
+
+  return ivqDetector;
 }
