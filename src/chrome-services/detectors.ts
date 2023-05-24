@@ -1,5 +1,5 @@
 import { handleErrorNullElement, TimeSegDatum } from "../types";
-import { createTranscriptObserver } from "./observers";
+import { createTranscriptObserver, createVideoObserver } from "./observers";
 
 // creates a MutationObserver that detects transcript load.
 // this allows us to wait until the transcript is loaded in the DOM.
@@ -24,4 +24,33 @@ export function createTranscriptDetector(timeSegData: TimeSegDatum[], fullTransc
   });
 
   return transcriptDetector;
+}
+
+// creates a MutationObserver that detects video end.
+// this allows us to track video progress to see when it's done.
+export function createVideoDetector(
+  timeSegData: TimeSegDatum[],
+  fullTranscript: string[],
+  makePostReq: (payload: object) => Promise<void>
+) {
+  const videoDetector = new MutationObserver(() => {
+    if (document.querySelector(".rc-VideoMiniPlayer")) {
+      const video = document.querySelector(".rc-VideoMiniPlayer");
+      videoDetector.disconnect();
+      console.log("video detected");
+
+      // observe the video to detect playback end
+      if (video) {
+        const videoObserver = createVideoObserver(timeSegData, fullTranscript, makePostReq);
+        videoObserver.observe(video, {
+          attributes: true,
+          subtree: true,
+        });
+      } else {
+        handleErrorNullElement("video");
+      }
+    }
+  });
+
+  return videoDetector;
 }
