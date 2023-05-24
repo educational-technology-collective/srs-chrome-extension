@@ -1,7 +1,19 @@
 import { TimeSegDatum, IvqDatum, handleErrorNullElement, requestObject, responseObject } from "../types";
+import { createTranscriptDetector } from "./detectors";
 
 const API_ENDPOINT = "https://fqtje2wqfl.execute-api.us-east-1.amazonaws.com/default/test";
 
+// on initial load of the page
+console.log("extension loaded");
+
+let timeSegData: TimeSegDatum[] = [];
+let ivqData: IvqDatum[] = [];
+let fullTranscript: string[] = [];
+
+const transcriptDetector = createTranscriptDetector(timeSegData, fullTranscript);
+
+// Chrome message passing API
+// listens to message passed by the service worker
 const listener = (
   request: requestObject,
   sender: chrome.runtime.MessageSender,
@@ -27,7 +39,7 @@ const listener = (
 
   timeSegData = [];
   ivqData = [];
-  fullTranscript = "";
+  fullTranscript = [];
 
   sendResponse({ message: "bye" });
   return true;
@@ -51,49 +63,6 @@ const makePostReq = async (payload: object) => {
     console.log(data);
   } catch (error) {
     console.log(error);
-  }
-};
-
-// callback function for transcriptObserver
-// checks if the rc-Phrase div has "active" class
-// and prints the phrase content if so.
-const transcriptCallback: MutationCallback = (mutationList) => {
-  for (const mutation of mutationList) {
-    if (mutation.type === "attributes") {
-      if (mutation.attributeName === "class") {
-        // casting to Element is ok, as mutation type is "attributes" and thus mutation.target will always return an Element type.
-        // this is a workaround because TypeScript thinks mutation.target is always of type Node even after the check.
-        const transcriptElement = <Element>mutation.target;
-        const isActive = transcriptElement.classList.contains("active");
-        if (isActive) {
-          console.log(`${mutation.attributeName} modified`);
-
-          const segmentElement = transcriptElement.querySelector("span");
-          let segment = "";
-          if (segmentElement) {
-            segment = segmentElement.innerHTML;
-            console.log(segment);
-          } else {
-            handleErrorNullElement("segmentElement");
-          }
-
-          const timestampElement = document.querySelector(".current-time-display");
-          let timestamp = "";
-          if (timestampElement) {
-            timestamp = timestampElement.innerHTML;
-            console.log(timestamp);
-          } else {
-            handleErrorNullElement("timestampElement");
-          }
-
-          timeSegData.push({ timestamp: timestamp, segment: segment });
-          console.log(timeSegData);
-
-          fullTranscript += segment;
-          console.log(fullTranscript);
-        }
-      }
-    }
   }
 };
 
@@ -122,27 +91,6 @@ const videoCallback: MutationCallback = (mutationList, observer) => {
     }
   }
 };
-
-// global observer to detect transcript load
-// this allows us to wait until the transcript is loaded in the DOM.
-const transcriptDetector = new MutationObserver(() => {
-  if (document.querySelector(".rc-Transcript")) {
-    const transcript = document.querySelector(".rc-Transcript");
-    transcriptDetector.disconnect();
-    console.log("transcript detected");
-
-    // observes the loaded transcript for highlighted phrases
-    const transcriptObserver = new MutationObserver(transcriptCallback);
-    if (transcript) {
-      transcriptObserver.observe(transcript, {
-        attributes: true,
-        subtree: true,
-      });
-    } else {
-      handleErrorNullElement("transcript");
-    }
-  }
-});
 
 // global observer to detect video
 // this allows us to track video progress to see when it's done.
@@ -226,10 +174,3 @@ ivqDetector.observe(document.body, {
   childList: true,
   subtree: true,
 });
-
-// on initial load of the page
-console.log("extension loaded");
-
-let timeSegData: TimeSegDatum[] = [];
-let ivqData: IvqDatum[] = [];
-let fullTranscript = "";
