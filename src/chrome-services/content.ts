@@ -9,9 +9,9 @@ let timeSegData: TimeSegDatum[] = [];
 let ivqData: IvqDatum[] = [];
 let fullTranscript: string[] = [];
 
-const transcriptDetector = createTranscriptDetector(timeSegData, fullTranscript);
-const videoDetector = createVideoDetector(timeSegData, fullTranscript, makePostReq);
-const ivqDetector = createIvqDetector(ivqData);
+let transcriptDetector = createTranscriptDetector(timeSegData, fullTranscript);
+let videoDetector = createVideoDetector(timeSegData, fullTranscript, makePostReq);
+let ivqDetector = createIvqDetector(ivqData);
 
 transcriptDetector.observe(document.body, {
   childList: true,
@@ -20,6 +20,7 @@ transcriptDetector.observe(document.body, {
 
 videoDetector.observe(document.body, {
   childList: true,
+  subtree: true,
 });
 
 ivqDetector.observe(document.body, {
@@ -36,27 +37,42 @@ const listener = (
 ) => {
   console.log("received:", request);
   console.log(sender.tab ? "from a content script:" + sender.tab.url : "from an extension");
+  transcriptDetector.disconnect();
+  videoDetector.disconnect();
+  ivqDetector.disconnect();
 
-  transcriptDetector.observe(document.body, {
-    childList: true,
-    subtree: true,
-  });
+  const url = request.message;
+  const videoUrlRegex = /^https:\/\/www.coursera.org\/learn\/.*\/lecture\/.*$/;
+  if (url && videoUrlRegex.test(url)) {
+    timeSegData = [];
+    ivqData = [];
+    fullTranscript = [];
 
-  videoDetector.observe(document.body, {
-    childList: true,
-  });
+    transcriptDetector = createTranscriptDetector(timeSegData, fullTranscript);
+    videoDetector = createVideoDetector(timeSegData, fullTranscript, makePostReq);
+    ivqDetector = createIvqDetector(ivqData);
 
-  ivqDetector.observe(document.body, {
-    childList: true,
-    subtree: true,
-  });
+    transcriptDetector.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
 
-  timeSegData = [];
-  ivqData = [];
-  fullTranscript = [];
+    videoDetector.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
 
-  sendResponse({ message: "bye" });
-  return true;
+    ivqDetector.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    sendResponse({ message: "url is a lecture video" });
+    return true;
+  } else {
+    sendResponse({ message: "url is not a lecture video" });
+    return true;
+  }
 };
 
 chrome.runtime.onMessage.addListener(listener);
