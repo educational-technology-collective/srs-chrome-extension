@@ -1,7 +1,7 @@
 import { handleErrorNullElement, TimeSegDatum } from "../types";
 
-// callback function for transcriptObserver
-// checks if the rc-Phrase div has "active" class and prints the phrase content if so
+// callback function for transcriptObserver.
+// checks if the rc-Phrase div has "active" class and prints the phrase content if so.
 export function createTranscriptObserverCallback(timeSegData: TimeSegDatum[], fullTranscript: string[]) {
   const transcriptObserverCallback: MutationCallback = (mutationList) => {
     for (const mutation of mutationList) {
@@ -44,4 +44,37 @@ export function createTranscriptObserverCallback(timeSegData: TimeSegDatum[], fu
   };
 
   return transcriptObserverCallback;
+}
+
+// callback function for videoObserver.
+// checks if the video is over and sets the state to true if so.
+export function createVideoObserverCallback(
+  timeSegData: TimeSegDatum[],
+  fullTranscript: string[],
+  makePostReq: (payload: object) => Promise<void>
+) {
+  const videoObserverCallback: MutationCallback = (mutationList, observer) => {
+    const mutation = mutationList[0];
+    if (mutation.type === "attributes") {
+      if (mutation.attributeName === "class") {
+        // casting to Element is ok, as mutation type is "attributes" and thus mutation.target will always return an Element type.
+        // this is a workaround because TypeScript thinks mutation.target is always of type Node even after the check.
+        const videoElement = <Element>mutation.target;
+        const isVideoDone = videoElement.classList.contains("vjs-ended");
+        if (isVideoDone) {
+          observer.disconnect();
+
+          const vidLearningData = {
+            fullTranscript: fullTranscript,
+            timeSegData: timeSegData,
+          };
+          console.log(vidLearningData);
+
+          makePostReq(vidLearningData);
+        }
+      }
+    }
+  };
+
+  return videoObserverCallback;
 }
