@@ -1,8 +1,8 @@
-import { TimeSegDatum, IvqDatum, handleErrorNullElement, requestObject, responseObject } from "../types";
-import { createTranscriptDetector, createVideoDetector } from "./detectors";
+import { TimeSegDatum, IvqDatum, requestObject, responseObject } from "../types";
+import { createIvqDetector, createTranscriptDetector, createVideoDetector } from "./detectors";
 import { makePostReq } from "./requests";
 
-// on initial load of the page
+// on initial load of the page.
 console.log("extension loaded");
 
 let timeSegData: TimeSegDatum[] = [];
@@ -11,9 +11,24 @@ let fullTranscript: string[] = [];
 
 const transcriptDetector = createTranscriptDetector(timeSegData, fullTranscript);
 const videoDetector = createVideoDetector(timeSegData, fullTranscript, makePostReq);
+const ivqDetector = createIvqDetector(ivqData);
 
-// Chrome message passing API
-// listens to message passed by the service worker
+transcriptDetector.observe(document.body, {
+  childList: true,
+  subtree: true,
+});
+
+videoDetector.observe(document.body, {
+  childList: true,
+});
+
+ivqDetector.observe(document.body, {
+  childList: true,
+  subtree: true,
+});
+
+// Chrome message passing API.
+// listens to message passed by the service worker.
 const listener = (
   request: requestObject,
   sender: chrome.runtime.MessageSender,
@@ -29,7 +44,6 @@ const listener = (
 
   videoDetector.observe(document.body, {
     childList: true,
-    subtree: true,
   });
 
   ivqDetector.observe(document.body, {
@@ -46,65 +60,3 @@ const listener = (
 };
 
 chrome.runtime.onMessage.addListener(listener);
-
-const ivqDetector = new MutationObserver(() => {
-  if (document.querySelector(".rc-VideoQuiz")) {
-    console.log("ivq found");
-    ivqDetector.disconnect();
-
-    // get current timestamp
-    const timestampElement = document.querySelector(".current-time-display");
-    let timestamp = "";
-    if (timestampElement) {
-      timestamp = timestampElement.innerHTML;
-    }
-
-    // get ivq question
-    const ivqQuestionElement = document.querySelector(".rc-CML");
-    let ivqQuestion = "";
-    if (ivqQuestionElement) {
-      if (ivqQuestionElement.textContent) {
-        ivqQuestion = ivqQuestionElement.textContent;
-      } else {
-        handleErrorNullElement("ivqQuestion");
-      }
-    } else {
-      handleErrorNullElement("ivqQuestionElement");
-    }
-
-    // get ivq answer choices
-    const ivqAnswersHtml = document.querySelectorAll(".rc-Option__input-text");
-    const ivqAnswers: string[] = [];
-    ivqAnswersHtml.forEach((ivqAnswer) => {
-      if (ivqAnswer.textContent) {
-        ivqAnswers.push(ivqAnswer.textContent);
-      } else {
-        handleErrorNullElement("ivqAnswer");
-      }
-    });
-
-    const ivqDatum = {
-      timestamp: timestamp,
-      question: ivqQuestion,
-      answers: ivqAnswers,
-    };
-
-    ivqData.push(ivqDatum);
-    console.log(ivqData);
-  }
-});
-
-transcriptDetector.observe(document.body, {
-  childList: true,
-  subtree: true,
-});
-
-videoDetector.observe(document.body, {
-  childList: true,
-  subtree: true,
-});
-
-ivqDetector.observe(document.body, {
-  childList: true,
-  subtree: true,
-});
