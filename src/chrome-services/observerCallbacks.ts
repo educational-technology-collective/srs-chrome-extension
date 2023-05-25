@@ -56,22 +56,21 @@ export function createVideoObserverCallback(
   const videoObserverCallback: MutationCallback = (mutationList, observer) => {
     const mutation = mutationList[0];
     if (mutation.type === "attributes") {
-      if (mutation.attributeName === "class") {
-        // casting to Element is ok, as mutation type is "attributes" and thus mutation.target will always return an Element type.
-        // this is a workaround because TypeScript thinks mutation.target is always of type Node even after the check.
-        const videoElement = <Element>mutation.target;
-        const isVideoDone = videoElement.classList.contains("vjs-ended");
-        if (isVideoDone) {
-          observer.disconnect();
+      // casting to Element is ok, as mutation type is "attributes" and thus mutation.target will always return an Element type.
+      // this is a workaround because TypeScript thinks mutation.target is always of type Node even after the check.
+      const videoElement = <Element>mutation.target;
 
-          const vidLearningData = {
-            fullTranscript: fullTranscript,
-            timeSegData: timeSegData,
-          };
-          console.log(vidLearningData);
+      const isVideoDone = videoElement.classList.contains("vjs-ended");
+      if (isVideoDone) {
+        observer.disconnect();
 
-          makePostReq(vidLearningData);
-        }
+        const vidLearningData = {
+          fullTranscript: fullTranscript,
+          timeSegData: timeSegData,
+        };
+        console.log(vidLearningData);
+
+        makePostReq(vidLearningData);
       }
     }
   };
