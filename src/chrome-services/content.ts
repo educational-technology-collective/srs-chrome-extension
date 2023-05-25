@@ -1,5 +1,5 @@
 import { TimeSegDatum, IvqDatum, requestObject, responseObject } from "../types";
-import { createIvqDetector, createTranscriptDetector, createVideoDetector } from "./detectors";
+import { createTranscriptDetector, createVideoDetector, createIvqDetector } from "./detectors";
 import { makePostReq } from "./requests";
 
 // on initial load of the page.
@@ -37,6 +37,9 @@ const listener = (
 ) => {
   console.log("received:", request);
   console.log(sender.tab ? "from a content script:" + sender.tab.url : "from an extension");
+
+  // disconnect any previously created detectors so that the browser can clean them up once we re-assign these below.
+  // this also prevents observers from "stacking", which leads to multiple observes at once.
   transcriptDetector.disconnect();
   videoDetector.disconnect();
   ivqDetector.disconnect();
