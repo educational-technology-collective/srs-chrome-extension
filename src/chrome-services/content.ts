@@ -30,6 +30,7 @@ ivqDetector.observe(document.body, {
 
 // Chrome message passing API.
 // listens to message passed by the service worker.
+// responds with a message telling whether a link is a video or not.
 const listener = (
   request: requestObject,
   sender: chrome.runtime.MessageSender,
@@ -46,7 +47,10 @@ const listener = (
 
   const url = request.message;
   const videoUrlRegex = /^https:\/\/www.coursera.org\/learn\/.*\/lecture\/.*$/;
+
+  // check if url is a video.
   if (url && videoUrlRegex.test(url)) {
+    // reset detectors and pass in fresh, empty arrays to fill.
     timeSegData = [];
     ivqData = [];
     fullTranscript = [];
@@ -55,6 +59,7 @@ const listener = (
     videoDetector = createVideoDetector(timeSegData, fullTranscript, makePostReq);
     ivqDetector = createIvqDetector(ivqData);
 
+    // turn the new detectors on
     transcriptDetector.observe(document.body, {
       childList: true,
       subtree: true,

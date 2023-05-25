@@ -7,15 +7,13 @@ export function createTranscriptObserverCallback(timeSegData: TimeSegDatum[], fu
     for (const mutation of mutationList) {
       if (mutation.type === "attributes") {
         if (mutation.attributeName === "class") {
-          // casting to Element is ok, as mutation type is "attributes" and thus mutation.target will always return an Element type.
-          // this is a workaround because TypeScript thinks mutation.target is always of type Node even after the check.
           const transcriptElement = <Element>mutation.target;
           const isActive = transcriptElement.classList.contains("active");
-          if (isActive) {
-            console.log(`${mutation.attributeName} modified`);
 
+          if (isActive) {
             const segmentElement = transcriptElement.querySelector("span");
             let segment = "";
+
             if (segmentElement) {
               segment = segmentElement.innerHTML;
               console.log(segment);
@@ -25,6 +23,7 @@ export function createTranscriptObserverCallback(timeSegData: TimeSegDatum[], fu
 
             const timestampElement = document.querySelector(".current-time-display");
             let timestamp = "";
+
             if (timestampElement) {
               timestamp = timestampElement.innerHTML;
               console.log(timestamp);
@@ -55,23 +54,19 @@ export function createVideoObserverCallback(
 ) {
   const videoObserverCallback: MutationCallback = (mutationList, observer) => {
     const mutation = mutationList[0];
-    if (mutation.type === "attributes") {
-      // casting to Element is ok, as mutation type is "attributes" and thus mutation.target will always return an Element type.
-      // this is a workaround because TypeScript thinks mutation.target is always of type Node even after the check.
-      const videoElement = <Element>mutation.target;
+    const videoElement = <Element>mutation.target;
+    const isVideoDone = videoElement.classList.contains("vjs-ended");
 
-      const isVideoDone = videoElement.classList.contains("vjs-ended");
-      if (isVideoDone) {
-        observer.disconnect();
+    if (isVideoDone) {
+      observer.disconnect();
 
-        const vidLearningData = {
-          fullTranscript: fullTranscript,
-          timeSegData: timeSegData,
-        };
-        console.log(vidLearningData);
+      const vidLearningData = {
+        fullTranscript: fullTranscript,
+        timeSegData: timeSegData,
+      };
+      console.log(vidLearningData);
 
-        makePostReq(vidLearningData);
-      }
+      makePostReq(vidLearningData);
     }
   };
 

@@ -15,6 +15,8 @@ export function createTranscriptDetector(timeSegData: TimeSegDatum[], fullTransc
         const transcriptObserver = createTranscriptObserver(timeSegData, fullTranscript);
         transcriptObserver.observe(transcript, {
           attributes: true,
+          attributeFilter: ["class"],
+          childList: true,
           subtree: true,
         });
       } else {
@@ -31,7 +33,6 @@ export function createTranscriptDetector(timeSegData: TimeSegDatum[], fullTransc
 export function createVideoDetector(
   timeSegData: TimeSegDatum[],
   fullTranscript: string[],
-  // ivqData: IvqDatum[],
   makePostReq: (payload: object) => Promise<void>
 ) {
   const videoDetector = new MutationObserver(() => {
@@ -45,8 +46,7 @@ export function createVideoDetector(
         const videoObserver = createVideoObserver(timeSegData, fullTranscript, makePostReq);
         videoObserver.observe(video, {
           attributes: true,
-          childList: true,
-          subtree: true,
+          attributeFilter: ["class"],
         });
       } else {
         handleErrorNullElement("video");
@@ -61,17 +61,15 @@ export function createVideoDetector(
 export function createIvqDetector(ivqData: IvqDatum[]) {
   const ivqDetector = new MutationObserver((mutationList) => {
     const mutation = mutationList[0];
-
-    // casting to Element is ok, as mutation type is "attributes" and thus mutation.target will always return an Element type.
-    // this is a workaround because TypeScript thinks mutation.target is always of type Node even after the check.
     const addedNodeElement = <Element>mutation.addedNodes[0];
 
-    if (document.querySelector(".rc-VideoQuiz") && addedNodeElement.classList.contains("rc-VideoQuiz")) {
+    if (addedNodeElement && addedNodeElement.classList && addedNodeElement.classList.contains("rc-VideoQuiz")) {
       console.log("ivq found");
 
       // get current timestamp
       const timestampElement = document.querySelector(".current-time-display");
       let timestamp = "";
+
       if (timestampElement) {
         timestamp = timestampElement.innerHTML;
       }
@@ -79,6 +77,7 @@ export function createIvqDetector(ivqData: IvqDatum[]) {
       // get ivq question
       const ivqQuestionElement = document.querySelector(".rc-CML");
       let ivqQuestion = "";
+
       if (ivqQuestionElement) {
         if (ivqQuestionElement.textContent) {
           ivqQuestion = ivqQuestionElement.textContent;
