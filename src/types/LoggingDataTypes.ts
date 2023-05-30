@@ -8,3 +8,16 @@ export interface IvqDatum {
   question: string;
   answers: string[];
 }
+
+export interface PlayPauseDatum {
+  timestamp: string;
+  isPlay: boolean;
+  isPause: boolean;
+  isActive: boolean;
+}
+
+export interface SkipRewindDatum {
+  timestamp: string;
+  isSkipping: boolean;
+  isRewind: boolean;
+}
