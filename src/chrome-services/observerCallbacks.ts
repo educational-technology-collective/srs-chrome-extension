@@ -1,4 +1,5 @@
 import { handleErrorNullElement, TimeSegDatum, PlayPauseDatum, SkipRewindDatum } from "../types";
+import { prevTimestamp, setPrevTimestamp, hasSeeked, setHasSeeked } from "./states";
 
 // callback function for transcriptObserver.
 // checks if the rc-Phrase div has "active" class and prints the phrase content if so.
@@ -73,13 +74,40 @@ export function createVideoObserverCallback(
       handleErrorNullElement("timestampElement");
     }
 
+    // srd is created first, then modified by isVideoSeeking, isVideoPaused, and isVideoPlaying before being pushed into the skipRewindData array.
+    // this is also why we can't move srd creation into isVideoSeeking - isVideoPaused and isVideoPlaying won't be able to access it.
+    const srd: SkipRewindDatum = {
+      prevTimestamp: "",
+      timestamp: "",
+      isSkipping: false,
+      isRewinding: false,
+      isPlay: false,
+      isPause: false,
+    };
+
+    if (isVideoSeeking) {
+      if (isVideoPlaying) {
+        srd.isPlay = true;
+      } else if (isVideoPaused) {
+        srd.isPause = true;
+      }
+
+      // saves the timestamp when the video started seeking.
+      // if video seeks from timestamp A to B, this saves A, and marks as hasSeeked.
+      // isVideoPlaying and isVideoPaused rely on this information to determine whether the video has been seeked forward or backward (skipped or rewound).
+      if (!hasSeeked) {
+        setPrevTimestamp(timestamp);
+        setHasSeeked(true);
+      }
+    }
+
     if (isVideoPlaying) {
       const ppd: PlayPauseDatum = { timestamp: timestamp, isPlay: true, isPause: false, isActive: false };
       if (isUserActive) {
         ppd.isActive = true;
       }
 
-      // could abstract this into a separate function, but very few parts use it.
+      // inserts only when there are no duplicates
       const isFound = playPauseData.some((element) => {
         if (
           element.timestamp === ppd.timestamp &&
@@ -93,6 +121,43 @@ export function createVideoObserverCallback(
       });
       if (!isFound) {
         playPauseData.push(ppd);
+      }
+
+      // handle seeking while video is playing.
+      if (hasSeeked && isVideoSeeking) {
+        if (prevTimestamp != timestamp) {
+          setHasSeeked(false);
+
+          if (prevTimestamp < timestamp) {
+            srd.isSkipping = true;
+            srd.prevTimestamp = prevTimestamp;
+            srd.timestamp = timestamp;
+          } else if (prevTimestamp > timestamp) {
+            srd.isRewinding = true;
+            srd.prevTimestamp = prevTimestamp;
+            srd.timestamp = timestamp;
+          }
+
+          setPrevTimestamp(timestamp);
+
+          // inserts only when there are no duplicates
+          const isFound = skipRewindData.some((element) => {
+            if (
+              element.prevTimestamp === srd.prevTimestamp &&
+              element.timestamp === srd.timestamp &&
+              element.isSkipping === srd.isSkipping &&
+              element.isRewinding === srd.isRewinding &&
+              element.isPlay === srd.isPlay &&
+              element.isPause === srd.isPause
+            ) {
+              return true;
+            }
+            return false;
+          });
+          if (!isFound) {
+            skipRewindData.push(srd);
+          }
+        }
       }
     }
 
@@ -102,7 +167,7 @@ export function createVideoObserverCallback(
         ppd.isActive = true;
       }
 
-      // could abstract this into a separate function, but very few parts use it.
+      // inserts only when there are no duplicates
       const isFound = playPauseData.some((element) => {
         if (
           element.timestamp === ppd.timestamp &&
@@ -117,29 +182,38 @@ export function createVideoObserverCallback(
       if (!isFound) {
         playPauseData.push(ppd);
       }
-    }
 
-    if (isVideoSeeking) {
-      // TODO: implement skip/rewind detection later
-      const srd: SkipRewindDatum = {
-        timestamp: timestamp,
-        isSkipping: true,
-        isRewind: true,
-      };
+      // handle skipping while video is paused.
+      if (hasSeeked && !isVideoSeeking) {
+        setHasSeeked(false);
 
-      // could abstract this into a separate function, but very few part uses it.
-      const isFound = skipRewindData.some((element) => {
-        if (
-          element.timestamp === srd.timestamp &&
-          element.isSkipping === srd.isSkipping &&
-          element.isRewind === srd.isRewind
-        ) {
-          return true;
+        if (prevTimestamp < timestamp) {
+          srd.isSkipping = true;
+          srd.prevTimestamp = prevTimestamp;
+          srd.timestamp = timestamp;
+        } else if (prevTimestamp > timestamp) {
+          srd.isRewinding = true;
+          srd.prevTimestamp = prevTimestamp;
+          srd.timestamp = timestamp;
         }
-        return false;
-      });
-      if (!isFound) {
-        skipRewindData.push(srd);
+
+        // inserts only when there are no duplicates
+        const isFound = skipRewindData.some((element) => {
+          if (
+            element.prevTimestamp === srd.prevTimestamp &&
+            element.timestamp === srd.timestamp &&
+            element.isSkipping === srd.isSkipping &&
+            element.isRewinding === srd.isRewinding &&
+            element.isPlay === srd.isPlay &&
+            element.isPause === srd.isPause
+          ) {
+            return true;
+          }
+          return false;
+        });
+        if (!isFound) {
+          skipRewindData.push(srd);
+        }
       }
     }
 
