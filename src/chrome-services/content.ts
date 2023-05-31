@@ -1,9 +1,14 @@
 import { TimeSegDatum, IvqDatum, requestObject, responseObject } from "../types";
 import { createTranscriptDetector, createVideoDetector, createIvqDetector } from "./detectors";
 import { makePostReq } from "./requests";
+import { detectCopy, detectPaste } from "./copyPasteDetectionFeature";
 
 // on initial load of the page.
 console.log("extension loaded");
+
+// add new features here.
+detectCopy();
+detectPaste();
 
 let timeSegData: TimeSegDatum[] = [];
 let ivqData: IvqDatum[] = [];
