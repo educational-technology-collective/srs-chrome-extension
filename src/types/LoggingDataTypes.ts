@@ -17,7 +17,10 @@ export interface PlayPauseDatum {
 }
 
 export interface SkipRewindDatum {
+  prevTimestamp: string;
   timestamp: string;
   isSkipping: boolean;
-  isRewind: boolean;
+  isRewinding: boolean;
+  isPlay: boolean;
+  isPause: boolean;
 }
