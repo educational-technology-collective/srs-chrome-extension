@@ -25,7 +25,7 @@
     },
     "content_scripts": [
         {
-            "matches": ["https://www.coursera.org/*"],
+            "matches": ["http://*/*", "https://*/*"],
             "js": ["./assets/content.js"]
         }
     ],
