@@ -31,6 +31,7 @@
 <div align="center">
   <a href="https://github.com/educational-technology-collective/srs-chrome-extension">
     <img src="public/logo.svg" alt="Logo" width="80" height="80">
+    <br />
   </a>
 
 <h3 align="center">SRS Chrome Extension</h3>
@@ -197,6 +198,7 @@ June Hyung (Jacob) Kim - [@jpoly1219](https://github.com/jpoly1219) - jpoly@umic
 
 - [Dr. Christopher Brooks - University of Michigan School of Information](https://christopherbrooks.ca)
 - [Educational Technology Collective - University of Michigan School of Information](https://edtech.labs.si.umich.edu)
+- [Logo created by Porto Mineiro under CC BY-SA 4.0 - Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Icon_S_blue.svg)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
