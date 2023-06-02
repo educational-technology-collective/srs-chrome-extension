@@ -1,5 +1,5 @@
-import { handleErrorNullElement, requestObject, responseObject } from "../types";
-import { ivqData, setIvqData } from "./states";
+import { handleErrorNullElement, requestObject, responseObject } from "../../types";
+import { ivqData, setIvqData } from "../states";
 
 export const detectIvq = () => {
   let ivqDetector = createIvqDetector();

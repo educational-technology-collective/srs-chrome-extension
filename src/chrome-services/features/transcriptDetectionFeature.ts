@@ -1,5 +1,5 @@
-import { handleErrorNullElement, requestObject, responseObject } from "../types";
-import { timeSegData, fullTranscript, setTimeSegData, setFullTranscript } from "./states";
+import { handleErrorNullElement, requestObject, responseObject } from "../../types";
+import { timeSegData, fullTranscript, setTimeSegData, setFullTranscript } from "../states";
 
 export const detectTranscript = () => {
   let transcriptDetector = createTranscriptDetector();
@@ -111,7 +111,7 @@ const createTranscriptObserverCallback = () => {
 
             if (timestampElement) {
               timestamp = timestampElement.innerHTML;
-              console.log(timestamp);
+              // console.log(timestamp);
             } else {
               handleErrorNullElement("timestampElement");
             }
@@ -120,7 +120,7 @@ const createTranscriptObserverCallback = () => {
             // console.log(timeSegData);
 
             fullTranscript.push(segment);
-            console.log(fullTranscript);
+            // console.log(fullTranscript);
           }
         }
       }

@@ -1,4 +1,4 @@
-import { handleErrorNullElement, PlayPauseDatum, SkipRewindDatum, requestObject, responseObject } from "../types";
+import { handleErrorNullElement, PlayPauseDatum, SkipRewindDatum, requestObject, responseObject } from "../../types";
 import {
   prevTimestamp,
   setPrevTimestamp,
@@ -8,8 +8,8 @@ import {
   fullTranscript,
   setTimeSegData,
   setFullTranscript,
-} from "./states";
-import { makePostReq } from "./requests";
+} from "../states";
+import { makePostReq } from "../requests";
 
 export const detectVideo = () => {
   let videoDetector = createVideoDetector();
