@@ -9,7 +9,7 @@ import {
   setTimeSegData,
   setFullTranscript,
 } from "../states";
-import { makePostReq } from "../requests";
+import { makePostReqTest } from "../requests";
 
 export const detectVideo = () => {
   let videoDetector = createVideoDetector();
@@ -41,7 +41,7 @@ export const detectVideo = () => {
     if (url && videoUrlRegex.test(url)) {
       // reset detectors and pass in fresh, empty arrays to fill.
       setTimeSegData([]);
-      setFullTranscript([]);
+      setFullTranscript("");
 
       videoDetector = createVideoDetector();
 
@@ -272,7 +272,7 @@ const createVideoObserverCallback = () => {
       };
       console.log(vidLearningData);
 
-      makePostReq(vidLearningData);
+      makePostReqTest(vidLearningData);
     }
   };
 
