@@ -1,10 +1,27 @@
-import { API_ENDPOINT } from "./constants";
+import { API_ENDPOINT_CHUNK_TRANSCRIPT, API_ENDPOINT_TEST } from "./constants";
 
-// generic POST request function.
-// we use this to make POST request to the AWS Lambda instance.
-export const makePostReq = async (payload: object) => {
+// makes POST request to the /test endpoint of the AWS Lambda instance.
+export const makePostReqTest = async (payload: object) => {
   try {
-    const resp = await fetch(API_ENDPOINT, {
+    const resp = await fetch(API_ENDPOINT_TEST, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await resp.json();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// makes POST request to the /chunkTranscript endpoint of the AWS Lambda instance.
+export const makePostReqChunkTranscript = async (payload: object[]) => {
+  try {
+    const resp = await fetch(API_ENDPOINT_CHUNK_TRANSCRIPT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
