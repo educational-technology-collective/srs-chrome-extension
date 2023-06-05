@@ -24,3 +24,14 @@ export interface SkipRewindDatum {
   isPlay: boolean;
   isPause: boolean;
 }
+
+export interface CourseStructure {
+  courseTitle: string;
+  courseSlug: string;
+  videoTitle: string;
+  videoSlug: string;
+  videoUrl: string;
+  videoLength: string;
+  fullTranscript: string;
+  videoStructure: TimeSegDatum[];
+}
