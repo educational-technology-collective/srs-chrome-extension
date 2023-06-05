@@ -1,4 +1,4 @@
-import { detectTranscript, detectVideo, detectIvq, detectCopy, detectPaste } from "./features";
+import { detectTranscript, detectVideo, detectIvq, detectCopy, detectPaste, chunkTranscript } from "./features";
 
 // on initial load of the page.
 console.log("extension loaded");
@@ -9,3 +9,4 @@ detectVideo();
 detectIvq();
 detectCopy();
 detectPaste();
+chunkTranscript();
