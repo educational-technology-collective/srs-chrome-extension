@@ -1,0 +1,1507 @@
+{
+    "courseTitle": "Introduction to Data Science in Python",
+    "courseSlug": "python-data-analysis",
+    "videoTitle": "Merging DataFrames",
+    "videoSlug": "Kgwr5/merging-dataframes",
+    "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+    "videoLength": "15:31",
+    "fullTranscript": "In this lecture, we're going to address how you can bring multiple DataFrame objects together, either by merging them horizontally or by concatenating them vertically. Before we jump into the code, we need to address a little relational theory and to get some language conventions down, I'm going to bring in an image to help with some of those concepts. This is a Venn diagram. A Venn diagram is traditionally used to show set membership. For example, the circle on the left is the population of students at a University, the circle on the right is the population of staff at a University, and the overlapping region in the middle are all of those students who are also staff. Maybe these students run tutorials for a course, or grade assignments, or engage in running research experiments. So this diagram shows two populations we might have data about, but there's overlap between those populations. When it comes to translating this to Pandas, we can think of the case where we might have these two populations as indices in separate DataFrames, maybe with the label of person name. When we want to join the DataFrames together, we have some choices to make. First, what do we want a list of all the people regardless of whether they're staff or student, and all of the information we can get on them? In database terminology, this is called a full Outer join. In set theory, it's called a Union. In the Venn diagram, it represents everyone in any circle. So here's an image of what that would look like as a Venn diagram. It's quite possible though that we only want those people who have maximum information for, those people who are both staff and students. Perhaps being a staff member and the student involves getting a tuition waiver, we want to calculate the cost of this. In database terminology, this is called an inner join, or in set theory, the intersection. It's represented in the Venn diagram as an overlapping part in each circle. So here's what that would look like. So with that background, let's see an example of how we would do this in Pandas, where we would use the merge function. So we'll import pandas as pd. First, let's create two DataFrames, staff and students. So I'll create the staff DataFrame first, pd.DataFrame, and I'm going to pass in a list of dicts. So the first one, Kelly, we'll set her role to Director of HR, and then we'll create another one, Sally, and will set her role to Course liaison, then the third person, James, we'll set his role to Grader. Let's index this staff by name. So staff_df equals staff_df.set index, name. Now, we'll create this student DataFrame as well. So student df equals pd.DataFrame. I will create a student called James and we'll say he's in business school. I will create a student called Mike and we'll say he's in law school, then we'll create a student called Sally, and say she's in engineering. We're going to index this by name too, so student_df equals student_df.set index name. Let's just print out the DataFrame. So we'll first print out staff_df.head and then we'll print student_df.head. So there's some overlap in these DataFrames, and that James and Sally are both students and staff, but Mike and Kelly are not. Importantly, both DataFrames are indexed along the value we want to merge them on, which is called Name. If we want the Union of these, we would call merge passing in the DataFrame on the left and the DataFrame on the right and telling merge that we want it to use an outer join. We would want to use the left and right indexes as the joining columns. So we'll say pd.merge, we pass in the staff first and the student DataFrames second, so that's our left and our right. We set the how parameter to outer. By default, it's inner, I believe, so we have to set it here, and then say that we want to use the index values. So we'll set the left index equal to true and the right index equal to true. We see in the resulting DataFrame that everybody is listed and since Mike does not have a role and John does not have a school, those cells are listed as missing values. If we wanted to get the intersection that is just those people who are a student and a staff member, we can set the how attribute to enter. Again, we set both the left and right indices to be true as the joining columns. So we call it pd.merge and we'd say the left is the staff, the right is the student. How is the inner? So we're looking for the intersection here, and the left, and the right index values are true. We see that the resulting DataFrame has only James and Sally in it. Now, there are two other common use cases when merging DataFrames, and both are examples of what we would call set addition. The first is when we want to get a list of all staff regardless of whether they're students or not. But if there were students, we'd want to get their student details as well. To do this, we would use a left join. It's important to note that the order of DataFrames in this function, the first DataFrame is the left DataFrame and the second is the right. So pd.merge, staff_df, that's our left, student_df, that's our right, we say how left joins. So we're interested in joining against the staff_df and set left index equal to true and right index equal to true. So you can probably guess what comes next. We want a list of all of the students and their roles if they are also staff. To do this, we would do a right join. So we do staff_df on the left, student_df on the right, how equals right and left index equals true and right index equals true. We can also do it one other way. The merge method has a couple of other interesting parameters. First, you don't need to use indices to join on, you can use columns as well. Here's an example. Here we have a parameter called \"on\" and then we can assign a column that both DataFrames, how? Using the joining column. So first, let's remove our index. So we'll reset the index on the staff DataFrame and we'll reset the index honors student DataFrame. Now let's merge using the on parameter. So pd.merge, staff on the left, student on the right, we want a right join, and then we just pass on equals name. So we're saying join on that column. So using the \"on\" parameter instead of an index is how I find myself using merge the most. In fact, I rarely use indices in pandas DataFrames, especially where I'm just cleaning data as opposed to doing data analysis. So what happens when we have conflicts between the DataFrames? Let's take a look by creating new staff and student DataFrames that have a location information. So I'm going to create a new staff DataFrame. I'm going to say Kelly, her role is Director of HR, but I'm also going to a location of State Street. Sally, role Course liaison and location of Washington Avenue, then James is a Grader, and I'll say he's also on Washington Avenue. Then for our students, we'll say James is Business school, the location is on Billiard Avenue, Mike's Law School and his location is Fraternity House Number 22, and then Sally's school, Engineering and her location is on Wilson Crescent. The staff DataFrame, this is an office location where we can find the staff person, and we can see the Director of HR is on State Street while the two students are on Washington Ave. These locations just happened to be right outside my window as I film this. But for the student DataFrame, the location information is actually their home address. The merge function preserves this information, but depends either on underscore x or underscore y to help differentiate which index went with which column of data. The underscore x is always the left DataFrame information and the underscore y is always the right DataFrame information. So here, if we want all of the staff information, regardless of whether they are students or not, but if they are students, we want to get their student details as well, then we would do a left join on the column of name. So pd.merge staff, student, who are joining across the left because we want to get all of the information of students who are joining on Name. From the output, we can see that there are columns location_x and location_y. Location_x refers to the location column in the left dataframe, which is a staff dataframe and location_y refers to the column in the right dataframe which is the student dataframes. Before we leave merging of dataframes, let's talk about multi indexing and multiple columns. It's quite possible that the first name for students and staff might overlap, but the last name might not. In this case, we can use a list of multiple columns that should be used to join keys from both dataframes using the on parameter. Recall that the column name assigned to the parameter need to exist in both dataframes. So here's an example with some new first and staff name data. So I'm just going to paste this in quickly. But what you can see is that people now have a last name. So as you can see here, James Wilde and James Hammond don't match on both keys since they have different last names. So we would expect that an inner join doesn't include these individuals in the output, and only Sally Brooks would be retained. So pd.merge staff_df, student_df, we want an inner join, and then for on we actually pass in a python list, that's a list of the columns that we're interested in, those all have to match, so first name and last name. So joining dataframes through merging is incredibly common, and you'll need to know how to pull data from different sources, clean it, and join it for analysis. This is a staple not only of pandas, but of database technologies as well. If we think of merging as joining ''horizontally,'' meaning we join on similar values in a column found in two dataframes, then concatenating is joining ''vertically,'' meaning we put dataframes on top or at the bottom of one another. So let's understand this from an example. You have a dataset that tracks some information over the years, and each year's record is separate CSV, and every CSV of every year's record has the exact same columns. What happens if you want to put all of that data, from all of the records together so you can concatenate them? Let's take a look at the US Department of Education College Scorecard data. It has each US university's data on student completion, student debt, after graduation income, and others. The data is stored in separate CSVs, with each CSV containing a year's record. Let's say we wanted the records from 2011-2013. We create first three dataframes, each containing one year's record, and because the CSV files we're working with are messy, I want to suppress some of the Jupyter warning messages and just tell read_csv to ignore bad lines. So I'm going to start the cell with the cell magic, %%capture. So you don't have to worry about this. It's just to suppress output as we're loading these CSV files because there are errors in them. So %%capture, remember that has to be at the very beginning of the cell, any cell logic magic functions have to be right the first line of the cell, and then we want df_2011, so we will read_csv from a college scorecards, and this is MERGED2011_12. Then you say error_bad_lines=False. That's just telling Pandas not to bother throwing an error, and I'll do that for 2012 again, that's datasets/college_scorecardMERGED2013, and then df_2013 as well. All right. Let's get a view of one of the dataframes. So I'll take 2011, and we'll just look at the top three rows in that. So we see there's a whopping number of columns, more than 1900, and we can calculate the length of each dataframe as well. So you do print len df_2011, print len df_2012, and we'll print len df_2013. So it's a bit surprising with the number of schools and the scorecard for 2011 is almost double that of the next two years. But let's not worry about that. That's probably buried somewhere in the docs why that is. Instead, let's just put all three dataframes in a list and call the list frames and pass the list into the concat function. So let's see what that looks like. So we'll say frames is equal to, this is a list of our three dataframes. So df_2011, df_ 2012, df_2013 and then we just call pd.concat. So that's a function on Pandas top-level module and we pass the list of frames. So as you can see, we have more observations in one dataframe and the columns remain the same. If we scroll down to the bottom of the output, we can see there are a total of over 30,000 rows after concatenating the three dataframes. Let's double check and let's quickly add the number of rows of the three dataframes to see if they match. So we'll just say the len of df_2011 plus the len of df_2012 plus the len of df_2013. Great. The two numbers match, which means our concatenation is successful. But wait, not all of the data is concatenated together, we don't know what observations are from what year anymore. So actually, the concat function has a parameter that solves such a problem with the keys parameter, and we can set an extra level of index. We pass in a list of the keys that we want to correspond to the dataframes in as the keys parameter. So let's try it out. So pd.concat, we pass in our list of dataframes, and then we just say the keys we want to be 2011, 2012, 2013. So now we have the indices as the year. So we know what observations are from what year. You should know that concatenation also has inner and outer methods. If you're concatenating two dataframes that do not have identical columns, and choose the outer methods, some cells will be NaN. If you choose to do the inner, then some observations will be dropped due to NaN values. You can think this as analogous to the left and right joints of the merge function. Now you know how to merge and concatenate dataframes together. You'll find such functions very useful for combining data to get more complex or complicated results to do analysis with. A solid understanding of how to merge data is absolutely essential when you're procuring, cleaning, and manipulating data. It's worth knowing how to join different dataframes quickly, and the different operations that you can use when joining data sets, and I would encourage you to check out the pandas docs for more on joining and concatenating data. ",
+    "videoStructure": [
+        {
+            "timestamp": "0:05",
+            "segment": "In this lecture, we're going to address how you can bring "
+        },
+        {
+            "timestamp": "0:08",
+            "segment": "multiple DataFrame objects together, "
+        },
+        {
+            "timestamp": "0:11",
+            "segment": "either by merging them horizontally "
+        },
+        {
+            "timestamp": "0:12",
+            "segment": "or by concatenating them vertically. "
+        },
+        {
+            "timestamp": "0:15",
+            "segment": "Before we jump into the code, "
+        },
+        {
+            "timestamp": "0:17",
+            "segment": "we need to address a little relational theory "
+        },
+        {
+            "timestamp": "0:19",
+            "segment": "and to get some language conventions down, "
+        },
+        {
+            "timestamp": "0:21",
+            "segment": "I'm going to bring in an image to "
+        },
+        {
+            "timestamp": "0:22",
+            "segment": "help with some of those concepts. "
+        },
+        {
+            "timestamp": "0:26",
+            "segment": "This is a Venn diagram. "
+        },
+        {
+            "timestamp": "0:28",
+            "segment": "A Venn diagram is traditionally "
+        },
+        {
+            "timestamp": "0:30",
+            "segment": "used to show set membership. "
+        },
+        {
+            "timestamp": "0:32",
+            "segment": "For example, the circle on the left is "
+        },
+        {
+            "timestamp": "0:34",
+            "segment": "the population of students at a University, "
+        },
+        {
+            "timestamp": "0:37",
+            "segment": "the circle on the right is "
+        },
+        {
+            "timestamp": "0:38",
+            "segment": "the population of staff at a University, "
+        },
+        {
+            "timestamp": "0:41",
+            "segment": "and the overlapping region in the middle are "
+        },
+        {
+            "timestamp": "0:43",
+            "segment": "all of those students who are also staff. "
+        },
+        {
+            "timestamp": "0:46",
+            "segment": "Maybe these students run tutorials for a course, "
+        },
+        {
+            "timestamp": "0:49",
+            "segment": "or grade assignments, or engage "
+        },
+        {
+            "timestamp": "0:51",
+            "segment": "in running research experiments. "
+        },
+        {
+            "timestamp": "0:53",
+            "segment": "So this diagram shows "
+        },
+        {
+            "timestamp": "0:55",
+            "segment": "two populations we might have data about, "
+        },
+        {
+            "timestamp": "0:57",
+            "segment": "but there's overlap between those populations. "
+        },
+        {
+            "timestamp": "1:01",
+            "segment": "When it comes to translating this to Pandas, "
+        },
+        {
+            "timestamp": "1:03",
+            "segment": "we can think of the case where we might have "
+        },
+        {
+            "timestamp": "1:05",
+            "segment": "these two populations as indices in separate DataFrames, "
+        },
+        {
+            "timestamp": "1:09",
+            "segment": "maybe with the label of person name. "
+        },
+        {
+            "timestamp": "1:11",
+            "segment": "When we want to join the DataFrames together, "
+        },
+        {
+            "timestamp": "1:14",
+            "segment": "we have some choices to make. "
+        },
+        {
+            "timestamp": "1:16",
+            "segment": "First, what do we want a list of "
+        },
+        {
+            "timestamp": "1:18",
+            "segment": "all the people regardless of "
+        },
+        {
+            "timestamp": "1:20",
+            "segment": "whether they're staff or student, "
+        },
+        {
+            "timestamp": "1:22",
+            "segment": "and all of the information we can get on them? "
+        },
+        {
+            "timestamp": "1:25",
+            "segment": "In database terminology, "
+        },
+        {
+            "timestamp": "1:26",
+            "segment": "this is called a full Outer join. "
+        },
+        {
+            "timestamp": "1:28",
+            "segment": "In set theory, it's called a Union. "
+        },
+        {
+            "timestamp": "1:31",
+            "segment": "In the Venn diagram, "
+        },
+        {
+            "timestamp": "1:32",
+            "segment": "it represents everyone in any circle. "
+        },
+        {
+            "timestamp": "1:35",
+            "segment": "So here's an image of what that would "
+        },
+        {
+            "timestamp": "1:37",
+            "segment": "look like as a Venn diagram. "
+        },
+        {
+            "timestamp": "1:40",
+            "segment": "It's quite possible though that we only want "
+        },
+        {
+            "timestamp": "1:44",
+            "segment": "those people who have maximum information for, "
+        },
+        {
+            "timestamp": "1:47",
+            "segment": "those people who are both staff and students. "
+        },
+        {
+            "timestamp": "1:50",
+            "segment": "Perhaps being a staff member and "
+        },
+        {
+            "timestamp": "1:52",
+            "segment": "the student involves getting a tuition waiver, "
+        },
+        {
+            "timestamp": "1:54",
+            "segment": "we want to calculate the cost of this. "
+        },
+        {
+            "timestamp": "1:56",
+            "segment": "In database terminology, this is called an inner join, "
+        },
+        {
+            "timestamp": "2:00",
+            "segment": "or in set theory, the intersection. "
+        },
+        {
+            "timestamp": "2:02",
+            "segment": "It's represented in the Venn diagram "
+        },
+        {
+            "timestamp": "2:04",
+            "segment": "as an overlapping part in each circle. "
+        },
+        {
+            "timestamp": "2:07",
+            "segment": "So here's what that would look like. "
+        },
+        {
+            "timestamp": "2:10",
+            "segment": "So with that background, "
+        },
+        {
+            "timestamp": "2:12",
+            "segment": "let's see an example of how we would do this in Pandas, "
+        },
+        {
+            "timestamp": "2:15",
+            "segment": "where we would use the merge function. "
+        },
+        {
+            "timestamp": "2:17",
+            "segment": "So we'll import pandas as pd. "
+        },
+        {
+            "timestamp": "2:20",
+            "segment": "First, let's create two DataFrames, staff and students. "
+        },
+        {
+            "timestamp": "2:23",
+            "segment": "So I'll create the staff DataFrame first, "
+        },
+        {
+            "timestamp": "2:26",
+            "segment": "pd.DataFrame, and I'm going to pass in a list of dicts. "
+        },
+        {
+            "timestamp": "2:29",
+            "segment": "So the first one, Kelly, "
+        },
+        {
+            "timestamp": "2:32",
+            "segment": "we'll set her role to Director of HR, "
+        },
+        {
+            "timestamp": "2:34",
+            "segment": "and then we'll create another one, "
+        },
+        {
+            "timestamp": "2:35",
+            "segment": "Sally, and will set her role to Course liaison, "
+        },
+        {
+            "timestamp": "2:39",
+            "segment": "then the third person, "
+        },
+        {
+            "timestamp": "2:41",
+            "segment": "James, we'll set his role to Grader. "
+        },
+        {
+            "timestamp": "2:43",
+            "segment": "Let's index this staff by name. "
+        },
+        {
+            "timestamp": "2:45",
+            "segment": "So staff_df equals staff_df.set index, name. "
+        },
+        {
+            "timestamp": "2:50",
+            "segment": "Now, we'll create this student DataFrame as well. "
+        },
+        {
+            "timestamp": "2:52",
+            "segment": "So student df equals pd.DataFrame. "
+        },
+        {
+            "timestamp": "2:55",
+            "segment": "I will create a student called "
+        },
+        {
+            "timestamp": "2:57",
+            "segment": "James and we'll say he's in business school. "
+        },
+        {
+            "timestamp": "2:59",
+            "segment": "I will create a student called "
+        },
+        {
+            "timestamp": "3:01",
+            "segment": "Mike and we'll say he's in law school, "
+        },
+        {
+            "timestamp": "3:03",
+            "segment": "then we'll create a student called Sally, "
+        },
+        {
+            "timestamp": "3:06",
+            "segment": "and say she's in engineering. "
+        },
+        {
+            "timestamp": "3:08",
+            "segment": "We're going to index this by name too, "
+        },
+        {
+            "timestamp": "3:10",
+            "segment": "so student_df equals student_df.set index name. "
+        },
+        {
+            "timestamp": "3:14",
+            "segment": "Let's just print out the DataFrame. "
+        },
+        {
+            "timestamp": "3:16",
+            "segment": "So we'll first print out "
+        },
+        {
+            "timestamp": "3:18",
+            "segment": "staff_df.head and then we'll print student_df.head. "
+        },
+        {
+            "timestamp": "3:23",
+            "segment": "So there's some overlap in these DataFrames, "
+        },
+        {
+            "timestamp": "3:26",
+            "segment": "and that James and Sally are both students and staff, "
+        },
+        {
+            "timestamp": "3:29",
+            "segment": "but Mike and Kelly are not. "
+        },
+        {
+            "timestamp": "3:32",
+            "segment": "Importantly, both DataFrames are "
+        },
+        {
+            "timestamp": "3:34",
+            "segment": "indexed along the value we want to merge them on, "
+        },
+        {
+            "timestamp": "3:36",
+            "segment": "which is called Name. "
+        },
+        {
+            "timestamp": "3:38",
+            "segment": "If we want the Union of these, "
+        },
+        {
+            "timestamp": "3:40",
+            "segment": "we would call merge "
+        },
+        {
+            "timestamp": "3:42",
+            "segment": "passing in the DataFrame on the left and "
+        },
+        {
+            "timestamp": "3:44",
+            "segment": "the DataFrame on the right and telling "
+        },
+        {
+            "timestamp": "3:45",
+            "segment": "merge that we want it to use an outer join. "
+        },
+        {
+            "timestamp": "3:48",
+            "segment": "We would want to use the left and right "
+        },
+        {
+            "timestamp": "3:50",
+            "segment": "indexes as the joining columns. "
+        },
+        {
+            "timestamp": "3:53",
+            "segment": "So we'll say pd.merge, "
+        },
+        {
+            "timestamp": "3:55",
+            "segment": "we pass in the staff first "
+        },
+        {
+            "timestamp": "3:57",
+            "segment": "and the student DataFrames second, "
+        },
+        {
+            "timestamp": "3:59",
+            "segment": "so that's our left and our right. "
+        },
+        {
+            "timestamp": "4:01",
+            "segment": "We set the how parameter to outer. "
+        },
+        {
+            "timestamp": "4:03",
+            "segment": "By default, it's inner, I believe, "
+        },
+        {
+            "timestamp": "4:05",
+            "segment": "so we have to set it here, "
+        },
+        {
+            "timestamp": "4:07",
+            "segment": "and then say that we want to use the index values. "
+        },
+        {
+            "timestamp": "4:09",
+            "segment": "So we'll set the left index equal to "
+        },
+        {
+            "timestamp": "4:11",
+            "segment": "true and the right index equal to true. "
+        },
+        {
+            "timestamp": "4:14",
+            "segment": "We see in the resulting DataFrame "
+        },
+        {
+            "timestamp": "4:16",
+            "segment": "that everybody is listed "
+        },
+        {
+            "timestamp": "4:18",
+            "segment": "and since Mike does not have "
+        },
+        {
+            "timestamp": "4:19",
+            "segment": "a role and John does not have a school, "
+        },
+        {
+            "timestamp": "4:21",
+            "segment": "those cells are listed as missing values. "
+        },
+        {
+            "timestamp": "4:24",
+            "segment": "If we wanted to get the intersection that is "
+        },
+        {
+            "timestamp": "4:27",
+            "segment": "just those people who are a student and a staff member, "
+        },
+        {
+            "timestamp": "4:31",
+            "segment": "we can set the how attribute to enter. "
+        },
+        {
+            "timestamp": "4:33",
+            "segment": "Again, we set both the left and right indices "
+        },
+        {
+            "timestamp": "4:36",
+            "segment": "to be true as the joining columns. "
+        },
+        {
+            "timestamp": "4:38",
+            "segment": "So we call it pd.merge "
+        },
+        {
+            "timestamp": "4:40",
+            "segment": "and we'd say the left is the staff, "
+        },
+        {
+            "timestamp": "4:43",
+            "segment": "the right is the student. How is the inner? "
+        },
+        {
+            "timestamp": "4:45",
+            "segment": "So we're looking for the intersection here, "
+        },
+        {
+            "timestamp": "4:47",
+            "segment": "and the left, and the right index values are true. "
+        },
+        {
+            "timestamp": "4:51",
+            "segment": "We see that the resulting DataFrame "
+        },
+        {
+            "timestamp": "4:53",
+            "segment": "has only James and Sally in it. "
+        },
+        {
+            "timestamp": "4:55",
+            "segment": "Now, there are two other common use cases "
+        },
+        {
+            "timestamp": "4:58",
+            "segment": "when merging DataFrames, "
+        },
+        {
+            "timestamp": "4:59",
+            "segment": "and both are examples of what we would call set addition. "
+        },
+        {
+            "timestamp": "5:02",
+            "segment": "The first is when we want to get a list of "
+        },
+        {
+            "timestamp": "5:05",
+            "segment": "all staff regardless of whether they're students or not. "
+        },
+        {
+            "timestamp": "5:08",
+            "segment": "But if there were students, "
+        },
+        {
+            "timestamp": "5:09",
+            "segment": "we'd want to get their student details as well. "
+        },
+        {
+            "timestamp": "5:12",
+            "segment": "To do this, we would use a left join. "
+        },
+        {
+            "timestamp": "5:15",
+            "segment": "It's important to note that "
+        },
+        {
+            "timestamp": "5:16",
+            "segment": "the order of DataFrames in this function, "
+        },
+        {
+            "timestamp": "5:18",
+            "segment": "the first DataFrame is "
+        },
+        {
+            "timestamp": "5:20",
+            "segment": "the left DataFrame and the second is the right. "
+        },
+        {
+            "timestamp": "5:23",
+            "segment": "So pd.merge, staff_df, that's our left, "
+        },
+        {
+            "timestamp": "5:26",
+            "segment": "student_df, that's our right, "
+        },
+        {
+            "timestamp": "5:28",
+            "segment": "we say how left joins. "
+        },
+        {
+            "timestamp": "5:31",
+            "segment": "So we're interested in joining against the staff_df "
+        },
+        {
+            "timestamp": "5:34",
+            "segment": "and set left index equal to "
+        },
+        {
+            "timestamp": "5:35",
+            "segment": "true and right index equal to true. "
+        },
+        {
+            "timestamp": "5:38",
+            "segment": "So you can probably guess what comes next. "
+        },
+        {
+            "timestamp": "5:41",
+            "segment": "We want a list of all of the students and "
+        },
+        {
+            "timestamp": "5:43",
+            "segment": "their roles if they are also staff. "
+        },
+        {
+            "timestamp": "5:45",
+            "segment": "To do this, we would do a right join. "
+        },
+        {
+            "timestamp": "5:47",
+            "segment": "So we do staff_df on the left, "
+        },
+        {
+            "timestamp": "5:50",
+            "segment": "student_df on the right, "
+        },
+        {
+            "timestamp": "5:51",
+            "segment": "how equals right and "
+        },
+        {
+            "timestamp": "5:53",
+            "segment": "left index equals true and right index equals true. "
+        },
+        {
+            "timestamp": "5:58",
+            "segment": "We can also do it one other way. "
+        },
+        {
+            "timestamp": "6:00",
+            "segment": "The merge method has a couple "
+        },
+        {
+            "timestamp": "6:02",
+            "segment": "of other interesting parameters. "
+        },
+        {
+            "timestamp": "6:03",
+            "segment": "First, you don't need to use indices to join on, "
+        },
+        {
+            "timestamp": "6:06",
+            "segment": "you can use columns as well. "
+        },
+        {
+            "timestamp": "6:08",
+            "segment": "Here's an example. Here we have "
+        },
+        {
+            "timestamp": "6:09",
+            "segment": "a parameter called \"on\" and "
+        },
+        {
+            "timestamp": "6:11",
+            "segment": "then we can assign a column that both DataFrames, how? "
+        },
+        {
+            "timestamp": "6:14",
+            "segment": "Using the joining column. "
+        },
+        {
+            "timestamp": "6:16",
+            "segment": "So first, let's remove our index. "
+        },
+        {
+            "timestamp": "6:18",
+            "segment": "So we'll reset the index on the staff "
+        },
+        {
+            "timestamp": "6:20",
+            "segment": "DataFrame and we'll reset "
+        },
+        {
+            "timestamp": "6:22",
+            "segment": "the index honors student DataFrame. "
+        },
+        {
+            "timestamp": "6:24",
+            "segment": "Now let's merge using the on parameter. "
+        },
+        {
+            "timestamp": "6:27",
+            "segment": "So pd.merge, staff on the left, "
+        },
+        {
+            "timestamp": "6:30",
+            "segment": "student on the right, we want a right join, "
+        },
+        {
+            "timestamp": "6:32",
+            "segment": "and then we just pass on equals name. "
+        },
+        {
+            "timestamp": "6:34",
+            "segment": "So we're saying join on that column. "
+        },
+        {
+            "timestamp": "6:36",
+            "segment": "So using the \"on\" parameter instead of an index is "
+        },
+        {
+            "timestamp": "6:40",
+            "segment": "how I find myself using merge the most. "
+        },
+        {
+            "timestamp": "6:43",
+            "segment": "In fact, I rarely use indices in pandas DataFrames, "
+        },
+        {
+            "timestamp": "6:47",
+            "segment": "especially where I'm just cleaning "
+        },
+        {
+            "timestamp": "6:48",
+            "segment": "data as opposed to doing data analysis. "
+        },
+        {
+            "timestamp": "6:51",
+            "segment": "So what happens when we have "
+        },
+        {
+            "timestamp": "6:53",
+            "segment": "conflicts between the DataFrames? "
+        },
+        {
+            "timestamp": "6:56",
+            "segment": "Let's take a look by creating new staff and "
+        },
+        {
+            "timestamp": "6:58",
+            "segment": "student DataFrames that have a location information. "
+        },
+        {
+            "timestamp": "7:00",
+            "segment": "So I'm going to create a new staff DataFrame. "
+        },
+        {
+            "timestamp": "7:02",
+            "segment": "I'm going to say Kelly, "
+        },
+        {
+            "timestamp": "7:04",
+            "segment": "her role is Director of HR, "
+        },
+        {
+            "timestamp": "7:06",
+            "segment": "but I'm also going to a location of State Street. "
+        },
+        {
+            "timestamp": "7:09",
+            "segment": "Sally, role Course liaison "
+        },
+        {
+            "timestamp": "7:12",
+            "segment": "and location of Washington Avenue, "
+        },
+        {
+            "timestamp": "7:15",
+            "segment": "then James is a Grader, "
+        },
+        {
+            "timestamp": "7:17",
+            "segment": "and I'll say he's also on Washington Avenue. "
+        },
+        {
+            "timestamp": "7:19",
+            "segment": "Then for our students, we'll say "
+        },
+        {
+            "timestamp": "7:22",
+            "segment": "James is Business school, "
+        },
+        {
+            "timestamp": "7:24",
+            "segment": "the location is on Billiard Avenue, "
+        },
+        {
+            "timestamp": "7:26",
+            "segment": "Mike's Law School and "
+        },
+        {
+            "timestamp": "7:28",
+            "segment": "his location is Fraternity House Number 22, "
+        },
+        {
+            "timestamp": "7:32",
+            "segment": "and then Sally's school, "
+        },
+        {
+            "timestamp": "7:33",
+            "segment": "Engineering and her location is on Wilson Crescent. "
+        },
+        {
+            "timestamp": "7:38",
+            "segment": "The staff DataFrame, this is "
+        },
+        {
+            "timestamp": "7:40",
+            "segment": "an office location where we can find the staff person, "
+        },
+        {
+            "timestamp": "7:43",
+            "segment": "and we can see the Director of HR is on "
+        },
+        {
+            "timestamp": "7:45",
+            "segment": "State Street while the two students "
+        },
+        {
+            "timestamp": "7:47",
+            "segment": "are on Washington Ave. "
+        },
+        {
+            "timestamp": "7:48",
+            "segment": "These locations just happened to be "
+        },
+        {
+            "timestamp": "7:50",
+            "segment": "right outside my window as I film this. "
+        },
+        {
+            "timestamp": "7:52",
+            "segment": "But for the student DataFrame, "
+        },
+        {
+            "timestamp": "7:55",
+            "segment": "the location information is actually their home address. "
+        },
+        {
+            "timestamp": "7:58",
+            "segment": "The merge function preserves this information, "
+        },
+        {
+            "timestamp": "8:01",
+            "segment": "but depends either on underscore x or underscore y to "
+        },
+        {
+            "timestamp": "8:04",
+            "segment": "help differentiate which index "
+        },
+        {
+            "timestamp": "8:06",
+            "segment": "went with which column of data. "
+        },
+        {
+            "timestamp": "8:08",
+            "segment": "The underscore x is always "
+        },
+        {
+            "timestamp": "8:09",
+            "segment": "the left DataFrame information and "
+        },
+        {
+            "timestamp": "8:12",
+            "segment": "the underscore y is always "
+        },
+        {
+            "timestamp": "8:13",
+            "segment": "the right DataFrame information. "
+        },
+        {
+            "timestamp": "8:15",
+            "segment": "So here, if we want all of the staff information, "
+        },
+        {
+            "timestamp": "8:18",
+            "segment": "regardless of whether they are students or not, "
+        },
+        {
+            "timestamp": "8:21",
+            "segment": "but if they are students, we want to get "
+        },
+        {
+            "timestamp": "8:22",
+            "segment": "their student details as well, "
+        },
+        {
+            "timestamp": "8:24",
+            "segment": "then we would do a left join on the column of name. "
+        },
+        {
+            "timestamp": "8:27",
+            "segment": "So pd.merge staff, student, "
+        },
+        {
+            "timestamp": "8:31",
+            "segment": "who are joining across the left because we want to get "
+        },
+        {
+            "timestamp": "8:34",
+            "segment": "all of the information of "
+        },
+        {
+            "timestamp": "8:35",
+            "segment": "students who are joining on Name. "
+        },
+        {
+            "timestamp": "8:38",
+            "segment": "From the output, we can see that there are "
+        },
+        {
+            "timestamp": "8:40",
+            "segment": "columns location_x and location_y. "
+        },
+        {
+            "timestamp": "8:43",
+            "segment": "Location_x refers to the location column "
+        },
+        {
+            "timestamp": "8:46",
+            "segment": "in the left dataframe, "
+        },
+        {
+            "timestamp": "8:47",
+            "segment": "which is a staff dataframe and location_y refers "
+        },
+        {
+            "timestamp": "8:50",
+            "segment": "to the column in the right dataframe "
+        },
+        {
+            "timestamp": "8:52",
+            "segment": "which is the student dataframes. "
+        },
+        {
+            "timestamp": "8:54",
+            "segment": "Before we leave merging of dataframes, "
+        },
+        {
+            "timestamp": "8:57",
+            "segment": "let's talk about multi indexing and multiple columns. "
+        },
+        {
+            "timestamp": "9:00",
+            "segment": "It's quite possible that "
+        },
+        {
+            "timestamp": "9:01",
+            "segment": "the first name for students and staff might overlap, "
+        },
+        {
+            "timestamp": "9:05",
+            "segment": "but the last name might not. "
+        },
+        {
+            "timestamp": "9:06",
+            "segment": "In this case, we can use a list "
+        },
+        {
+            "timestamp": "9:08",
+            "segment": "of multiple columns that should be used to "
+        },
+        {
+            "timestamp": "9:10",
+            "segment": "join keys from both dataframes using the on parameter. "
+        },
+        {
+            "timestamp": "9:15",
+            "segment": "Recall that the column name assigned to the parameter "
+        },
+        {
+            "timestamp": "9:17",
+            "segment": "need to exist in both dataframes. "
+        },
+        {
+            "timestamp": "9:21",
+            "segment": "So here's an example with "
+        },
+        {
+            "timestamp": "9:22",
+            "segment": "some new first and staff name data. "
+        },
+        {
+            "timestamp": "9:24",
+            "segment": "So I'm just going to paste this in quickly. "
+        },
+        {
+            "timestamp": "9:27",
+            "segment": "But what you can see is that people now have a last name. "
+        },
+        {
+            "timestamp": "9:34",
+            "segment": "So as you can see here, James Wilde "
+        },
+        {
+            "timestamp": "9:37",
+            "segment": "and James Hammond don't "
+        },
+        {
+            "timestamp": "9:38",
+            "segment": "match on both keys since they have different last names. "
+        },
+        {
+            "timestamp": "9:41",
+            "segment": "So we would expect that an inner join "
+        },
+        {
+            "timestamp": "9:42",
+            "segment": "doesn't include these individuals in the output, "
+        },
+        {
+            "timestamp": "9:45",
+            "segment": "and only Sally Brooks would be retained. "
+        },
+        {
+            "timestamp": "9:48",
+            "segment": "So pd.merge staff_df, student_df, "
+        },
+        {
+            "timestamp": "9:51",
+            "segment": "we want an inner join, "
+        },
+        {
+            "timestamp": "9:52",
+            "segment": "and then for on we actually pass in a python list, "
+        },
+        {
+            "timestamp": "9:56",
+            "segment": "that's a list of the columns that we're interested in, "
+        },
+        {
+            "timestamp": "9:58",
+            "segment": "those all have to match, "
+        },
+        {
+            "timestamp": "9:59",
+            "segment": "so first name and last name. "
+        },
+        {
+            "timestamp": "10:01",
+            "segment": "So joining dataframes through "
+        },
+        {
+            "timestamp": "10:04",
+            "segment": "merging is incredibly common, "
+        },
+        {
+            "timestamp": "10:05",
+            "segment": "and you'll need to know how to "
+        },
+        {
+            "timestamp": "10:07",
+            "segment": "pull data from different sources, "
+        },
+        {
+            "timestamp": "10:08",
+            "segment": "clean it, and join it for analysis. "
+        },
+        {
+            "timestamp": "10:11",
+            "segment": "This is a staple not only of pandas, "
+        },
+        {
+            "timestamp": "10:13",
+            "segment": "but of database technologies as well. "
+        },
+        {
+            "timestamp": "10:15",
+            "segment": "If we think of merging as joining ''horizontally,'' "
+        },
+        {
+            "timestamp": "10:19",
+            "segment": "meaning we join on similar values "
+        },
+        {
+            "timestamp": "10:21",
+            "segment": "in a column found in two dataframes, "
+        },
+        {
+            "timestamp": "10:23",
+            "segment": "then concatenating is joining ''vertically,'' meaning we "
+        },
+        {
+            "timestamp": "10:26",
+            "segment": "put dataframes on top or at the bottom of one another. "
+        },
+        {
+            "timestamp": "10:30",
+            "segment": "So let's understand this from an example. "
+        },
+        {
+            "timestamp": "10:32",
+            "segment": "You have a dataset that tracks "
+        },
+        {
+            "timestamp": "10:34",
+            "segment": "some information over the years, "
+        },
+        {
+            "timestamp": "10:36",
+            "segment": "and each year's record is separate CSV, "
+        },
+        {
+            "timestamp": "10:39",
+            "segment": "and every CSV of "
+        },
+        {
+            "timestamp": "10:40",
+            "segment": "every year's record has the exact same columns. "
+        },
+        {
+            "timestamp": "10:42",
+            "segment": "What happens if you want to put all of that data, "
+        },
+        {
+            "timestamp": "10:45",
+            "segment": "from all of the records "
+        },
+        {
+            "timestamp": "10:47",
+            "segment": "together so you can concatenate them? "
+        },
+        {
+            "timestamp": "10:50",
+            "segment": "Let's take a look at the US Department "
+        },
+        {
+            "timestamp": "10:52",
+            "segment": "of Education College Scorecard data. "
+        },
+        {
+            "timestamp": "10:54",
+            "segment": "It has each US university's data on student completion, "
+        },
+        {
+            "timestamp": "10:58",
+            "segment": "student debt, after graduation income, and others. "
+        },
+        {
+            "timestamp": "11:02",
+            "segment": "The data is stored in separate CSVs, "
+        },
+        {
+            "timestamp": "11:04",
+            "segment": "with each CSV containing a year's record. "
+        },
+        {
+            "timestamp": "11:07",
+            "segment": "Let's say we wanted the records from 2011-2013. "
+        },
+        {
+            "timestamp": "11:11",
+            "segment": "We create first three dataframes, "
+        },
+        {
+            "timestamp": "11:13",
+            "segment": "each containing one year's record, "
+        },
+        {
+            "timestamp": "11:15",
+            "segment": "and because the CSV files we're working with are messy, "
+        },
+        {
+            "timestamp": "11:18",
+            "segment": "I want to suppress some of "
+        },
+        {
+            "timestamp": "11:19",
+            "segment": "the Jupyter warning messages and just "
+        },
+        {
+            "timestamp": "11:21",
+            "segment": "tell read_csv to ignore bad lines. "
+        },
+        {
+            "timestamp": "11:24",
+            "segment": "So I'm going to start the cell with "
+        },
+        {
+            "timestamp": "11:25",
+            "segment": "the cell magic, %%capture. "
+        },
+        {
+            "timestamp": "11:28",
+            "segment": "So you don't have to worry about this. "
+        },
+        {
+            "timestamp": "11:31",
+            "segment": "It's just to suppress output as we're loading "
+        },
+        {
+            "timestamp": "11:33",
+            "segment": "these CSV files because there are errors in them. "
+        },
+        {
+            "timestamp": "11:37",
+            "segment": "So %%capture, remember that "
+        },
+        {
+            "timestamp": "11:39",
+            "segment": "has to be at the very beginning of the cell, "
+        },
+        {
+            "timestamp": "11:41",
+            "segment": "any cell logic magic functions "
+        },
+        {
+            "timestamp": "11:44",
+            "segment": "have to be right the first line of the cell, "
+        },
+        {
+            "timestamp": "11:46",
+            "segment": "and then we want df_2011, "
+        },
+        {
+            "timestamp": "11:48",
+            "segment": "so we will read_csv from a college scorecards, "
+        },
+        {
+            "timestamp": "11:51",
+            "segment": "and this is MERGED2011_12. "
+        },
+        {
+            "timestamp": "11:54",
+            "segment": "Then you say error_bad_lines=False. "
+        },
+        {
+            "timestamp": "11:57",
+            "segment": "That's just telling Pandas "
+        },
+        {
+            "timestamp": "11:58",
+            "segment": "not to bother throwing an error, "
+        },
+        {
+            "timestamp": "12:00",
+            "segment": "and I'll do that for 2012 again, "
+        },
+        {
+            "timestamp": "12:03",
+            "segment": "that's datasets/college_scorecardMERGED2013, "
+        },
+        {
+            "timestamp": "12:09",
+            "segment": "and then df_2013 as well. "
+        },
+        {
+            "timestamp": "12:14",
+            "segment": "All right. Let's get a view of one of the dataframes. "
+        },
+        {
+            "timestamp": "12:17",
+            "segment": "So I'll take 2011, and we'll just "
+        },
+        {
+            "timestamp": "12:19",
+            "segment": "look at the top three rows in that. "
+        },
+        {
+            "timestamp": "12:22",
+            "segment": "So we see there's a whopping number of columns, "
+        },
+        {
+            "timestamp": "12:25",
+            "segment": "more than 1900, and we can "
+        },
+        {
+            "timestamp": "12:27",
+            "segment": "calculate the length of each dataframe as well. "
+        },
+        {
+            "timestamp": "12:30",
+            "segment": "So you do print len df_2011, "
+        },
+        {
+            "timestamp": "12:33",
+            "segment": "print len df_2012, and we'll print len df_2013. "
+        },
+        {
+            "timestamp": "12:38",
+            "segment": "So it's a bit surprising with "
+        },
+        {
+            "timestamp": "12:40",
+            "segment": "the number of schools and the scorecard "
+        },
+        {
+            "timestamp": "12:41",
+            "segment": "for 2011 is almost double that of the next two years. "
+        },
+        {
+            "timestamp": "12:45",
+            "segment": "But let's not worry about that. "
+        },
+        {
+            "timestamp": "12:46",
+            "segment": "That's probably buried somewhere in the docs why that is. "
+        },
+        {
+            "timestamp": "12:49",
+            "segment": "Instead, let's just put "
+        },
+        {
+            "timestamp": "12:50",
+            "segment": "all three dataframes in a list and call "
+        },
+        {
+            "timestamp": "12:53",
+            "segment": "the list frames and "
+        },
+        {
+            "timestamp": "12:54",
+            "segment": "pass the list into the concat function. "
+        },
+        {
+            "timestamp": "12:57",
+            "segment": "So let's see what that looks like. "
+        },
+        {
+            "timestamp": "12:59",
+            "segment": "So we'll say frames is equal to, "
+        },
+        {
+            "timestamp": "13:01",
+            "segment": "this is a list of our three dataframes. "
+        },
+        {
+            "timestamp": "13:04",
+            "segment": "So df_2011, df_ 2012, "
+        },
+        {
+            "timestamp": "13:06",
+            "segment": "df_2013 and then we just call pd.concat. "
+        },
+        {
+            "timestamp": "13:10",
+            "segment": "So that's a function on "
+        },
+        {
+            "timestamp": "13:11",
+            "segment": "Pandas top-level module and we pass the list of frames. "
+        },
+        {
+            "timestamp": "13:16",
+            "segment": "So as you can see, we have more observations in "
+        },
+        {
+            "timestamp": "13:19",
+            "segment": "one dataframe and the columns remain the same. "
+        },
+        {
+            "timestamp": "13:21",
+            "segment": "If we scroll down to the bottom of the output, "
+        },
+        {
+            "timestamp": "13:24",
+            "segment": "we can see there are a total of over "
+        },
+        {
+            "timestamp": "13:25",
+            "segment": "30,000 rows after concatenating the three dataframes. "
+        },
+        {
+            "timestamp": "13:30",
+            "segment": "Let's double check and let's quickly add the number of "
+        },
+        {
+            "timestamp": "13:32",
+            "segment": "rows of the three dataframes to see if they match. "
+        },
+        {
+            "timestamp": "13:36",
+            "segment": "So we'll just say the len of df_2011 plus the len of "
+        },
+        {
+            "timestamp": "13:39",
+            "segment": "df_2012 plus the len of df_2013. "
+        },
+        {
+            "timestamp": "13:44",
+            "segment": "Great. The two numbers match, "
+        },
+        {
+            "timestamp": "13:46",
+            "segment": "which means our concatenation is successful. "
+        },
+        {
+            "timestamp": "13:49",
+            "segment": "But wait, not all of the data is concatenated together, "
+        },
+        {
+            "timestamp": "13:52",
+            "segment": "we don't know what observations are "
+        },
+        {
+            "timestamp": "13:54",
+            "segment": "from what year anymore. "
+        },
+        {
+            "timestamp": "13:56",
+            "segment": "So actually, the concat function has "
+        },
+        {
+            "timestamp": "13:58",
+            "segment": "a parameter that solves "
+        },
+        {
+            "timestamp": "14:00",
+            "segment": "such a problem with the keys parameter, "
+        },
+        {
+            "timestamp": "14:02",
+            "segment": "and we can set an extra level of index. "
+        },
+        {
+            "timestamp": "14:04",
+            "segment": "We pass in a list of the keys "
+        },
+        {
+            "timestamp": "14:05",
+            "segment": "that we want to correspond to "
+        },
+        {
+            "timestamp": "14:07",
+            "segment": "the dataframes in as "
+        },
+        {
+            "timestamp": "14:09",
+            "segment": "the keys parameter. So let's try it out. "
+        },
+        {
+            "timestamp": "14:11",
+            "segment": "So pd.concat, we pass in our list of dataframes, "
+        },
+        {
+            "timestamp": "14:15",
+            "segment": "and then we just say the keys we want to "
+        },
+        {
+            "timestamp": "14:17",
+            "segment": "be 2011, 2012, 2013. "
+        },
+        {
+            "timestamp": "14:26",
+            "segment": "So now we have the indices as the year. "
+        },
+        {
+            "timestamp": "14:29",
+            "segment": "So we know what observations are from what year. "
+        },
+        {
+            "timestamp": "14:32",
+            "segment": "You should know that concatenation "
+        },
+        {
+            "timestamp": "14:34",
+            "segment": "also has inner and outer methods. "
+        },
+        {
+            "timestamp": "14:36",
+            "segment": "If you're concatenating two dataframes that "
+        },
+        {
+            "timestamp": "14:38",
+            "segment": "do not have identical columns, "
+        },
+        {
+            "timestamp": "14:40",
+            "segment": "and choose the outer methods, "
+        },
+        {
+            "timestamp": "14:42",
+            "segment": "some cells will be NaN. "
+        },
+        {
+            "timestamp": "14:44",
+            "segment": "If you choose to do the inner, "
+        },
+        {
+            "timestamp": "14:45",
+            "segment": "then some observations will be dropped due to NaN values. "
+        },
+        {
+            "timestamp": "14:48",
+            "segment": "You can think this as analogous to the left "
+        },
+        {
+            "timestamp": "14:51",
+            "segment": "and right joints of the merge function. "
+        },
+        {
+            "timestamp": "14:54",
+            "segment": "Now you know how to merge and concatenate "
+        },
+        {
+            "timestamp": "14:56",
+            "segment": "dataframes together. "
+        },
+        {
+            "timestamp": "14:58",
+            "segment": "You'll find such functions very "
+        },
+        {
+            "timestamp": "15:00",
+            "segment": "useful for combining data to get "
+        },
+        {
+            "timestamp": "15:01",
+            "segment": "more complex or complicated results to do analysis with. "
+        },
+        {
+            "timestamp": "15:05",
+            "segment": "A solid understanding of how to merge data "
+        },
+        {
+            "timestamp": "15:08",
+            "segment": "is absolutely essential when you're procuring, "
+        },
+        {
+            "timestamp": "15:10",
+            "segment": "cleaning, and manipulating data. "
+        },
+        {
+            "timestamp": "15:12",
+            "segment": "It's worth knowing how to join "
+        },
+        {
+            "timestamp": "15:13",
+            "segment": "different dataframes quickly, "
+        },
+        {
+            "timestamp": "15:14",
+            "segment": "and the different operations that you "
+        },
+        {
+            "timestamp": "15:17",
+            "segment": "can use when joining data sets, "
+        },
+        {
+            "timestamp": "15:19",
+            "segment": "and I would encourage you to check out the pandas docs "
+        },
+        {
+            "timestamp": "15:21",
+            "segment": "for more on joining and concatenating data. "
+        }
+    ]
+}
