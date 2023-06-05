@@ -1,4 +1,4 @@
-import cs from "../courseStructure.json";
+import cs from "../courseData.json";
 import { TimeSegDatum } from "../../types";
 
 // chunks transcript into managable pieces.
@@ -6,8 +6,8 @@ import { TimeSegDatum } from "../../types";
 export const chunkTranscript = async (chunkSize: number) => {
   let counter = 0;
   let chunk: TimeSegDatum[] = [];
-  cs.videoStructure.forEach((element) => {
-    if (counter == chunkSize) {
+  cs.timeSegData.forEach((element, index) => {
+    if (counter == chunkSize || index == cs.timeSegData.length - 1) {
       counter = 0;
       console.log(chunk);
       chunk = [];
