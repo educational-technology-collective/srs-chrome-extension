@@ -25,7 +25,7 @@ export interface SkipRewindDatum {
   isPause: boolean;
 }
 
-export interface CourseStructure {
+export interface CourseDatum {
   courseTitle: string;
   courseSlug: string;
   videoTitle: string;
@@ -33,5 +33,12 @@ export interface CourseStructure {
   videoUrl: string;
   videoLength: string;
   fullTranscript: string;
-  videoStructure: TimeSegDatum[];
+  timeSegData: TimeSegDatum[];
+  structure: [
+    {
+      start: string;
+      end: string;
+      concept: string;
+    }
+  ];
 }
