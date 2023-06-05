@@ -1,5 +1,5 @@
 import { handleErrorNullElement, requestObject, responseObject } from "../../types";
-import { timeSegData, fullTranscript, setTimeSegData, setFullTranscript } from "../states";
+import { timeSegData, setTimeSegData, setFullTranscript, concatFullTranscript } from "../states";
 
 export const detectTranscript = () => {
   let transcriptDetector = createTranscriptDetector();
@@ -31,7 +31,7 @@ export const detectTranscript = () => {
     if (url && videoUrlRegex.test(url)) {
       // reset detectors and pass in fresh, empty arrays to fill.
       setTimeSegData([]);
-      setFullTranscript([]);
+      setFullTranscript("");
 
       transcriptDetector = createTranscriptDetector();
 
@@ -119,7 +119,7 @@ const createTranscriptObserverCallback = () => {
             timeSegData.push({ timestamp: timestamp, segment: segment });
             // console.log(timeSegData);
 
-            fullTranscript.push(segment);
+            concatFullTranscript(segment);
             // console.log(fullTranscript);
           }
         }
