@@ -9,4 +9,4 @@ detectVideo();
 detectIvq();
 detectCopy();
 detectPaste();
-chunkTranscript(30);
+chunkTranscript(60);
