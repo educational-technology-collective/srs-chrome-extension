@@ -8,12 +8,12 @@ const pushTimeSegData = (value: TimeSegDatum) => {
   timeSegData.push(value);
 };
 
-let fullTranscript: string[] = [];
-const setFullTranscript = (value: string[]) => {
+let fullTranscript = "";
+const setFullTranscript = (value: string) => {
   fullTranscript = value;
 };
-const pushFullTranscript = (value: string) => {
-  fullTranscript.push(value);
+const concatFullTranscript = (value: string) => {
+  fullTranscript += value;
 };
 
 let ivqData: IvqDatum[] = [];
@@ -35,7 +35,7 @@ const setHasSeeked = (value: boolean) => {
 };
 
 export { timeSegData, setTimeSegData, pushTimeSegData };
-export { fullTranscript, setFullTranscript, pushFullTranscript };
+export { fullTranscript, setFullTranscript, concatFullTranscript };
 export { ivqData, setIvqData, pushIvqData };
 export { prevTimestamp, setPrevTimestamp };
 export { hasSeeked, setHasSeeked };
