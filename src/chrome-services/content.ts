@@ -1,4 +1,12 @@
-import { detectTranscript, detectVideo, detectIvq, detectCopy, detectPaste, chunkTranscript } from "./features";
+import {
+  detectTranscript,
+  detectVideo,
+  detectIvq,
+  detectCopy,
+  detectPaste,
+  chunkTranscript,
+  sideBar,
+} from "./features";
 
 // on initial load of the page.
 console.log("extension loaded");
@@ -10,3 +18,4 @@ detectIvq();
 detectCopy();
 detectPaste();
 chunkTranscript(60);
+sideBar();
