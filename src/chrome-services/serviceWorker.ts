@@ -7,3 +7,15 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
     })();
   }
 });
+
+chrome.action.onClicked.addListener((tab) => {
+  console.log("activated");
+  (async () => {
+    if (tab.id) {
+      console.log("activated");
+      const response = await chrome.tabs.sendMessage(tab.id, "toggle");
+      console.log(response);
+      return true;
+    }
+  })();
+});
