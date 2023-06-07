@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Dropdown, ConceptLabel, Mcq, Button } from "./components";
+import { Dropdown, ConceptLabel, Mcq, DeleteButton } from "./components";
 import { Lm } from "./types";
 import "./App.css";
 
 function App() {
+  // move this to a separate DB in the future.
   const lmArray: Lm[] = [
     {
       id: 0,
@@ -358,14 +359,17 @@ function App() {
     },
   ];
 
+  // lmArray index handling.
+  // this index is used to access specific elements of the lmArray.
   const [index, setIndex] = useState(-1);
-  const [arr, setArr] = useState(lmArray);
-
   const handleIndex = (value: number) => {
     console.log("LM INDEX:", value);
     setIndex(value);
   };
 
+  // updates the lmArray itself.
+  // used to delete elements from the array.
+  const [arr, setArr] = useState(lmArray);
   const deleteArr = (i: number) => {
     const newLmArray = arr.map((lm, idx) => {
       if (i === idx) {
@@ -380,6 +384,8 @@ function App() {
     setIndex(-1);
   };
 
+  // determines whether an answer choice is clicked or not.
+  // makes sure that the choice turns green or red, or transparent when reset.
   const handleClick = (i: number, acIndex: number) => {
     const newLmArray = arr.map((lm, idx) => {
       if (i === idx) {
@@ -398,7 +404,7 @@ function App() {
       <Dropdown lmArray={arr} handleIndex={handleIndex} />
       <ConceptLabel lmArray={arr} index={index} />
       <Mcq lmArray={arr} index={index} handleClick={handleClick} />
-      <Button name={"Delete"} index={index} deleteArr={deleteArr} />
+      <DeleteButton name={"Delete"} index={index} deleteArr={deleteArr} />
     </>
   );
 }

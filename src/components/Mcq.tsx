@@ -9,7 +9,6 @@ interface Props {
 }
 
 const Mcq = ({ lmArray, index, handleClick }: Props) => {
-  console.log("MCQ loaded!");
   let question = "";
   let answerChoices: AnswerChoice[] = [];
 

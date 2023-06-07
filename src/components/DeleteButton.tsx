@@ -4,7 +4,7 @@ interface Props {
   deleteArr: (i: number) => void;
 }
 
-const Button = ({ name, index, deleteArr }: Props) => {
+const DeleteButton = ({ name, index, deleteArr }: Props) => {
   return (
     <>
       <button onClick={() => deleteArr(index)}>{name}</button>
@@ -12,4 +12,4 @@ const Button = ({ name, index, deleteArr }: Props) => {
   );
 };
 
-export { Button };
+export { DeleteButton };

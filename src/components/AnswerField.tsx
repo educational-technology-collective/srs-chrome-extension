@@ -8,8 +8,8 @@ interface Props {
 }
 
 const AnswerField = ({ answerIndex, answerChoiceIndex, answerChoice, handleClick }: Props) => {
-  console.log("answer field loaded!");
-
+  // when an item is clicked, it will turn green or red depending on whether it's correct or not.
+  // on re-render, will turn transparent.
   return (
     <>
       <div
