@@ -1,14 +1,25 @@
+import { AnswerChoice } from "../types";
+
 interface Props {
   answerIndex: number;
-  answer: string;
+  answerChoiceIndex: number;
+  answerChoice: AnswerChoice;
+  handleClick: (i: number, acIndex: number) => void;
 }
 
-const AnswerField = ({ answerIndex, answer }: Props) => {
+const AnswerField = ({ answerIndex, answerChoiceIndex, answerChoice, handleClick }: Props) => {
+  console.log("answer field loaded!");
+
   return (
     <>
-      <p>
-        {answerIndex == 0 ? "A" : "B"}: {answer}
-      </p>
+      <div
+        onClick={() => handleClick(answerIndex, answerChoiceIndex)}
+        style={answerChoice.isClicked ? { backgroundColor: answerChoice.color } : { backgroundColor: "transparent" }}
+      >
+        <p>
+          {answerChoiceIndex == 0 ? "A" : "B"}: {answerChoice.answer}
+        </p>
+      </div>
     </>
   );
 };
