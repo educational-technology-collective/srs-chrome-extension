@@ -1,0 +1,11 @@
+#concept, #conceptClassification {
+    min-height: 10em;
+}
+
+h3, p {
+    text-align: start;
+}
+
+h3 {
+    font-size: 1.17em
+}

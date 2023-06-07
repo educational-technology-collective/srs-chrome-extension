@@ -1,6 +1,7 @@
 import { QuestionField } from "./QuestionField";
 import { AnswerField } from "./AnswerField";
 import { Lm, AnswerChoice } from "../types";
+import "../styles/Mcq.css";
 
 interface Props {
   lmArray: Lm[];
@@ -19,20 +20,22 @@ const Mcq = ({ lmArray, index, handleClick }: Props) => {
 
   return (
     <>
-      <h3>MCQ:</h3>
-      {index >= 0 && <QuestionField question={question} />}
-      {index >= 0 &&
-        answerChoices.map((answerChoice, answerChoiceIndex) => {
-          return (
-            <AnswerField
-              key={answerChoiceIndex}
-              answerIndex={index}
-              answerChoiceIndex={answerChoiceIndex}
-              answerChoice={answerChoice}
-              handleClick={handleClick}
-            />
-          );
-        })}
+      <div id="mcq">
+        <h3>MCQ:</h3>
+        {index >= 0 && <QuestionField question={question} />}
+        {index >= 0 &&
+          answerChoices.map((answerChoice, answerChoiceIndex) => {
+            return (
+              <AnswerField
+                key={answerChoiceIndex}
+                answerIndex={index}
+                answerChoiceIndex={answerChoiceIndex}
+                answerChoice={answerChoice}
+                handleClick={handleClick}
+              />
+            );
+          })}
+      </div>
     </>
   );
 };

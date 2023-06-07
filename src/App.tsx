@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dropdown, ConceptLabel, Mcq, DeleteButton } from "./components";
 import { Lm } from "./types";
-import "./App.css";
+import "./styles/App.css";
 
 function App() {
   // move this to a separate DB in the future.

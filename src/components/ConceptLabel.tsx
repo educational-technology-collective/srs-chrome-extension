@@ -1,4 +1,5 @@
 import { Lm } from "../types";
+import "../styles/ConceptLabel.css";
 
 interface Props {
   lmArray: Lm[];
@@ -21,10 +22,14 @@ const ConceptLabel = ({ lmArray, index }: Props) => {
 
   return (
     <>
-      <h3>Concept:</h3>
-      <p>{index >= 0 && conceptNameWithCase}</p>
-      <h3>Concept Classification:</h3>
-      <p>{index >= 0 && conceptClassificationWithCase}</p>
+      <div id="concept">
+        <h3>Concept:</h3>
+        <p>{index >= 0 && conceptNameWithCase}</p>
+      </div>
+      <div id="conceptClassification">
+        <h3>Concept Classification:</h3>
+        <p>{index >= 0 && conceptClassificationWithCase}</p>
+      </div>
     </>
   );
 };
