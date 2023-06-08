@@ -22,19 +22,21 @@ const Mcq = ({ lmArray, index, handleClick }: Props) => {
     <>
       <div id="mcq">
         <h3>MCQ:</h3>
-        {index >= 0 && <QuestionField question={question} />}
-        {index >= 0 &&
-          answerChoices.map((answerChoice, answerChoiceIndex) => {
-            return (
-              <AnswerField
-                key={answerChoiceIndex}
-                answerIndex={index}
-                answerChoiceIndex={answerChoiceIndex}
-                answerChoice={answerChoice}
-                handleClick={handleClick}
-              />
-            );
-          })}
+        <div id="quiz">
+          {index >= 0 && <QuestionField question={question} />}
+          {index >= 0 &&
+            answerChoices.map((answerChoice, answerChoiceIndex) => {
+              return (
+                <AnswerField
+                  key={answerChoiceIndex}
+                  answerIndex={index}
+                  answerChoiceIndex={answerChoiceIndex}
+                  answerChoice={answerChoice}
+                  handleClick={handleClick}
+                />
+              );
+            })}
+        </div>
       </div>
     </>
   );

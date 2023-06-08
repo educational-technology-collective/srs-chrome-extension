@@ -1,5 +1,6 @@
 import { DropdownItem } from "./DropdownItem";
 import { Lm } from "../types";
+import "../styles/Dropdown.css";
 
 interface Props {
   lmArray: Lm[];
@@ -17,12 +18,14 @@ const Dropdown = ({ lmArray, handleIndex }: Props) => {
 
   return (
     <>
-      <select name="" id="lmSelectMenu" onChange={handleChange}>
-        <option value="-1">Select a learning moment...</option>
-        {lmArray.map((lm, index) => {
-          return !lm.deleted && <DropdownItem key={index} index={index} value={lm.end_time} />;
-        })}
-      </select>
+      <div id="dropdown">
+        <select name="" id="lmSelectMenu" onChange={handleChange}>
+          <option value="-1">Select a learning moment...</option>
+          {lmArray.map((lm, index) => {
+            return !lm.deleted && <DropdownItem key={index} index={index} value={lm.end_time} />;
+          })}
+        </select>
+      </div>
     </>
   );
 };

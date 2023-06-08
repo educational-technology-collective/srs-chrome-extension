@@ -1,3 +1,5 @@
+import "../styles/DeleteButton.css";
+
 interface Props {
   name: string;
   index: number;

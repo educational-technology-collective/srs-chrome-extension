@@ -404,7 +404,7 @@ function App() {
       <Dropdown lmArray={arr} handleIndex={handleIndex} />
       <ConceptLabel lmArray={arr} index={index} />
       <Mcq lmArray={arr} index={index} handleClick={handleClick} />
-      <DeleteButton name={"Delete"} index={index} deleteArr={deleteArr} />
+      <DeleteButton name={"Delete this learning moment"} index={index} deleteArr={deleteArr} />
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { AnswerChoice } from "../types";
+import "../styles/AnswerField.css";
 
 interface Props {
   answerIndex: number;
@@ -13,6 +14,7 @@ const AnswerField = ({ answerIndex, answerChoiceIndex, answerChoice, handleClick
   return (
     <>
       <div
+        id="answer"
         onClick={() => handleClick(answerIndex, answerChoiceIndex)}
         style={answerChoice.isClicked ? { backgroundColor: answerChoice.color } : { backgroundColor: "transparent" }}
       >

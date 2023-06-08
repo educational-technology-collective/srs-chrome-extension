@@ -1,3 +1,5 @@
+import "../styles/QuestionField.css";
+
 interface Props {
   question: string;
 }
