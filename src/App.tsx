@@ -390,6 +390,10 @@ function App() {
   // used to delete elements from the array.
   const [arr, setArr] = useState(lmArray);
   const deleteArr = (i: number) => {
+    if (i === -1) {
+      return;
+    }
+
     const newLmArray = arr.map((lm, idx) => {
       if (i === idx) {
         lm.deleted = true;
@@ -405,6 +409,10 @@ function App() {
 
   // save elements.
   const saveArr = (i: number) => {
+    if (i === -1) {
+      return;
+    }
+
     const newLmArray = arr.map((lm, idx) => {
       if (i === idx) {
         lm.saved = true;
