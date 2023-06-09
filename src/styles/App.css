@@ -7,6 +7,14 @@
   align-items: flex-start;
 }
 
+#deleteSaveContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 1em;
+  justify-content: center;
+}
+
 /* 
 .logo {
   height: 6em;

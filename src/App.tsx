@@ -446,8 +446,10 @@ function App() {
       <Dropdown lmArray={arr} handleIndex={handleIndex} />
       <ConceptLabel lmArray={arr} index={index} />
       <Mcq lmArray={arr} index={index} handleClick={handleClick} />
-      <DeleteButton name={"Delete this learning moment"} index={index} deleteArr={deleteArr} />
-      <SaveButton name={"Save this learning moment"} index={index} saveArr={saveArr} />
+      <div id="deleteSaveContainer">
+        <DeleteButton name={"Delete this learning moment"} index={index} deleteArr={deleteArr} />
+        <SaveButton name={"Save this learning moment"} index={index} saveArr={saveArr} />
+      </div>
     </>
   );
 }
