@@ -17,4 +17,5 @@ export interface Lm {
   concept_classification: string;
   md_flashcard: Flashcard[];
   deleted: boolean;
+  saved: boolean;
 }

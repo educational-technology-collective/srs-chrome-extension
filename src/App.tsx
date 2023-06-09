@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dropdown, ConceptLabel, Mcq, DeleteButton } from "./components";
+import { Dropdown, ConceptLabel, Mcq, DeleteButton, SaveButton } from "./components";
 import { Lm } from "./types";
 import "./styles/App.css";
 
@@ -22,6 +22,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 1,
@@ -39,6 +40,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 2,
@@ -60,6 +62,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 3,
@@ -77,6 +80,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 4,
@@ -94,6 +98,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 5,
@@ -111,6 +116,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 6,
@@ -136,6 +142,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 7,
@@ -161,6 +168,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 8,
@@ -178,6 +186,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 9,
@@ -195,6 +204,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 10,
@@ -220,6 +230,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 11,
@@ -237,6 +248,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 12,
@@ -254,6 +266,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 13,
@@ -271,6 +284,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 14,
@@ -288,6 +302,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 15,
@@ -305,6 +320,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 16,
@@ -322,6 +338,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 17,
@@ -339,6 +356,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
     {
       id: 18,
@@ -356,6 +374,7 @@ function App() {
         },
       ],
       deleted: false,
+      saved: false,
     },
   ];
 
@@ -384,6 +403,21 @@ function App() {
     setIndex(-1);
   };
 
+  // save elements.
+  const saveArr = (i: number) => {
+    const newLmArray = arr.map((lm, idx) => {
+      if (i === idx) {
+        lm.saved = true;
+        return lm;
+      } else {
+        return lm;
+      }
+    });
+
+    setArr(newLmArray);
+    console.log(newLmArray);
+  };
+
   // determines whether an answer choice is clicked or not.
   // makes sure that the choice turns green or red, or transparent when reset.
   const handleClick = (i: number, acIndex: number) => {
@@ -405,6 +439,7 @@ function App() {
       <ConceptLabel lmArray={arr} index={index} />
       <Mcq lmArray={arr} index={index} handleClick={handleClick} />
       <DeleteButton name={"Delete this learning moment"} index={index} deleteArr={deleteArr} />
+      <SaveButton name={"Save this learning moment"} index={index} saveArr={saveArr} />
     </>
   );
 }
