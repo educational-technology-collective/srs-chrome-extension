@@ -9,7 +9,9 @@ interface Props {
 const DeleteButton = ({ name, index, deleteArr }: Props) => {
   return (
     <>
-      <button onClick={() => deleteArr(index)}>{name}</button>
+      <button id="deleteBtn" onClick={() => deleteArr(index)}>
+        {name}
+      </button>
     </>
   );
 };
