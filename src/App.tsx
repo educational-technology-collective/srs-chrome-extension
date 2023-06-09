@@ -8,11 +8,11 @@ function App() {
   const lmArray: Lm[] = [
     {
       id: 0,
-      start_time: "0:16",
-      end_time: "2:09",
-      concept_name: "relational theory",
-      concept_classification: "conceptual knowledge",
-      md_flashcard: [
+      startTime: "0:16",
+      endTime: "2:09",
+      conceptName: "relational theory",
+      conceptClassification: "conceptual knowledge",
+      mdFlashcard: [
         {
           question: "Is understanding relational theory helpful in understanding merging and joining?",
           answerChoices: [
@@ -26,11 +26,11 @@ function App() {
     },
     {
       id: 1,
-      start_time: "0:25",
-      end_time: "1:00",
-      concept_name: "venn diagram",
-      concept_classification: "factual knowledge",
-      md_flashcard: [
+      startTime: "0:25",
+      endTime: "1:00",
+      conceptName: "venn diagram",
+      conceptClassification: "factual knowledge",
+      mdFlashcard: [
         {
           question: "What is a venn diagram used for?",
           answerChoices: [
@@ -44,11 +44,11 @@ function App() {
     },
     {
       id: 2,
-      start_time: "1:11",
-      end_time: "15:31",
-      concept_name: "join",
-      concept_classification: "conceptual knowledge",
-      md_flashcard: [
+      startTime: "1:11",
+      endTime: "15:31",
+      conceptName: "join",
+      conceptClassification: "conceptual knowledge",
+      mdFlashcard: [
         {
           question: "When do we need joins?",
           answerChoices: [
@@ -66,11 +66,11 @@ function App() {
     },
     {
       id: 3,
-      start_time: "1:16",
-      end_time: "1:40",
-      concept_name: "outer join",
-      concept_classification: "factual knowledge",
-      md_flashcard: [
+      startTime: "1:16",
+      endTime: "1:40",
+      conceptName: "outer join",
+      conceptClassification: "factual knowledge",
+      mdFlashcard: [
         {
           question: "What is another name for a full outer join?",
           answerChoices: [
@@ -84,11 +84,11 @@ function App() {
     },
     {
       id: 4,
-      start_time: "1:41",
-      end_time: "2:07",
-      concept_name: "inner join",
-      concept_classification: "factual knowledge",
-      md_flashcard: [
+      startTime: "1:41",
+      endTime: "2:07",
+      conceptName: "inner join",
+      conceptClassification: "factual knowledge",
+      mdFlashcard: [
         {
           question: "What is another name for an inner join?",
           answerChoices: [
@@ -102,11 +102,11 @@ function App() {
     },
     {
       id: 5,
-      start_time: "2:17",
-      end_time: "10:15",
-      concept_name: "merging",
-      concept_classification: "conceptual knowledge",
-      md_flashcard: [
+      startTime: "2:17",
+      endTime: "10:15",
+      conceptName: "merging",
+      conceptClassification: "conceptual knowledge",
+      mdFlashcard: [
         {
           question: "What is the function that we use for merging DataFrames?",
           answerChoices: [
@@ -120,11 +120,11 @@ function App() {
     },
     {
       id: 6,
-      start_time: "3:39",
-      end_time: "4:24",
-      concept_name: "merge union",
-      concept_classification: "procedural knowledge",
-      md_flashcard: [
+      startTime: "3:39",
+      endTime: "4:24",
+      conceptName: "merge union",
+      conceptClassification: "procedural knowledge",
+      mdFlashcard: [
         {
           question: "How would we write a union in Pandas?",
           answerChoices: [
@@ -146,11 +146,11 @@ function App() {
     },
     {
       id: 7,
-      start_time: "4:25",
-      end_time: "4:54",
-      concept_name: "merge intersection",
-      concept_classification: "procedural knowledge",
-      md_flashcard: [
+      startTime: "4:25",
+      endTime: "4:54",
+      conceptName: "merge intersection",
+      conceptClassification: "procedural knowledge",
+      mdFlashcard: [
         {
           question: "How would we write an intersection in Pandas?",
           answerChoices: [
@@ -172,11 +172,11 @@ function App() {
     },
     {
       id: 8,
-      start_time: "4:55",
-      end_time: "5:58",
-      concept_name: "set addition",
-      concept_classification: "conceptual knowledge",
-      md_flashcard: [
+      startTime: "4:55",
+      endTime: "5:58",
+      conceptName: "set addition",
+      conceptClassification: "conceptual knowledge",
+      mdFlashcard: [
         {
           question: "What are the two types of set addition covered in this lecture?",
           answerChoices: [
@@ -190,11 +190,11 @@ function App() {
     },
     {
       id: 9,
-      start_time: "5:01",
-      end_time: "5:38",
-      concept_name: "left join",
-      concept_classification: "procedural knowledge",
-      md_flashcard: [
+      startTime: "5:01",
+      endTime: "5:38",
+      conceptName: "left join",
+      conceptClassification: "procedural knowledge",
+      mdFlashcard: [
         {
           question: "What does left join include?",
           answerChoices: [
@@ -208,11 +208,11 @@ function App() {
     },
     {
       id: 10,
-      start_time: "5:39",
-      end_time: "5:58",
-      concept_name: "right join",
-      concept_classification: "proedural knowledge",
-      md_flashcard: [
+      startTime: "5:39",
+      endTime: "5:58",
+      conceptName: "right join",
+      conceptClassification: "proedural knowledge",
+      mdFlashcard: [
         {
           question: "How do you do a right join using merge?",
           answerChoices: [
@@ -234,11 +234,11 @@ function App() {
     },
     {
       id: 11,
-      start_time: "5:58",
-      end_time: "6:51",
-      concept_name: "merge on column",
-      concept_classification: "procedural knowledge",
-      md_flashcard: [
+      startTime: "5:58",
+      endTime: "6:51",
+      conceptName: "merge on column",
+      conceptClassification: "procedural knowledge",
+      mdFlashcard: [
         {
           question: "Should you include index parameters if you are merging on a specific column?",
           answerChoices: [
@@ -252,11 +252,11 @@ function App() {
     },
     {
       id: 12,
-      start_time: "6:52",
-      end_time: "8:53",
-      concept_name: "how to resolve conflicts between dataframes",
-      concept_classification: "procedural knowledge",
-      md_flashcard: [
+      startTime: "6:52",
+      endTime: "8:53",
+      conceptName: "how to resolve conflicts between dataframes",
+      conceptClassification: "procedural knowledge",
+      mdFlashcard: [
         {
           question: "How does pandas preserve conflicting columns?",
           answerChoices: [
@@ -270,11 +270,11 @@ function App() {
     },
     {
       id: 13,
-      start_time: "8:55",
-      end_time: "10:14",
-      concept_name: "multi-indexing and multiple columns",
-      concept_classification: "procedural knowledge",
-      md_flashcard: [
+      startTime: "8:55",
+      endTime: "10:14",
+      conceptName: "multi-indexing and multiple columns",
+      conceptClassification: "procedural knowledge",
+      mdFlashcard: [
         {
           question: "How do we merge on multiple columns?",
           answerChoices: [
@@ -288,11 +288,11 @@ function App() {
     },
     {
       id: 14,
-      start_time: "10:16",
-      end_time: "14:52",
-      concept_name: "concat",
-      concept_classification: "conceptual knowledge",
-      md_flashcard: [
+      startTime: "10:16",
+      endTime: "14:52",
+      conceptName: "concat",
+      conceptClassification: "conceptual knowledge",
+      mdFlashcard: [
         {
           question: "How does concat stitch together DataFrames?",
           answerChoices: [
@@ -306,11 +306,11 @@ function App() {
     },
     {
       id: 15,
-      start_time: "10:30",
-      end_time: "14:52",
-      concept_name: "concat example",
-      concept_classification: "procedural knowledge",
-      md_flashcard: [
+      startTime: "10:30",
+      endTime: "14:52",
+      conceptName: "concat example",
+      conceptClassification: "procedural knowledge",
+      mdFlashcard: [
         {
           question: "What function do we use to concatenate two DataFrames?",
           answerChoices: [
@@ -324,11 +324,11 @@ function App() {
     },
     {
       id: 16,
-      start_time: "11:30",
-      end_time: "11:36",
-      concept_name: "cell magic",
-      concept_classification: "factual knowledge",
-      md_flashcard: [
+      startTime: "11:30",
+      endTime: "11:36",
+      conceptName: "cell magic",
+      conceptClassification: "factual knowledge",
+      mdFlashcard: [
         {
           question: "How do we use cell magic?",
           answerChoices: [
@@ -342,11 +342,11 @@ function App() {
     },
     {
       id: 17,
-      start_time: "11:37",
-      end_time: "12:14",
-      concept_name: "cell magic example",
-      concept_classification: "procedural knowledge",
-      md_flashcard: [
+      startTime: "11:37",
+      endTime: "12:14",
+      conceptName: "cell magic example",
+      conceptClassification: "procedural knowledge",
+      mdFlashcard: [
         {
           question: "How do we suppress Jupyter's warning messages?",
           answerChoices: [
@@ -360,11 +360,11 @@ function App() {
     },
     {
       id: 18,
-      start_time: "13:48",
-      end_time: "14:52",
-      concept_name: "handle ambiguous keys",
-      concept_classification: "procedural knowledge",
-      md_flashcard: [
+      startTime: "13:48",
+      endTime: "14:52",
+      conceptName: "handle ambiguous keys",
+      conceptClassification: "procedural knowledge",
+      mdFlashcard: [
         {
           question: "How do you handle ambiguous keys during a concat?",
           answerChoices: [
@@ -431,7 +431,7 @@ function App() {
   const handleClick = (i: number, acIndex: number) => {
     const newLmArray = arr.map((lm, idx) => {
       if (i === idx) {
-        lm.md_flashcard[0].answerChoices[acIndex].isClicked = true;
+        lm.mdFlashcard[0].answerChoices[acIndex].isClicked = true;
         return lm;
       } else {
         return lm;

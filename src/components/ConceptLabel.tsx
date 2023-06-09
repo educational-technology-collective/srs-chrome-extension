@@ -13,11 +13,11 @@ const ConceptLabel = ({ lmArray, index }: Props) => {
   let conceptClassificationWithCase = "";
   console.log("index:", index);
   if (index >= 0) {
-    console.log(lmArray[index].concept_name);
-    console.log(lmArray[index].concept_classification);
-    conceptNameWithCase = lmArray[index].concept_name[0].toUpperCase() + lmArray[index].concept_name.substring(1);
+    console.log(lmArray[index].conceptName);
+    console.log(lmArray[index].conceptClassification);
+    conceptNameWithCase = lmArray[index].conceptName[0].toUpperCase() + lmArray[index].conceptName.substring(1);
     conceptClassificationWithCase =
-      lmArray[index].concept_classification[0].toUpperCase() + lmArray[index].concept_classification.substring(1);
+      lmArray[index].conceptClassification[0].toUpperCase() + lmArray[index].conceptClassification.substring(1);
   }
 
   return (

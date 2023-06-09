@@ -22,7 +22,7 @@ const Dropdown = ({ lmArray, handleIndex }: Props) => {
         <select name="" id="lmSelectMenu" onChange={handleChange}>
           <option value="-1">Select a learning moment...</option>
           {lmArray.map((lm, index) => {
-            return !lm.deleted && <DropdownItem key={index} index={index} value={lm.end_time} />;
+            return !lm.deleted && <DropdownItem key={index} index={index} value={lm.endTime} />;
           })}
         </select>
       </div>

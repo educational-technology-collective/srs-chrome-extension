@@ -11,11 +11,11 @@ export interface Flashcard {
 
 export interface Lm {
   id: number;
-  start_time: string;
-  end_time: string;
-  concept_name: string;
-  concept_classification: string;
-  md_flashcard: Flashcard[];
+  startTime: string;
+  endTime: string;
+  conceptName: string;
+  conceptClassification: string;
+  mdFlashcard: Flashcard[];
   deleted: boolean;
   saved: boolean;
 }

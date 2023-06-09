@@ -14,8 +14,8 @@ const Mcq = ({ lmArray, index, handleClick }: Props) => {
   let answerChoices: AnswerChoice[] = [];
 
   if (index >= 0) {
-    question = lmArray[index].md_flashcard[0].question;
-    answerChoices = lmArray[index].md_flashcard[0].answerChoices;
+    question = lmArray[index].mdFlashcard[0].question;
+    answerChoices = lmArray[index].mdFlashcard[0].answerChoices;
   }
 
   return (
