@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { Dropdown, ConceptLabel, Mcq, DeleteButton, SaveButton } from "./components";
 import { Lm } from "./types";
 import "./styles/App.css";
@@ -7,7 +8,7 @@ function App() {
   // move this to a separate DB in the future.
   const lmArray: Lm[] = [
     {
-      id: 0,
+      id: uuidv4(),
       startTime: "0:16",
       endTime: "2:09",
       conceptName: "relational theory",
@@ -25,7 +26,7 @@ function App() {
       saved: false,
     },
     {
-      id: 1,
+      id: uuidv4(),
       startTime: "0:25",
       endTime: "1:00",
       conceptName: "venn diagram",
@@ -43,7 +44,7 @@ function App() {
       saved: false,
     },
     {
-      id: 2,
+      id: uuidv4(),
       startTime: "1:11",
       endTime: "15:31",
       conceptName: "join",
@@ -65,7 +66,7 @@ function App() {
       saved: false,
     },
     {
-      id: 3,
+      id: uuidv4(),
       startTime: "1:16",
       endTime: "1:40",
       conceptName: "outer join",
@@ -83,7 +84,7 @@ function App() {
       saved: false,
     },
     {
-      id: 4,
+      id: uuidv4(),
       startTime: "1:41",
       endTime: "2:07",
       conceptName: "inner join",
@@ -101,7 +102,7 @@ function App() {
       saved: false,
     },
     {
-      id: 5,
+      id: uuidv4(),
       startTime: "2:17",
       endTime: "10:15",
       conceptName: "merging",
@@ -119,7 +120,7 @@ function App() {
       saved: false,
     },
     {
-      id: 6,
+      id: uuidv4(),
       startTime: "3:39",
       endTime: "4:24",
       conceptName: "merge union",
@@ -145,7 +146,7 @@ function App() {
       saved: false,
     },
     {
-      id: 7,
+      id: uuidv4(),
       startTime: "4:25",
       endTime: "4:54",
       conceptName: "merge intersection",
@@ -171,7 +172,7 @@ function App() {
       saved: false,
     },
     {
-      id: 8,
+      id: uuidv4(),
       startTime: "4:55",
       endTime: "5:58",
       conceptName: "set addition",
@@ -189,7 +190,7 @@ function App() {
       saved: false,
     },
     {
-      id: 9,
+      id: uuidv4(),
       startTime: "5:01",
       endTime: "5:38",
       conceptName: "left join",
@@ -207,7 +208,7 @@ function App() {
       saved: false,
     },
     {
-      id: 10,
+      id: uuidv4(),
       startTime: "5:39",
       endTime: "5:58",
       conceptName: "right join",
@@ -233,7 +234,7 @@ function App() {
       saved: false,
     },
     {
-      id: 11,
+      id: uuidv4(),
       startTime: "5:58",
       endTime: "6:51",
       conceptName: "merge on column",
@@ -251,7 +252,7 @@ function App() {
       saved: false,
     },
     {
-      id: 12,
+      id: uuidv4(),
       startTime: "6:52",
       endTime: "8:53",
       conceptName: "how to resolve conflicts between dataframes",
@@ -269,7 +270,7 @@ function App() {
       saved: false,
     },
     {
-      id: 13,
+      id: uuidv4(),
       startTime: "8:55",
       endTime: "10:14",
       conceptName: "multi-indexing and multiple columns",
@@ -287,7 +288,7 @@ function App() {
       saved: false,
     },
     {
-      id: 14,
+      id: uuidv4(),
       startTime: "10:16",
       endTime: "14:52",
       conceptName: "concat",
@@ -305,7 +306,7 @@ function App() {
       saved: false,
     },
     {
-      id: 15,
+      id: uuidv4(),
       startTime: "10:30",
       endTime: "14:52",
       conceptName: "concat example",
@@ -323,7 +324,7 @@ function App() {
       saved: false,
     },
     {
-      id: 16,
+      id: uuidv4(),
       startTime: "11:30",
       endTime: "11:36",
       conceptName: "cell magic",
@@ -341,7 +342,7 @@ function App() {
       saved: false,
     },
     {
-      id: 17,
+      id: uuidv4(),
       startTime: "11:37",
       endTime: "12:14",
       conceptName: "cell magic example",
@@ -359,7 +360,7 @@ function App() {
       saved: false,
     },
     {
-      id: 18,
+      id: uuidv4(),
       startTime: "13:48",
       endTime: "14:52",
       conceptName: "handle ambiguous keys",
@@ -405,6 +406,7 @@ function App() {
 
     setArr(newLmArray);
     setIndex(-1);
+    alert("deleted!");
   };
 
   // save elements.
@@ -424,6 +426,7 @@ function App() {
 
     setArr(newLmArray);
     console.log(newLmArray);
+    alert("saved!");
   };
 
   // determines whether an answer choice is clicked or not.
@@ -450,6 +453,9 @@ function App() {
         <DeleteButton name={"Delete this learning moment"} index={index} deleteArr={deleteArr} />
         <SaveButton name={"Save this learning moment"} index={index} saveArr={saveArr} />
       </div>
+      {/* <LoginButton /> */}
+      {/* <LogoutButton /> */}
+      {/* <Profile /> */}
     </>
   );
 }

@@ -10,7 +10,7 @@ export interface Flashcard {
 }
 
 export interface Lm {
-  id: number;
+  id: string;
   startTime: string;
   endTime: string;
   conceptName: string;
