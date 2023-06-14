@@ -9,7 +9,7 @@ import {
   setTimeSegData,
   setFullTranscript,
 } from "../states";
-import { makePostReqTest } from "../requests";
+import { makePostReqLog } from "../requests";
 
 export const detectVideo = () => {
   let videoDetector = createVideoDetector();
@@ -272,7 +272,7 @@ const createVideoObserverCallback = () => {
       };
       console.log(vidLearningData);
 
-      makePostReqTest(vidLearningData);
+      makePostReqLog(vidLearningData);
     }
   };
 
