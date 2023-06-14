@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Dropdown, ConceptLabel, Mcq, DeleteButton, SaveButton } from "./components";
+import { Dropdown, ConceptLabel, Mcq, DeleteButton, SaveButton, LoginButton, LogoutButton } from "./components";
 import { Lm } from "./types";
 import "./styles/App.css";
 
@@ -453,9 +453,8 @@ function App() {
         <DeleteButton name={"Delete this learning moment"} index={index} deleteArr={deleteArr} />
         <SaveButton name={"Save this learning moment"} index={index} saveArr={saveArr} />
       </div>
-      {/* <LoginButton /> */}
-      {/* <LogoutButton /> */}
-      {/* <Profile /> */}
+      <LoginButton />
+      <LogoutButton />
     </>
   );
 }
