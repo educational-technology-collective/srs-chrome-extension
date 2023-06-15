@@ -1,9 +1,11 @@
-import { API_ENDPOINT_LOG } from "./constants";
+import { API_GATEWAY } from "./constants";
 
-// makes POST request to the /test endpoint of the AWS Lambda instance.
-export const makePostReqLog = async (payload: object) => {
+// makes POST request to the given endpoint of the AWS Lambda instance.
+// endpoint should lead with a slash.
+export const makePostReq = async (endpoint: string, payload: object) => {
   try {
-    const resp = await fetch(API_ENDPOINT_LOG, {
+    const url = API_GATEWAY + endpoint;
+    const resp = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
