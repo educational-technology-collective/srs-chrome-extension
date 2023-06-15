@@ -1,15 +1,17 @@
-import { handleErrorNullElement, PlayPauseDatum, SkipRewindDatum, requestObject, responseObject } from "../../types";
+import { handleErrorNullElement, playPauseDatum, skipRewindDatum, requestObject, responseObject } from "../../types";
 import {
   prevTimestamp,
   setPrevTimestamp,
   hasSeeked,
   setHasSeeked,
-  timeSegData,
+  segmentData,
   fullTranscript,
-  setTimeSegData,
+  setSegmentData,
   setFullTranscript,
+  isMetadata,
+  setIsMetadata,
 } from "../states";
-import { makePostReqLog } from "../requests";
+import { makePostReq } from "../requests";
 
 export const detectVideo = () => {
   let videoDetector = createVideoDetector();
@@ -40,8 +42,9 @@ export const detectVideo = () => {
     // check if url is a video.
     if (url && videoUrlRegex.test(url)) {
       // reset detectors and pass in fresh, empty arrays to fill.
-      setTimeSegData([]);
+      setSegmentData([]);
       setFullTranscript("");
+      setIsMetadata(true);
 
       videoDetector = createVideoDetector();
 
@@ -87,7 +90,7 @@ const createVideoDetector = () => {
   return videoDetector;
 };
 
-// creates a video observer that detects video end and writes timeSegData and fullTranscript to vidLearningData.
+// creates a video observer that detects video end and writes segmentData and fullTranscript to vidLearningData.
 const createVideoObserver = () => {
   const vc = createVideoObserverCallback();
   const videoObserver = new MutationObserver(vc);
@@ -97,9 +100,7 @@ const createVideoObserver = () => {
 // callback function for videoObserver.
 // checks if the video is over and sets the state to true if so.
 const createVideoObserverCallback = () => {
-  const playPauseData: PlayPauseDatum[] = [];
-  const skipRewindData: SkipRewindDatum[] = [];
-  const videoObserverCallback: MutationCallback = (mutationList, observer) => {
+  const videoObserverCallback: MutationCallback = (mutationList) => {
     const mutation = mutationList[0];
     const videoElement = <Element>mutation.target;
     const isVideoPlaying = videoElement.classList.contains("vjs-playing");
@@ -107,7 +108,7 @@ const createVideoObserverCallback = () => {
     const isVideoSeeking = videoElement.classList.contains("vjs-seeking");
     const isVideoDone = videoElement.classList.contains("vjs-ended");
     const isUserActive = videoElement.classList.contains("vjs-user-active");
-    // const isUserInactive = videoElement.classList.contains("vjs-user-inactive");
+    const videoUrl = window.location.toString();
 
     const timestampElement = document.querySelector(".current-time-display");
     let timestamp = "";
@@ -118,161 +119,101 @@ const createVideoObserverCallback = () => {
       handleErrorNullElement("timestampElement");
     }
 
-    // srd is created first, then modified by isVideoSeeking, isVideoPaused, and isVideoPlaying before being pushed into the skipRewindData array.
-    // this is also why we can't move srd creation into isVideoSeeking - isVideoPaused and isVideoPlaying won't be able to access it.
-    const srd: SkipRewindDatum = {
-      prevTimestamp: "",
-      timestamp: "",
-      isSkipping: false,
-      isRewinding: false,
-      isPlay: false,
-      isPause: false,
-    };
-
     if (isVideoSeeking) {
-      if (isVideoPlaying) {
-        srd.isPlay = true;
-      } else if (isVideoPaused) {
-        srd.isPause = true;
-      }
+      setIsMetadata(false);
 
       // saves the timestamp when the video started seeking.
       // if video seeks from timestamp A to B, this saves A, and marks as hasSeeked.
-      // isVideoPlaying and isVideoPaused rely on this information to determine whether the video has been seeked forward or backward (skipped or rewound).
+      // we rely on this information to determine whether the video has been seeked forward or backward (skipped or rewound).
       if (!hasSeeked) {
         setPrevTimestamp(timestamp);
         setHasSeeked(true);
       }
     }
 
-    if (isVideoPlaying) {
-      const ppd: PlayPauseDatum = { timestamp: timestamp, isPlay: true, isPause: false, isActive: false };
-      if (isUserActive) {
-        ppd.isActive = true;
-      }
+    if (isVideoPlaying && isUserActive) {
+      const ppd: playPauseDatum = {
+        timestamp: timestamp,
+        videoUrl: videoUrl,
+        action: "play",
+      };
 
-      // inserts only when there are no duplicates
-      const isFound = playPauseData.some((element) => {
-        if (
-          element.timestamp === ppd.timestamp &&
-          element.isPlay === ppd.isPlay &&
-          element.isPause === ppd.isPause &&
-          element.isActive === ppd.isActive
-        ) {
-          return true;
-        }
-        return false;
-      });
-      if (!isFound) {
-        playPauseData.push(ppd);
-      }
+      console.log("ppd:", ppd);
+      makePostReq("/telemetry", ppd);
 
       // handle seeking while video is playing.
       if (hasSeeked && isVideoSeeking) {
+        setIsMetadata(false);
+
         if (prevTimestamp != timestamp) {
           setHasSeeked(false);
 
-          if (prevTimestamp < timestamp) {
-            srd.isSkipping = true;
-            srd.prevTimestamp = prevTimestamp;
-            srd.timestamp = timestamp;
+          const srd: skipRewindDatum = {
+            startTimestamp: prevTimestamp,
+            endTimestamp: timestamp,
+            videoUrl: videoUrl,
+            action: "",
+          };
+
+          if (prevTimestamp <= timestamp) {
+            srd.action = "skip";
           } else if (prevTimestamp > timestamp) {
-            srd.isRewinding = true;
-            srd.prevTimestamp = prevTimestamp;
-            srd.timestamp = timestamp;
+            srd.action = "rewind";
           }
 
           setPrevTimestamp(timestamp);
-
-          // inserts only when there are no duplicates
-          const isFound = skipRewindData.some((element) => {
-            if (
-              element.prevTimestamp === srd.prevTimestamp &&
-              element.timestamp === srd.timestamp &&
-              element.isSkipping === srd.isSkipping &&
-              element.isRewinding === srd.isRewinding &&
-              element.isPlay === srd.isPlay &&
-              element.isPause === srd.isPause
-            ) {
-              return true;
-            }
-            return false;
-          });
-          if (!isFound) {
-            skipRewindData.push(srd);
-          }
+          console.log("srd:", srd);
+          makePostReq("/telemetry", srd);
         }
       }
     }
 
-    if (isVideoPaused) {
-      const ppd: PlayPauseDatum = { timestamp: timestamp, isPlay: false, isPause: true, isActive: false };
-      if (isUserActive) {
-        ppd.isActive = true;
-      }
+    if (isVideoPaused && isUserActive) {
+      const ppd: playPauseDatum = {
+        timestamp: timestamp,
+        videoUrl: videoUrl,
+        action: "pause",
+      };
 
-      // inserts only when there are no duplicates
-      const isFound = playPauseData.some((element) => {
-        if (
-          element.timestamp === ppd.timestamp &&
-          element.isPlay === ppd.isPlay &&
-          element.isPause === ppd.isPause &&
-          element.isActive === ppd.isActive
-        ) {
-          return true;
-        }
-        return false;
-      });
-      if (!isFound) {
-        playPauseData.push(ppd);
-      }
+      console.log("ppd:", ppd);
+      makePostReq("/telemetry", ppd);
 
       // handle skipping while video is paused.
       if (hasSeeked && !isVideoSeeking) {
+        setIsMetadata(false);
         setHasSeeked(false);
 
-        if (prevTimestamp < timestamp) {
-          srd.isSkipping = true;
-          srd.prevTimestamp = prevTimestamp;
-          srd.timestamp = timestamp;
+        const srd: skipRewindDatum = {
+          startTimestamp: prevTimestamp,
+          endTimestamp: timestamp,
+          videoUrl: videoUrl,
+          action: "",
+        };
+
+        if (prevTimestamp <= timestamp) {
+          srd.action = "skip";
         } else if (prevTimestamp > timestamp) {
-          srd.isRewinding = true;
-          srd.prevTimestamp = prevTimestamp;
-          srd.timestamp = timestamp;
+          srd.action = "rewind";
         }
 
-        // inserts only when there are no duplicates
-        const isFound = skipRewindData.some((element) => {
-          if (
-            element.prevTimestamp === srd.prevTimestamp &&
-            element.timestamp === srd.timestamp &&
-            element.isSkipping === srd.isSkipping &&
-            element.isRewinding === srd.isRewinding &&
-            element.isPlay === srd.isPlay &&
-            element.isPause === srd.isPause
-          ) {
-            return true;
-          }
-          return false;
-        });
-        if (!isFound) {
-          skipRewindData.push(srd);
-        }
+        console.log("srd:", srd);
+        makePostReq("/telemetry", srd);
       }
     }
 
     if (isVideoDone) {
-      observer.disconnect();
+      // observer.disconnect();
 
-      const vidLearningData = {
-        fullTranscript: fullTranscript,
-        timeSegData: timeSegData,
-        playPauseData: playPauseData,
-        skipRewindData: skipRewindData,
-      };
-      console.log(vidLearningData);
-
-      makePostReqLog(vidLearningData);
+      if (isMetadata) {
+        // no play/pause/skip/rewind, so it must be for metadata collection.
+        const metadata = {
+          fullTranscript: fullTranscript,
+          segments: segmentData,
+          videoUrl: videoUrl,
+        };
+        console.log(metadata);
+        makePostReq("/metadata", metadata);
+      }
     }
   };
 
