@@ -1,11 +1,11 @@
-import { TimeSegDatum, IvqDatum } from "../types";
+import { SegmentDatum, IvqDatum } from "../types";
 
-let timeSegData: TimeSegDatum[] = [];
-const setTimeSegData = (value: TimeSegDatum[]) => {
-  timeSegData = value;
+let segmentData: SegmentDatum[] = [];
+const setSegmentData = (value: SegmentDatum[]) => {
+  segmentData = value;
 };
-const pushTimeSegData = (value: TimeSegDatum) => {
-  timeSegData.push(value);
+const pushSegmentData = (value: SegmentDatum) => {
+  segmentData.push(value);
 };
 
 let fullTranscript = "";
@@ -34,8 +34,14 @@ const setHasSeeked = (value: boolean) => {
   hasSeeked = value;
 };
 
-export { timeSegData, setTimeSegData, pushTimeSegData };
+let isMetadata = true;
+const setIsMetadata = (value: boolean) => {
+  isMetadata = value;
+};
+
+export { segmentData, setSegmentData, pushSegmentData };
 export { fullTranscript, setFullTranscript, concatFullTranscript };
 export { ivqData, setIvqData, pushIvqData };
 export { prevTimestamp, setPrevTimestamp };
 export { hasSeeked, setHasSeeked };
+export { isMetadata, setIsMetadata };

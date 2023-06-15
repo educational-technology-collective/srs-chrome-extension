@@ -1,4 +1,4 @@
 export * from "./ErrorTypes";
-export * from "./LoggingDataTypes";
+export * from "./TelemetryDataTypes";
 export * from "./MessagePassingTypes";
 export * from "./GenerativeDataTypes";

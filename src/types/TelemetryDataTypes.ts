@@ -1,4 +1,4 @@
-export interface TimeSegDatum {
+export interface SegmentDatum {
   timestamp: string;
   segment: string;
 }
@@ -9,20 +9,17 @@ export interface IvqDatum {
   answers: string[];
 }
 
-export interface PlayPauseDatum {
+export interface playPauseDatum {
   timestamp: string;
-  isPlay: boolean;
-  isPause: boolean;
-  isActive: boolean;
+  videoUrl: string;
+  action: string;
 }
 
-export interface SkipRewindDatum {
-  prevTimestamp: string;
-  timestamp: string;
-  isSkipping: boolean;
-  isRewinding: boolean;
-  isPlay: boolean;
-  isPause: boolean;
+export interface skipRewindDatum {
+  startTimestamp: string;
+  endTimestamp: string;
+  videoUrl: string;
+  action: string;
 }
 
 export interface CourseDatum {
@@ -33,7 +30,7 @@ export interface CourseDatum {
   videoUrl: string;
   videoLength: string;
   fullTranscript: string;
-  timeSegData: TimeSegDatum[];
+  segmentData: SegmentDatum[];
   structure: [
     {
       start: string;
