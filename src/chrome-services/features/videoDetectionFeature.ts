@@ -1,4 +1,4 @@
-import { handleErrorNullElement, playPauseDatum, skipRewindDatum, requestObject, responseObject } from "../../types";
+import { handleErrorNullElement, PlayPauseDatum, SkipRewindDatum, requestObject, responseObject } from "../../types";
 import {
   prevTimestamp,
   setPrevTimestamp,
@@ -132,7 +132,7 @@ const createVideoObserverCallback = () => {
     }
 
     if (isVideoPlaying && isUserActive) {
-      const ppd: playPauseDatum = {
+      const ppd: PlayPauseDatum = {
         timestamp: timestamp,
         videoUrl: videoUrl,
         action: "play",
@@ -148,7 +148,7 @@ const createVideoObserverCallback = () => {
         if (prevTimestamp != timestamp) {
           setHasSeeked(false);
 
-          const srd: skipRewindDatum = {
+          const srd: SkipRewindDatum = {
             startTimestamp: prevTimestamp,
             endTimestamp: timestamp,
             videoUrl: videoUrl,
@@ -169,7 +169,7 @@ const createVideoObserverCallback = () => {
     }
 
     if (isVideoPaused && isUserActive) {
-      const ppd: playPauseDatum = {
+      const ppd: PlayPauseDatum = {
         timestamp: timestamp,
         videoUrl: videoUrl,
         action: "pause",
@@ -183,7 +183,7 @@ const createVideoObserverCallback = () => {
         setIsMetadata(false);
         setHasSeeked(false);
 
-        const srd: skipRewindDatum = {
+        const srd: SkipRewindDatum = {
           startTimestamp: prevTimestamp,
           endTimestamp: timestamp,
           videoUrl: videoUrl,

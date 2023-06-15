@@ -9,13 +9,13 @@ export interface IvqDatum {
   answers: string[];
 }
 
-export interface playPauseDatum {
+export interface PlayPauseDatum {
   timestamp: string;
   videoUrl: string;
   action: string;
 }
 
-export interface skipRewindDatum {
+export interface SkipRewindDatum {
   startTimestamp: string;
   endTimestamp: string;
   videoUrl: string;
