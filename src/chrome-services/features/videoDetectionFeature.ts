@@ -206,6 +206,7 @@ const createVideoObserverCallback = () => {
 
       if (isMetadata) {
         // no play/pause/skip/rewind, so it must be for metadata collection.
+        setIsMetadata(false);
         const metadata = {
           fullTranscript: fullTranscript,
           segments: segmentData,
