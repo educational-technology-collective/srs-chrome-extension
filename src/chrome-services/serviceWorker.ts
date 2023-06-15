@@ -20,27 +20,61 @@ chrome.action.onClicked.addListener((tab) => {
   })();
 });
 
-let user_signed_in = false;
-chrome.identity.onSignInChanged.addListener(function (account_id, signedIn) {
-  if (signedIn) {
-    user_signed_in = true;
-    console.log("user signed in:", user_signed_in);
-    console.log("account id:", account_id);
-  } else {
-    user_signed_in = false;
-  }
+let isUserSignedIn = false;
+chrome.identity.onSignInChanged.addListener((accountId, isSignedIn) => {
+  (async () => {
+    if (isSignedIn) {
+      isUserSignedIn = true;
+      console.log("user signed in:", isUserSignedIn);
+      console.log("account id:", accountId);
+    } else {
+      isUserSignedIn = false;
+      console.log("user signed in:", isUserSignedIn);
+      console.log("account id:", accountId);
+    }
+  })();
+  return true;
 });
 
 chrome.runtime.onMessage.addListener((request) => {
-  if (request.message === "get_auth_token") {
-    chrome.identity.getAuthToken({ interactive: true }, function (token) {
-      console.log("token:", token);
-    });
-  } else if (request.message === "get_profile") {
-    chrome.identity.getProfileUserInfo({ accountStatus: "ANY" }, function (user_info) {
-      console.log("user info", user_info);
-    });
-  }
-
+  (async () => {
+    console.log("request message:", request.message);
+    if (request.message === "get_auth_token") {
+      chrome.identity.getAuthToken({ interactive: true }, (token) => {
+        console.log("token:", token);
+        console.log("token.token:", token.token);
+        console.log("token.grantedScopes:", token.grantedScopes);
+        console.log("user signed in:", isUserSignedIn);
+      });
+    } else if (request.message === "get_profile") {
+      chrome.identity.getProfileUserInfo({ accountStatus: "ANY" }, (userInfo) => {
+        console.log("user info", userInfo);
+        console.log("user signed in:", isUserSignedIn);
+      });
+    } else if (request.message === "logout") {
+      chrome.identity.getAuthToken({ interactive: true }, (token) => {
+        console.log("token:", token);
+        if (token) {
+          chrome.identity.removeCachedAuthToken({ token: <string>token }, function () {
+            console.log("Access token revoked.");
+          });
+        }
+      });
+      // chrome.identity.clearAllCachedAuthTokens();
+      // chrome.identity.launchWebAuthFlow(
+      //   {
+      //     url: "https://accounts.google.com/logout",
+      //     // url: "https://accounts.google.com/logout?continue=https://www.example.com",
+      //     interactive: false,
+      //   },
+      //   (responseUrl) => {
+      //     // Perform any necessary clean-up or notify the user.
+      //     console.log("responseUrl", responseUrl);
+      //   }
+      // );
+      console.log("logged out");
+      console.log("user signed in:", isUserSignedIn);
+    }
+  })();
   return true;
 });
