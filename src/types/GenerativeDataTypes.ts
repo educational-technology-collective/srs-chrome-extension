@@ -9,15 +9,17 @@ export interface Flashcard {
   answerChoices: AnswerChoice[];
 }
 
+export interface Concept {
+  id: string;
+  name: string;
+}
+
 export interface VideoLm {
   id: string;
   videoUrl: string;
   startTime: string;
   endTime: string;
-  concept: {
-    id: string;
-    name: string;
-  };
+  concepts: Concept[];
   mdFlashcard: Flashcard[];
 }
 
