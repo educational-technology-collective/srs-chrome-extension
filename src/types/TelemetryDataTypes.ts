@@ -10,16 +10,18 @@ export interface IvqDatum {
 }
 
 export interface PlayPauseDatum {
+  userEmail: string;
+  action: string;
   timestamp: string;
   videoUrl: string;
-  action: string;
 }
 
 export interface SkipRewindDatum {
+  userEmail: string;
+  action: string;
   startTimestamp: string;
   endTimestamp: string;
   videoUrl: string;
-  action: string;
 }
 
 export interface CourseDatum {

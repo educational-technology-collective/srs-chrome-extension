@@ -133,13 +133,14 @@ const createVideoObserverCallback = () => {
 
     if (isVideoPlaying && isUserActive) {
       const ppd: PlayPauseDatum = {
+        userEmail: "user@gmail.com",
         timestamp: timestamp,
         videoUrl: videoUrl,
         action: "play",
       };
 
       console.log("ppd:", ppd);
-      makePostReq("/telemetry", ppd);
+      makePostReq("/telemetry/playback", ppd);
 
       // handle seeking while video is playing.
       if (hasSeeked && isVideoSeeking) {
@@ -149,6 +150,7 @@ const createVideoObserverCallback = () => {
           setHasSeeked(false);
 
           const srd: SkipRewindDatum = {
+            userEmail: "user@gmail.com",
             startTimestamp: prevTimestamp,
             endTimestamp: timestamp,
             videoUrl: videoUrl,
@@ -163,20 +165,21 @@ const createVideoObserverCallback = () => {
 
           setPrevTimestamp(timestamp);
           console.log("srd:", srd);
-          makePostReq("/telemetry", srd);
+          makePostReq("/telemetry/playback", srd);
         }
       }
     }
 
     if (isVideoPaused && isUserActive) {
       const ppd: PlayPauseDatum = {
+        userEmail: "user@gmail.com",
         timestamp: timestamp,
         videoUrl: videoUrl,
         action: "pause",
       };
 
       console.log("ppd:", ppd);
-      makePostReq("/telemetry", ppd);
+      makePostReq("/telemetry/playback", ppd);
 
       // handle skipping while video is paused.
       if (hasSeeked && !isVideoSeeking) {
@@ -184,6 +187,7 @@ const createVideoObserverCallback = () => {
         setHasSeeked(false);
 
         const srd: SkipRewindDatum = {
+          userEmail: "user@gmail.com",
           startTimestamp: prevTimestamp,
           endTimestamp: timestamp,
           videoUrl: videoUrl,
@@ -197,7 +201,7 @@ const createVideoObserverCallback = () => {
         }
 
         console.log("srd:", srd);
-        makePostReq("/telemetry", srd);
+        makePostReq("/telemetry/playback", srd);
       }
     }
 
@@ -213,7 +217,7 @@ const createVideoObserverCallback = () => {
           videoUrl: videoUrl,
         };
         console.log(metadata);
-        makePostReq("/metadata", metadata);
+        makePostReq("/metadata/playback", metadata);
       }
     }
   };
