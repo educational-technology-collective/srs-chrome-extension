@@ -1,34 +1,27 @@
-import { Lm } from "../types";
+import { VideoLm, Concept } from "../types";
 import "../styles/ConceptLabel.css";
 
 interface Props {
-  lmArray: Lm[];
+  lmArray: VideoLm[];
   index: number;
 }
 
 const ConceptLabel = ({ lmArray, index }: Props) => {
   console.log("from conceptLabel", index);
-
-  let conceptNameWithCase = "";
-  let conceptClassificationWithCase = "";
-  console.log("index:", index);
+  let concepts: Concept[] = [];
   if (index >= 0) {
-    console.log(lmArray[index].conceptName);
-    console.log(lmArray[index].conceptClassification);
-    conceptNameWithCase = lmArray[index].conceptName[0].toUpperCase() + lmArray[index].conceptName.substring(1);
-    conceptClassificationWithCase =
-      lmArray[index].conceptClassification[0].toUpperCase() + lmArray[index].conceptClassification.substring(1);
+    concepts = lmArray[index].concepts;
   }
 
   return (
     <>
       <div id="concept">
         <h3>Concept:</h3>
-        <p>{index >= 0 && conceptNameWithCase}</p>
-      </div>
-      <div id="conceptClassification">
-        <h3>Concept Classification:</h3>
-        <p>{index >= 0 && conceptClassificationWithCase}</p>
+        {index >= 0 &&
+          concepts &&
+          concepts.map((concept, idx) => {
+            return <p key={idx}>{concept.name}</p>;
+          })}
       </div>
     </>
   );
