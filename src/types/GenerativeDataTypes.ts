@@ -9,13 +9,18 @@ export interface Flashcard {
   answerChoices: AnswerChoice[];
 }
 
-export interface Lm {
+export interface VideoLm {
   id: string;
+  videoUrl: string;
   startTime: string;
   endTime: string;
-  conceptName: string;
-  conceptClassification: string;
+  concept: {
+    id: string;
+    name: string;
+  };
   mdFlashcard: Flashcard[];
-  deleted: boolean;
-  saved: boolean;
+}
+
+export interface Lm {
+  id: string;
 }
