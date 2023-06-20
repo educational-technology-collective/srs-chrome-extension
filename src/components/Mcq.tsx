@@ -1,10 +1,10 @@
 import { QuestionField } from "./QuestionField";
 import { AnswerField } from "./AnswerField";
-import { Lm, AnswerChoice } from "../types";
+import { VideoLm, AnswerChoice } from "../types";
 import "../styles/Mcq.css";
 
 interface Props {
-  lmArray: Lm[];
+  lmArray: VideoLm[];
   index: number;
   handleClick: (i: number, acIndex: number) => void;
 }

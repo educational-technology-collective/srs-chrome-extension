@@ -1,9 +1,9 @@
 import { DropdownItem } from "./DropdownItem";
-import { Lm } from "../types";
+import { VideoLm } from "../types";
 import "../styles/Dropdown.css";
 
 interface Props {
-  lmArray: Lm[];
+  lmArray: VideoLm[];
   handleIndex: (value: number) => void;
 }
 
@@ -22,7 +22,8 @@ const Dropdown = ({ lmArray, handleIndex }: Props) => {
         <select name="" id="lmSelectMenu" onChange={handleChange}>
           <option value="-1">Select a learning moment...</option>
           {lmArray.map((lm, index) => {
-            return !lm.deleted && <DropdownItem key={index} index={index} value={lm.endTime} />;
+            // return !lm.deleted && <DropdownItem key={index} index={index} value={lm.endTime} />;
+            return <DropdownItem key={index} index={index} value={lm.endTime} />;
           })}
         </select>
       </div>
