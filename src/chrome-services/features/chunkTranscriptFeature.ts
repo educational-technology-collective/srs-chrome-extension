@@ -9,7 +9,7 @@ export const chunkTranscript = async (chunkSize: number) => {
   cs.segmentData.forEach((element, index) => {
     if (counter == chunkSize || index == cs.segmentData.length - 1) {
       counter = 0;
-      console.log(chunk);
+      // console.log(chunk);
       chunk = [];
     }
     chunk.push(element);
