@@ -1,3 +1,5 @@
+import { VideoLm } from "../types";
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
   if (changeInfo.url) {
     (async () => {
@@ -19,6 +21,8 @@ chrome.action.onClicked.addListener((tab) => {
     }
   })();
 });
+
+// user authentication.
 
 let isUserSignedIn = false;
 chrome.identity.onSignInChanged.addListener((accountId, isSignedIn) => {
@@ -74,6 +78,30 @@ chrome.runtime.onMessage.addListener((request) => {
       // );
       console.log("logged out");
       console.log("user signed in:", isUserSignedIn);
+    }
+  })();
+  return true;
+});
+
+// receiving LM pool from the frontend
+chrome.runtime.onMessage.addListener((request) => {
+  (async () => {
+    if (request.message === "GET from App") {
+      // convert VideoLm[] to Object for constant-time lookup
+      // key = endTime, val = LM object
+      const lmPoolMap = new Map();
+      request.data.forEach((lm: VideoLm) => {
+        lmPoolMap.set(lm.endTime, lm);
+      });
+
+      // pass to content script
+      const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+      if (tab.id) {
+        // we can't send Map as data in the Chrome message passing API.
+        // it has to be JSON-serializable.
+        // so we convert it to an object before pushing message.
+        await chrome.tabs.sendMessage(tab.id, { message: "lmPoolMap", data: Object.fromEntries(lmPoolMap) });
+      }
     }
   })();
   return true;

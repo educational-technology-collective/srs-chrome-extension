@@ -1,4 +1,4 @@
-import { SegmentDatum, IvqDatum } from "../types";
+import { SegmentDatum, IvqDatum, VideoLm } from "../types";
 
 let segmentData: SegmentDatum[] = [];
 const setSegmentData = (value: SegmentDatum[]) => {
@@ -39,9 +39,15 @@ const setIsMetadata = (value: boolean) => {
   isMetadata = value;
 };
 
+let lmPoolMap: Map<string, VideoLm>;
+const setLmPoolMap = (value: Map<string, VideoLm>) => {
+  lmPoolMap = new Map([...value]);
+};
+
 export { segmentData, setSegmentData, pushSegmentData };
 export { fullTranscript, setFullTranscript, concatFullTranscript };
 export { ivqData, setIvqData, pushIvqData };
 export { prevTimestamp, setPrevTimestamp };
 export { hasSeeked, setHasSeeked };
 export { isMetadata, setIsMetadata };
+export { lmPoolMap, setLmPoolMap };

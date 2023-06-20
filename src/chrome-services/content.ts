@@ -1,5 +1,6 @@
 import {
   detectTranscript,
+  detectPlayback,
   detectVideo,
   detectIvq,
   detectCopy,
@@ -13,6 +14,7 @@ console.log("extension loaded");
 
 // add new features here.
 detectTranscript();
+detectPlayback();
 detectVideo();
 detectIvq();
 detectCopy();
