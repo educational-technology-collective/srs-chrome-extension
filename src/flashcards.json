@@ -1,0 +1,178 @@
+[
+    {
+        "lmId": {
+            "$oid": "649099a17ca6a4a49d04740b"
+        },
+        "type": "m",
+        "content": {
+            "question": "Is understanding relational theory helpful in understanding merging and joining?",
+            "answer": [
+                { "option": "Yes", "isCorrect": true },
+                { "option": "No", "isCorrect": false }
+            ]
+        }
+    },
+    {
+        "lmId": {
+            "$oid": "64909a097ca6a4a49d04740c"
+        },
+        "type": "m",
+        "content": {
+            "question": "What is a venn diagram used for?",
+            "answer": [
+                { "option": "To show change in value over time", "isCorrect": false },
+                { "option": "To show commonalities and differences of attributes", "isCorrect": true }
+            ]
+        }
+    },
+    {
+        "lmId": {
+            "$oid": "64909a147ca6a4a49d04740d"
+        },
+        "type": "m",
+        "content": {
+            "question": "What is another name for a full outer join?",
+            "answer": [
+                { "option": "Union", "isCorrect": true },
+                { "option": "Intersection", "isCorrect": false }
+            ]
+        }
+    },
+    {
+        "lmId": {
+            "$oid": "64909a207ca6a4a49d04740e"
+        },
+        "type": "m",
+        "content": {
+            "question": "What is another name for an inner join?",
+            "answer": [
+                { "option": "Union", "isCorrect": false },
+                { "option": "Intersection", "isCorrect": true }
+            ]
+        }
+    },
+    {
+        "lmId": {
+            "$oid": "64909a2c7ca6a4a49d04740f"
+        },
+        "type": "m",
+        "content": {
+            "question": "What is the function that we use for merging DataFrames?",
+            "answer": [
+                { "option": "pd.merge", "isCorrect": true },
+                { "option": "pd.merge_on", "isCorrect": false }
+            ]
+        }
+    },
+    {
+        "lmId": {
+            "$oid": "64909a397ca6a4a49d047410"
+        },
+        "type": "m",
+        "content": {
+            "question": "What does left join include?",
+            "answer": [
+                { "option": "df1's data without intersection", "isCorrect": false },
+                { "option": "df1's data including the intersection", "isCorrect": true }
+            ]
+        }
+    },
+    {
+        "lmId": {
+            "$oid": "64909a467ca6a4a49d047411"
+        },
+        "type": "m",
+        "content": {
+            "question": "How do you do a right join using merge?",
+            "answer": [
+                { "option": "pd.merge(df1, df2, how='right', left_index=True, right_index=True)", "isCorrect": true },
+                { "option": "pd.merge(df1, df2, join_type='right', left_index=True, right_index=True)", "isCorrect": false }
+            ]
+        }
+    },
+    {
+        "lmId": {
+            "$oid": "64909a537ca6a4a49d047412"
+        },
+        "type": "m",
+        "content": {
+            "question": "Should you include index parameters if you are merging on a specific column?",
+            "answer": [
+                { "option": "No", "isCorrect": true },
+                { "option": "Yes", "isCorrect": false }
+            ]
+        }
+    },
+    {
+        "lmId": {
+            "$oid": "64909a5f7ca6a4a49d047413"
+        },
+        "type": "m",
+        "content": {
+            "question": "How does pandas preserve conflicting columns?",
+            "answer": [
+                { "option": "It appends _x and _y", "isCorrect": true },
+                { "option": "It appends _1 and _2", "isCorrect": false }
+            ]
+        }
+    },
+    {
+        "lmId": {
+            "$oid": "64909a6b7ca6a4a49d047414"
+        },
+        "type": "m",
+        "content": {
+            "question": "How does concat stitch together DataFrames?",
+            "answer": [
+                { "option": "It joins two DataFrames vertically", "isCorrect": true },
+                { "option": "It's just an alias of merge", "isCorrect": false }
+            ]
+        }
+    },
+    {
+        "lmId": {
+            "$oid": "64909a8b7ca6a4a49d047415"
+        },
+        "type": "m",
+        "content": {
+            "question": "What function do we use to concatenate two DataFrames?",
+            "answer": [
+                { "option": "pd.concat", "isCorrect": true },
+                { "option": "pd.cat", "isCorrect": false }
+            ]
+        }
+    },
+    {
+        "lmId": {
+            "$oid": "64909a997ca6a4a49d047416"
+        },
+        "type": "m",
+        "content": {
+            "question": "How do you handle ambiguous keys during a concat?",
+            "answer": [
+                { "option": "Pass in an array of keys", "isCorrect": true },
+                { "option": "This will not happen during a concat", "isCorrect": false }
+            ]
+        }
+    },
+    {
+        "lmId": {
+            "$oid": "64909aaf7ca6a4a49d047417"
+        },
+        "type": "q",
+        "content": {
+            "question": "When can we get NaN values during a concat?",
+            "answer": "When we are concatenating DataFrames that don't have identical columns."
+        }
+    },
+    {
+        "lmId": {
+            "$oid": "64909ab97ca6a4a49d047418"
+        },
+        "type": "q",
+        "content": {
+            "question": "Where can we learn more about merging, joining and concatenating?",
+            "answer": "The Pandas docs."
+        }
+    }
+]
