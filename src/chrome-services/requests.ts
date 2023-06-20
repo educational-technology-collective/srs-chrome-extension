@@ -14,7 +14,8 @@ export const makePostReq = async (endpoint: string, payload: object) => {
     });
 
     const data = await resp.json();
-    console.log(data);
+    console.log("POST:", data);
+    return data;
   } catch (error) {
     console.log(error);
   }
@@ -44,6 +45,7 @@ export const makeGetReq = async (endpoint: string, params: string[][]) => {
 
     const data = await resp.json();
     console.log("GET:", data);
+    return data;
   } catch (error) {
     console.log(error);
   }
