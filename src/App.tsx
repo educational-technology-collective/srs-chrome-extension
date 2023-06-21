@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Dropdown, ConceptLabel, LoginButton, LogoutButton } from "./components";
+import { Pane1, Pane2, Pane3 } from "./components";
 import { VideoLm } from "./types";
 import { makeGetReq } from "./utils";
 import "./styles/App.css";
@@ -9,10 +9,15 @@ function App() {
   // this way the GET request will be sent again.
   const lmArray: VideoLm[] = [];
   const [arr, setArr] = useState(lmArray);
+
+  const updateArr = (value: VideoLm[]) => {
+    setArr(value);
+  };
+
   useEffect(() => {
     // switch url to window.location.toString() in prod.
     makeGetReq("/lm/video", [
-      ["videoUrl", "https://www.coursera.org/learn/python-data-analysis/lecture/TPrDp/introduction-to-specialization"],
+      ["videoUrl", "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes"],
     ])
       .then((res) => {
         setArr(res);
@@ -28,7 +33,6 @@ function App() {
   // this index is used to access specific elements of the lmArray.
   const [index, setIndex] = useState(-1);
   const handleIndex = (value: number) => {
-    console.log("LM INDEX:", value);
     setIndex(value);
   };
 
@@ -90,15 +94,18 @@ function App() {
 
   return (
     <>
-      <Dropdown lmArray={arr} handleIndex={handleIndex} />
-      <ConceptLabel lmArray={arr} index={index} />
+      <div id="pane1">
+        <Pane1 lmArray={arr} handleIndex={handleIndex} index={index} />
+      </div>
+      <div id="pane2">
+        <Pane2 lmArray={arr} index={index} />
+      </div>
       {/* <Mcq lmArray={arr} index={index} handleClick={handleClick} /> */}
-      <div id="deleteSaveContainer">
+      <div id="pane3">
+        <Pane3 lmArray={arr} index={index} updateArr={updateArr} />
         {/* <DeleteButton name={"Delete this learning moment"} index={index} deleteArr={deleteArr} /> */}
         {/* <SaveButton name={"Save this learning moment"} index={index} saveArr={saveArr} /> */}
       </div>
-      <LoginButton />
-      <LogoutButton />
     </>
   );
 }
