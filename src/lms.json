@@ -1,0 +1,112 @@
+[{
+  "_id": {
+    "$oid": "649099a17ca6a4a49d04740b"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "0:05",
+  "endTime": "0:25"
+},
+{
+  "_id": {
+    "$oid": "64909a097ca6a4a49d04740c"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "0:26",
+  "endTime": "1:10"
+},
+{
+  "_id": {
+    "$oid": "64909a147ca6a4a49d04740d"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "1:11",
+  "endTime": "1:39"
+},
+{
+  "_id": {
+    "$oid": "64909a207ca6a4a49d04740e"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "1:40",
+  "endTime": "2:09"
+},
+{
+  "_id": {
+    "$oid": "64909a2c7ca6a4a49d04740f"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "2:10",
+  "endTime": "5:01"
+},
+{
+  "_id": {
+    "$oid": "64909a397ca6a4a49d047410"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "5:02",
+  "endTime": "5:40"
+},
+{
+  "_id": {
+    "$oid": "64909a467ca6a4a49d047411"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "5:41",
+  "endTime": "5:59"
+},
+{
+  "_id": {
+    "$oid": "64909a537ca6a4a49d047412"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "6:00",
+  "endTime": "7:57"
+},
+{
+  "_id": {
+    "$oid": "64909a5f7ca6a4a49d047413"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "7:58",
+  "endTime": "10:14"
+},
+{
+  "_id": {
+    "$oid": "64909a6b7ca6a4a49d047414"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "10:15",
+  "endTime": "12:58"
+},
+{
+  "_id": {
+    "$oid": "64909a8b7ca6a4a49d047415"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "12:59",
+  "endTime": "13:48"
+},
+{
+  "_id": {
+    "$oid": "64909a997ca6a4a49d047416"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "13:49",
+  "endTime": "14:31"
+},
+{
+  "_id": {
+    "$oid": "64909aaf7ca6a4a49d047417"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "14:32",
+  "endTime": "14:53"
+},
+{
+  "_id": {
+    "$oid": "64909ab97ca6a4a49d047418"
+  },
+  "videoUrl": "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes",
+  "startTime": "14:54",
+  "endTime": "15:31"
+}]

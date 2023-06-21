@@ -1,0 +1,98 @@
+[{
+  "_id": {
+    "$oid": "64909b6b7ca6a4a49d047421"
+  },
+  "lmIds": [{"$oid": "649099a17ca6a4a49d04740b"}],
+  "name": "Introduction to merging dataframes"
+},
+{
+  "_id": {
+    "$oid": "64909b897ca6a4a49d047422"
+  },
+  "lmIds": [{"$oid": "64909a097ca6a4a49d04740c"}],
+  "name": "Venn diagram analogy"
+},
+{
+  "_id": {
+    "$oid": "64909b957ca6a4a49d047423"
+  },
+  "lmIds": [{"$oid": "64909a147ca6a4a49d04740d"}],
+  "name": "Full Outer join (Union)"
+},
+{
+  "_id": {
+    "$oid": "64909ba27ca6a4a49d047424"
+  },
+  "lmIds": [{"$oid": "64909a207ca6a4a49d04740e"}],
+  "name": "Inner join (Intersection)"
+},
+{
+  "_id": {
+    "$oid": "64909bae7ca6a4a49d047425"
+  },
+  "lmIds": [{"$oid": "64909a2c7ca6a4a49d04740f"}],
+  "name": "Merging DataFrames using the merge function"
+},
+{
+  "_id": {
+    "$oid": "64909bba7ca6a4a49d047426"
+  },
+  "lmIds": [{"$oid": "64909a397ca6a4a49d047410"}],
+  "name": "Left join"
+},
+{
+  "_id": {
+    "$oid": "64909bc57ca6a4a49d047427"
+  },
+  "lmIds": [{"$oid": "64909a467ca6a4a49d047411"}],
+  "name": "Right join"
+},
+{
+  "_id": {
+    "$oid": "64909bd07ca6a4a49d047428"
+  },
+  "lmIds": [{"$oid": "64909a537ca6a4a49d047412"}],
+  "name": "Merging on columns using the 'on' parameter"
+},
+{
+  "_id": {
+    "$oid": "64909bde7ca6a4a49d047429"
+  },
+  "lmIds": [{"$oid": "64909a5f7ca6a4a49d047413"}],
+  "name": "Handling conflicts between DataFrames"
+},
+{
+  "_id": {
+    "$oid": "64909be87ca6a4a49d04742a"
+  },
+  "lmIds": [{"$oid": "64909a6b7ca6a4a49d047414"}],
+  "name": "Concatenating DataFrames vertically"
+},
+{
+  "_id": {
+    "$oid": "64909bf37ca6a4a49d04742b"
+  },
+  "lmIds": [{"$oid": "64909a8b7ca6a4a49d047415"}],
+  "name": "Concatenating DataFrames using the concat function"
+},
+{
+  "_id": {
+    "$oid": "64909bfd7ca6a4a49d04742c"
+  },
+  "lmIds": [{"$oid": "64909a997ca6a4a49d047416"}],
+  "name": "Adding keys during concatenation"
+},
+{
+  "_id": {
+    "$oid": "64909c087ca6a4a49d04742d"
+  },
+  "lmIds": [{"$oid": "64909aaf7ca6a4a49d047417"}],
+  "name": "Inner and outer concatenation"
+},
+{
+  "_id": {
+    "$oid": "64909c127ca6a4a49d04742e"
+  },
+  "lmIds": [{"$oid": "64909ab97ca6a4a49d047418"}],
+  "name": "Importance of merging and concatenating DataFrames"
+}]
