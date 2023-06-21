@@ -1,7 +1,8 @@
+import { FormEvent, useEffect, useState } from "react";
 import { McqAnswerField, QaAnswerField } from ".";
 import { Flashcard, McqAnswer, VideoLm } from "../types";
+import { makePostReq, makePutReq } from "../utils";
 import "../styles/Card.css";
-import { FormEvent, useEffect, useState } from "react";
 
 interface Props {
   cards: Flashcard[];
@@ -51,7 +52,6 @@ const Card = ({ cards, cardIndex, lmArray, lmIndex, updateArr }: Props) => {
 
   const handleEditSubmit = (event: FormEvent) => {
     event.preventDefault();
-    // send POST/PUT request to server
 
     // update lmArray object
     const newLmArray = JSON.parse(JSON.stringify(lmArray));
@@ -65,13 +65,16 @@ const Card = ({ cards, cardIndex, lmArray, lmIndex, updateArr }: Props) => {
 
     updateArr(newLmArray);
 
+    // send PUT request to server
+    const payload = newLmArray[lmIndex].flashcards[cardIndex];
+    makePutReq("/flashcards", payload);
+
     setMode("display");
     console.log("edit submit");
   };
 
   const handleAddSubmit = (event: FormEvent) => {
     event.preventDefault();
-    // sned POST request to server
 
     // update lmArray object
     const newLmArray = JSON.parse(JSON.stringify(lmArray));
@@ -88,6 +91,10 @@ const Card = ({ cards, cardIndex, lmArray, lmIndex, updateArr }: Props) => {
     }
 
     updateArr(newLmArray);
+
+    // sned POST request to server
+    const payload = newLmArray[lmIndex].flashcards[cardIndex];
+    makePostReq("/flashcards", payload);
 
     setMode("display");
     console.log("add submit");
