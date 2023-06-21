@@ -6,7 +6,6 @@ export { ConceptLabel } from "./ConceptLabel";
 export { Card } from "./Card";
 export { McqAnswerField } from "./McqAnswerField";
 export { QaAnswerField } from "./QaAnswerField";
-export { Mcq } from "./Mcq";
 export { DeleteButton } from "./DeleteButton";
 export { SaveButton } from "./SaveButton";
 export { LoginButton } from "./LoginButton";
