@@ -1,5 +1,11 @@
+export { Pane1 } from "./Pane1";
+export { Pane2 } from "./Pane2";
+export { Pane3 } from "./Pane3";
 export { Dropdown } from "./Dropdown";
 export { ConceptLabel } from "./ConceptLabel";
+export { Card } from "./Card";
+export { McqAnswerField } from "./McqAnswerField";
+export { QaAnswerField } from "./QaAnswerField";
 export { Mcq } from "./Mcq";
 export { DeleteButton } from "./DeleteButton";
 export { SaveButton } from "./SaveButton";
