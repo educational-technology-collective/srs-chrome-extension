@@ -50,3 +50,24 @@ export const makeGetReq = async (endpoint: string, params: string[][]) => {
     console.log(error);
   }
 };
+
+// makes PUT request to the given endpoint of the AWS Lambda instance.
+// endpoint should lead with a slash.
+export const makePutReq = async (endpoint: string, payload: object) => {
+  try {
+    const url = API_GATEWAY + endpoint;
+    const resp = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await resp.json();
+    console.log("PUT:", data);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
