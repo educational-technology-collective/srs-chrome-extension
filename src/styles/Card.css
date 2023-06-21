@@ -1,0 +1,36 @@
+#cardQ {
+    text-align: left;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+#mcqAns {
+    text-align: left;
+}
+
+#qaAns {
+    text-align: left;
+}
+
+#cardEditFormContainer {
+    height: 100%;
+    padding: 4px;
+}
+
+.cardForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.cardInput {
+    width: 100%;
+    height: 40%;
+    word-wrap: break-word;
+}
+
+.submitBtn {
+    width: fit-content;
+}
