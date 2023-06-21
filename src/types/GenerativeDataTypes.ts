@@ -1,12 +1,15 @@
-export interface AnswerChoice {
-  answer: string;
-  color: string;
-  isClicked: boolean;
+export interface McqAnswer {
+  option: string;
+  isCorrect: boolean;
 }
 
 export interface Flashcard {
-  question: string;
-  answerChoices: AnswerChoice[];
+  lmId: string;
+  type: string;
+  content: {
+    question: string;
+    answer: McqAnswer[] | string;
+  };
 }
 
 export interface Concept {
@@ -19,8 +22,8 @@ export interface VideoLm {
   videoUrl: string;
   startTime: string;
   endTime: string;
-  concepts: Concept[];
-  mdFlashcard: Flashcard[];
+  concepts: Concept[]; // for frontend use
+  flashcards: Flashcard[]; // for frontend use
 }
 
 export interface Lm {
