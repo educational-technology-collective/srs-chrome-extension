@@ -1,27 +1,19 @@
-import { VideoLm, Concept } from "../types";
 import "../styles/ConceptLabel.css";
 
 interface Props {
-  lmArray: VideoLm[];
-  index: number;
+  concept: string;
 }
 
-const ConceptLabel = ({ lmArray, index }: Props) => {
-  console.log("from conceptLabel", index);
-  let concepts: Concept[] = [];
-  if (index >= 0) {
-    concepts = lmArray[index].concepts;
-  }
-
+const ConceptLabel = ({ concept }: Props) => {
   return (
     <>
-      <div id="concept">
-        <h3>Concept:</h3>
-        {index >= 0 &&
-          concepts &&
-          concepts.map((concept, idx) => {
-            return <p key={idx}>{concept.name}</p>;
-          })}
+      <div className="conceptContainer">
+        <div className="concept">
+          <span>{concept}</span>
+        </div>
+        <div className="delConceptBtnContainer">
+          <button className="delConceptBtn">X</button>
+        </div>
       </div>
     </>
   );
