@@ -1,0 +1,16 @@
+#pane3Container {
+    width: 100%;
+    height: 100%;
+}
+
+#pane3Navbar {
+    display: flex;
+    flex-direction: row;
+}
+
+#flashcardHeader {
+    width: 70%;
+    text-align: left;
+    font-size: 1em;
+    font-weight: bold;
+}

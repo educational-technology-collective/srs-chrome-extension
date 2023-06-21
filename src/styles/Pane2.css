@@ -1,0 +1,16 @@
+#conceptHeader {
+    text-align: left;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#pane2Container {
+    height: 100%;
+    position: relative;
+}
+
+.addConceptBtn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
