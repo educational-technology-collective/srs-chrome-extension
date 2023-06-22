@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from ".";
 import { VideoLm, Flashcard } from "../types";
 import "../styles/Pane3.css";
@@ -10,15 +10,22 @@ interface Props {
 }
 
 const Pane3 = ({ lmArray, index, updateArr }: Props) => {
+  const [flashcards, setFlashcards] = useState([] as Flashcard[]);
   const [fcIndex, setFcIndex] = useState(0);
 
-  let flashcards: Flashcard[] = [];
-  if (index >= 0) {
-    flashcards = lmArray[index].flashcards;
-  }
+  // let flashcards: Flashcard[] = [];
+  useEffect(() => {
+    if (index >= 0) {
+      setFlashcards(lmArray[index].flashcards);
+    }
+  }, [index, lmArray]);
 
   const handlePrev = () => {
-    setFcIndex((fcIndex - 1) % flashcards.length);
+    if (fcIndex === 0) {
+      setFcIndex(flashcards.length - 1);
+    } else {
+      setFcIndex((fcIndex - 1) % flashcards.length);
+    }
   };
 
   const handleNext = () => {

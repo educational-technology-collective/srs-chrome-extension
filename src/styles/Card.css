@@ -17,6 +17,11 @@
     padding: 4px;
 }
 
+#cardAddFormContainer {
+    height: 100%;
+    padding: 4px;
+}
+
 .cardForm {
     display: flex;
     flex-direction: column;

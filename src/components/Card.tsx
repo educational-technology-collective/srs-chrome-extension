@@ -13,34 +13,43 @@ interface Props {
 }
 
 const Card = ({ cards, cardIndex, lmArray, lmIndex, updateArr }: Props) => {
-  const cardType = cardIndex >= 0 ? cards[cardIndex].type : "";
+  const cardType = cards.length > 0 && cardIndex >= 0 ? cards[cardIndex].type : "";
+  const [question, setQuestion] = useState("");
   const [mcqAnswers, setMcqAnswers] = useState([] as McqAnswer[]);
   const [qaAnswer, setQaAnswer] = useState("");
 
   useEffect(() => {
-    if (cardType === "m") {
-      setMcqAnswers(cards[cardIndex].content.answer as McqAnswer[]);
-    } else if (cardType === "q") {
-      setQaAnswer(cards[cardIndex].content.answer as string);
+    setQuestion("");
+    setMcqAnswers([] as McqAnswer[]);
+    setQaAnswer("");
+
+    if (cards.length > 0 && cardIndex >= 0) {
+      setQuestion(cards[cardIndex].content.question);
+      if (cardType === "m") {
+        setMcqAnswers(cards[cardIndex].content.answer as McqAnswer[]);
+      } else if (cardType === "q") {
+        setQaAnswer(cards[cardIndex].content.answer as string);
+      }
     }
   }, [cardType, cardIndex, cards]);
 
   // text versions are used in edit and add modes.
-  const [qText, setQText] = useState(cards[cardIndex].content.question);
+  const [qText, setQText] = useState("");
   const [mcqAnsText, setMcqAnsText] = useState("");
   const [qaAnsText, setQaAnsText] = useState("");
 
   // initially, texts will update once mcqAnswers and qaAnswers are loaded.
   useEffect(() => {
+    setQText(question);
     setMcqAnsText(JSON.stringify(mcqAnswers));
     setQaAnsText(qaAnswer);
-  }, [mcqAnswers, qaAnswer]);
+  }, [question, mcqAnswers, qaAnswer]);
 
   // three modes: display, edit, add.
   const [mode, setMode] = useState("display");
 
   const handleEdit = () => {
-    setQText(cards[cardIndex].content.question);
+    setQText(question);
     setMcqAnsText(JSON.stringify(mcqAnswers));
     setQaAnsText(qaAnswer);
     setMode("edit");
@@ -69,8 +78,8 @@ const Card = ({ cards, cardIndex, lmArray, lmIndex, updateArr }: Props) => {
     updateArr(newLmArray);
 
     // send PUT request to server
-    const payload = newLmArray[lmIndex].flashcards[cardIndex];
-    makePutReq("/flashcards", payload);
+    // const payload = newLmArray[lmIndex].flashcards[cardIndex];
+    // makePutReq("/flashcards", payload);
 
     setMode("display");
     console.log("edit submit");
@@ -96,8 +105,8 @@ const Card = ({ cards, cardIndex, lmArray, lmIndex, updateArr }: Props) => {
     updateArr(newLmArray);
 
     // sned POST request to server
-    const payload = newLmArray[lmIndex].flashcards[cardIndex];
-    makePostReq("/flashcards", payload);
+    // const payload = newLmArray[lmIndex].flashcards[cardIndex];
+    // makePostReq("/flashcards", payload);
 
     setMode("display");
     console.log("add submit");
@@ -114,7 +123,7 @@ const Card = ({ cards, cardIndex, lmArray, lmIndex, updateArr }: Props) => {
           <div id="cardQ">
             {cardIndex >= 0 && (
               <>
-                <p>Q: {cards[cardIndex].content.question}</p>
+                <p>Q: {question}</p>
               </>
             )}
           </div>
