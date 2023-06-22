@@ -21,6 +21,7 @@ function App() {
     ])
       .then((res) => {
         setArr(res);
+        setIndex(0);
         // send message to the service worker, so that it can update the state in chrome-services directory.
         chrome.runtime.sendMessage({ message: "GET from App", data: res });
       })
@@ -95,10 +96,10 @@ function App() {
   return (
     <>
       <div id="pane1">
-        <Pane1 lmArray={arr} handleIndex={handleIndex} index={index} />
+        <Pane1 lmArray={arr} updateArr={updateArr} handleIndex={handleIndex} index={index} />
       </div>
       <div id="pane2">
-        <Pane2 lmArray={arr} index={index} />
+        <Pane2 lmArray={arr} index={index} updateArr={updateArr} />
       </div>
       {/* <Mcq lmArray={arr} index={index} handleClick={handleClick} /> */}
       <div id="pane3">
