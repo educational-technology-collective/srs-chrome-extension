@@ -1,8 +1,27 @@
+#pane1Container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+}
+
+#pane1Navbar {
+    display: flex;
+    flex-direction: row;
+}
+
+#lmHeader {
+    text-align: left;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0;
+}
+
 .label {
     font-weight: bold;
 }
 
-table {
+.table {
     border-collapse: collapse;
     text-align: left;
 }
@@ -10,4 +29,10 @@ table {
 td {
     padding-right: 0.2em;
     vertical-align: top;
+}
+
+.pane1BtnContainer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
