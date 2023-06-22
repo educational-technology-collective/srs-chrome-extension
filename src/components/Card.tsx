@@ -40,6 +40,9 @@ const Card = ({ cards, cardIndex, lmArray, lmIndex, updateArr }: Props) => {
   const [mode, setMode] = useState("display");
 
   const handleEdit = () => {
+    setQText(cards[cardIndex].content.question);
+    setMcqAnsText(JSON.stringify(mcqAnswers));
+    setQaAnsText(qaAnswer);
     setMode("edit");
   };
 
@@ -100,6 +103,10 @@ const Card = ({ cards, cardIndex, lmArray, lmIndex, updateArr }: Props) => {
     console.log("add submit");
   };
 
+  const handleCancel = () => {
+    setMode("display");
+  };
+
   return (
     <>
       {mode === "display" && (
@@ -148,6 +155,9 @@ const Card = ({ cards, cardIndex, lmArray, lmIndex, updateArr }: Props) => {
             <button className="submitBtn" type="submit">
               Submit
             </button>
+            <button className="cancelBtn" type="button" onClick={handleCancel}>
+              Cancel
+            </button>
           </form>
         </div>
       )}
@@ -163,6 +173,9 @@ const Card = ({ cards, cardIndex, lmArray, lmIndex, updateArr }: Props) => {
             )}
             <button className="submitBtn" type="submit">
               Submit
+            </button>
+            <button className="cancelBtn" type="button" onClick={handleCancel}>
+              Cancel
             </button>
           </form>
         </div>
