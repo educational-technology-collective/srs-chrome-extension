@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { McqAnswerField, QaAnswerField } from ".";
 import { Flashcard, McqAnswer, VideoLm } from "../types";
-import { makePostReq, makePutReq } from "../utils";
+// import { makePostReq, makePutReq } from "../utils";
 import "../styles/Card.css";
 
 interface Props {

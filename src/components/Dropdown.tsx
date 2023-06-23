@@ -9,7 +9,7 @@ interface Props {
 }
 
 // this is a dropdown menu that lists all the captured learning moments.
-const Dropdown = ({ lmArray, handleIndex, index }: Props) => {
+const Dropdown = ({ lmArray, handleIndex }: Props) => {
   const handleChange = () => {
     const e = document.getElementById("lmSelectMenu") as HTMLSelectElement;
     const value = +e.value;

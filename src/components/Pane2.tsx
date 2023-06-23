@@ -48,9 +48,7 @@ const Pane2 = ({ lmArray, index, updateArr }: Props) => {
   return (
     <>
       <div id="pane2Container">
-        <div id="conceptHeaderContainer">
-          <p id="conceptHeader">Concepts:</p>
-        </div>
+        <p id="conceptHeader">Concepts:</p>
         {mode === "display" && (
           <>
             <div id="conceptLabelContainer">

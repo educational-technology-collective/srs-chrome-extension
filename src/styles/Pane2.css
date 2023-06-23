@@ -1,12 +1,15 @@
+#pane2Container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
 #conceptHeader {
     text-align: left;
     font-size: 1em;
     font-weight: bold;
     margin: 0;
-}
-
-#conceptHeaderContainer {
-    height: fit-content;
 }
 
 #conceptLabelContainer {
@@ -17,12 +20,6 @@
     flex-wrap: wrap;
 }
 
-#pane2Container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    position: relative;
-}
 
 #btnContainer {
     display: flex;
@@ -38,15 +35,3 @@
     display: flex;
     flex-direction: column;
 }
-
-/* #editConceptBtn {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
-
-#addConceptBtn {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-} */

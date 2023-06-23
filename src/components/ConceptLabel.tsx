@@ -33,7 +33,7 @@ const ConceptLabel = ({ concepts, conceptIndex, setConcepts, lmArray, lmIndex, u
         </div>
         <div className="delConceptBtnContainer">
           <button className="delConceptBtn" onClick={handleDelete}>
-            X
+            x
           </button>
         </div>
       </div>

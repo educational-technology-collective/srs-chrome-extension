@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Dropdown } from ".";
 import { VideoLm } from "../types";
 import "../styles/Pane1.css";
 
@@ -113,10 +112,14 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
         <div id="pane1Navbar">
           {/* <Dropdown lmArray={lmArray} handleIndex={handleIndex} index={index} /> */}
           <p id="lmHeader">Learning Moments:</p>
+          <div className="navbarSpacer"></div>
           <div id="lmBtnContainer">
             <button id="prevLmBtn" onClick={handlePrev}>
               &lt;
             </button>
+            <span id="lmCounter">
+              {index + 1} / {lmArray.length}
+            </span>
             <button id="nextLmBtn" onClick={handleNext}>
               &gt;
             </button>
@@ -124,7 +127,7 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
         </div>
         {mode === "display" && (
           <>
-            <div id="tableContainer">
+            <div id="pane1DisplayContainer">
               <table className="table">
                 <tr>
                   <td>
