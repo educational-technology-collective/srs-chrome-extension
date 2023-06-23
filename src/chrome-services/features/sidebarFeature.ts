@@ -24,10 +24,10 @@ export const sideBar = () => {
           pageHeader.style.marginRight = currWidthMargin + "px";
           iframe.style.width = currWidthMargin + "px";
         } else {
-          pageHeader.style.marginRight = "20vw";
-          iplHeader.style.marginRight = "20vw";
-          iplContent.style.marginRight = "20vw";
-          iframe.style.width = "20vw";
+          pageHeader.style.marginRight = "40vw";
+          iplHeader.style.marginRight = "40vw";
+          iplContent.style.marginRight = "40vw";
+          iframe.style.width = "40vw";
         }
       } else {
         pageHeader.style.marginRight = "";
@@ -41,13 +41,15 @@ export const sideBar = () => {
   };
 
   const iframe = document.createElement("iframe");
-  iframe.style.width = "0vw";
+
   iframe.style.position = "absolute";
+  iframe.style.width = "0vw";
   iframe.style.height = "100vh";
   iframe.style.right = "0";
   iframe.style.margin = "0";
   iframe.src = chrome.runtime.getURL("index.html");
   document.body.appendChild(iframe);
+  document.body.style.paddingRight = "40vw";
 
   // these will be undefined at the beginning.
   let pageHeader = <HTMLElement>document.getElementsByClassName("rc-PageHeader")[0];
