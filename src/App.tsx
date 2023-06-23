@@ -103,7 +103,7 @@ function App() {
       </div>
       {/* <Mcq lmArray={arr} index={index} handleClick={handleClick} /> */}
       <div id="pane3">
-        <Pane3 lmArray={arr} index={index} updateArr={updateArr} />
+        <Pane3 lmArray={arr} lmIndex={index} updateArr={updateArr} />
         {/* <DeleteButton name={"Delete this learning moment"} index={index} deleteArr={deleteArr} /> */}
         {/* <SaveButton name={"Save this learning moment"} index={index} saveArr={saveArr} /> */}
       </div>
