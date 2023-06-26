@@ -11,9 +11,9 @@ interface Props {
 
 const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
   const [flashcards, setFlashcards] = useState([] as Flashcard[]);
-  // const [flashcard, setFlashcard] = useState({} as Flashcard);
   const [fcIndex, setFcIndex] = useState(-1);
   const [mode, setMode] = useState("");
+  const [q2Add, setQ2Add] = useState("m");
 
   useEffect(() => {
     if (lmIndex >= 0) {
@@ -24,46 +24,55 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
       } else {
         setFcIndex(0);
       }
-      // setFlashcard(flashcards[fcIndex]);
       setMode("display");
     }
-  }, [lmIndex, lmArray]);
+  }, [lmIndex, lmArray, flashcards.length]);
 
   const handlePrev = () => {
     console.log(fcIndex);
     if (fcIndex === 0) {
       setFcIndex(flashcards.length - 1);
-      // setFlashcard(flashcards[flashcards.length - 1]);
     } else {
       setFcIndex((fcIndex - 1) % flashcards.length);
-      // setFlashcard(flashcards[(fcIndex - 1) % flashcards.length]);
     }
     console.log(fcIndex);
   };
 
   const handleNext = () => {
-    console.log(fcIndex);
-    console.log(flashcards.length);
-    console.log((fcIndex + 1) % flashcards.length);
     setFcIndex((fcIndex + 1) % flashcards.length);
-    // setFlashcard(flashcards[(fcIndex + 1) % flashcards.length]);
-    console.log(fcIndex);
-    // console.log(flashcard);
   };
 
   const [qBuffer, setQBuffer] = useState("");
   const [mcqAnsBuffer, setMcqAnsBuffer] = useState("");
   const [qaAnsBuffer, setQaAnsBuffer] = useState("");
 
-  const handleAdd = () => {
+  const handleAddSelect = () => {
+    setMode("addSelect");
+  };
+
+  const handleAddMcq = () => {
+    setQ2Add("m");
+    setMode("add");
+  };
+
+  const handleAddQa = () => {
+    setQ2Add("q");
     setMode("add");
   };
 
   const handleEdit = () => {
+    if (flashcards.length === 0) {
+      return;
+    }
+
     setMode("edit");
   };
 
   const handleDelete = () => {
+    if (flashcards.length === 0) {
+      return;
+    }
+
     const newLmArray: VideoLm[] = JSON.parse(JSON.stringify(lmArray));
     const newFlashcards: Flashcard[] = JSON.parse(JSON.stringify(flashcards));
     if (fcIndex >= 0) {
@@ -167,6 +176,7 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
             <CardAdd
               card={flashcards[fcIndex]}
               handleAddSubmit={handleAddSubmit}
+              q2Add={q2Add}
               qBuffer={qBuffer}
               mcqAnsBuffer={mcqAnsBuffer}
               qaAnsBuffer={qaAnsBuffer}
@@ -191,13 +201,19 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
         <div id="pane3BtnContainer">
           {mode === "display" && (
             <>
-              <button onClick={handleAdd}>Add</button>
+              <button onClick={handleAddSelect}>Add</button>
               <button onClick={handleEdit}>Edit</button>
               <button onClick={handleDelete}>Delete</button>
             </>
           )}
-          {(mode === "edit" || mode === "add") && (
+          {(mode === "edit" || mode === "add" || mode === "addSelect") && (
             <>
+              {mode === "addSelect" && (
+                <>
+                  <button onClick={handleAddMcq}>MCQ</button>
+                  <button onClick={handleAddQa}>QA</button>
+                </>
+              )}
               <button onClick={handleCancel}>Cancel</button>
             </>
           )}

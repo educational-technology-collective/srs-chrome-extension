@@ -5,6 +5,7 @@ import "../styles/CardAdd.css";
 interface Props {
   card: Flashcard;
   handleAddSubmit: (event: FormEvent) => void;
+  q2Add: string;
   qBuffer: string;
   mcqAnsBuffer: string;
   qaAnsBuffer: string;
@@ -16,6 +17,7 @@ interface Props {
 const CardAdd = ({
   card,
   handleAddSubmit,
+  q2Add,
   qBuffer,
   mcqAnsBuffer,
   qaAnsBuffer,
@@ -38,10 +40,10 @@ const CardAdd = ({
       <div id="cardAddContainer">
         <form className="cardForm" onSubmit={handleAddSubmit}>
           <textarea className="cardQInput" value={qBuffer} onChange={(e) => setQBuffer(e.target.value)} />
-          {card && card.type === "m" && (
+          {card && q2Add === "m" && (
             <textarea className="cardAInput" value={mcqAnsBuffer} onChange={(e) => setMcqAnsBuffer(e.target.value)} />
           )}
-          {card && card.type === "q" && (
+          {card && q2Add === "q" && (
             <textarea className="cardAInput" value={qaAnsBuffer} onChange={(e) => setQaAnsBuffer(e.target.value)} />
           )}
           <button className="submitBtn" type="submit">
