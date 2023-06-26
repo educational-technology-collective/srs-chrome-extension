@@ -6,7 +6,6 @@ interface Props {
 }
 
 const CardDisplay = ({ card }: Props) => {
-  console.log("display:", card);
   let mcqAnswers: McqAnswer[] = [];
   let qaAnswer = "";
 
