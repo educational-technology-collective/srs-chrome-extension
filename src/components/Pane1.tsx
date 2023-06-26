@@ -156,11 +156,11 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
               </table>
             </div>
             <div className="pane1BtnContainer">
-              <button id="lmEditBtn" onClick={handleEdit}>
-                Edit
-              </button>
               <button id="lmAddBtn" onClick={handleAdd}>
                 Add
+              </button>
+              <button id="lmEditBtn" onClick={handleEdit}>
+                Edit
               </button>
               <button id="lmDelBtn" onClick={handleDelete}>
                 Delete

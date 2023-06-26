@@ -18,7 +18,7 @@
     margin: 0;
 }
 
-#pane1DisplayContainer {
+#pane1DisplayContainer, #editFormContainer, #addFormContainer {
     flex-grow: 1;
 }
 
