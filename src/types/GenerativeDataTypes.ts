@@ -12,17 +12,12 @@ export interface Flashcard {
   };
 }
 
-export interface Concept {
-  id: string;
-  name: string;
-}
-
 export interface VideoLm {
   id: string;
   videoUrl: string;
   startTime: string;
   endTime: string;
-  concepts: Concept[]; // for frontend use
+  concepts: string[]; // for frontend use
   flashcards: Flashcard[]; // for frontend use
 }
 

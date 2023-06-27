@@ -16,9 +16,19 @@ function App() {
 
   useEffect(() => {
     // switch url to window.location.toString() in prod.
-    makeGetReq("/lm/video", [
-      ["videoUrl", "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes"],
-    ])
+    // makeGetReqWithParam("/lm/video", [
+    //   ["videoUrl", "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes"],
+    // ])
+    //   .then((res) => {
+    //     setArr(res);
+    //     setIndex(0);
+    //     // send message to the service worker, so that it can update the state in chrome-services directory.
+    //     chrome.runtime.sendMessage({ message: "GET from App", data: res });
+    //   })
+    //   .catch((err) => {
+    //     console.log("Error while fetching videoLM:", err);
+    //   });
+    makeGetReq("/lms/videoId/6499ef9395f0588d6bcfd1db")
       .then((res) => {
         setArr(res);
         setIndex(0);
