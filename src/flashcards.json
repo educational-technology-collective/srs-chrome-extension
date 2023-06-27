@@ -8,7 +8,9 @@
             "question": "Is understanding relational theory helpful in understanding merging and joining?",
             "answer": [
                 { "option": "Yes", "isCorrect": true },
-                { "option": "No", "isCorrect": false }
+                { "option": "No", "isCorrect": false },
+                { "option": "Not really", "isCorrect": false },
+                { "option": "Absolutely not", "isCorrect": false }
             ]
         }
     },
@@ -21,7 +23,9 @@
             "question": "What is a venn diagram used for?",
             "answer": [
                 { "option": "To show change in value over time", "isCorrect": false },
-                { "option": "To show commonalities and differences of attributes", "isCorrect": true }
+                { "option": "To show commonalities and differences of attributes", "isCorrect": true },
+                { "option": "To show a relationship between two pie charts", "isCorrect": false },
+                { "option": "To calculate the standard deviation", "isCorrect": false }
             ]
         }
     },
@@ -33,8 +37,10 @@
         "content": {
             "question": "What is another name for a full outer join?",
             "answer": [
-                { "option": "Union", "isCorrect": true },
-                { "option": "Intersection", "isCorrect": false }
+                { "option": "Inner join", "isCorrect": false },
+                { "option": "Intersection", "isCorrect": false },
+                { "option": "Merge", "isCorrect": false },
+                { "option": "Union", "isCorrect": true }
             ]
         }
     },
@@ -47,7 +53,9 @@
             "question": "What is another name for an inner join?",
             "answer": [
                 { "option": "Union", "isCorrect": false },
-                { "option": "Intersection", "isCorrect": true }
+                { "option": "Full outer join", "isCorrect": false },
+                { "option": "Intersection", "isCorrect": true },
+                { "option": "Merge", "isCorrect": false }
             ]
         }
     },
@@ -59,8 +67,10 @@
         "content": {
             "question": "What is the function that we use for merging DataFrames?",
             "answer": [
+                { "option": "pd.merge_on", "isCorrect": false },
                 { "option": "pd.merge", "isCorrect": true },
-                { "option": "pd.merge_on", "isCorrect": false }
+                { "option": "pd.merge_with", "isCorrect": false },
+                { "option": "pd.merge_df", "isCorrect": false }
             ]
         }
     },
@@ -73,7 +83,9 @@
             "question": "What does left join include?",
             "answer": [
                 { "option": "df1's data without intersection", "isCorrect": false },
-                { "option": "df1's data including the intersection", "isCorrect": true }
+                { "option": "df1's data including the intersection", "isCorrect": true },
+                { "option": "df1's leftmost data when sorted alphabetically", "isCorrect": false },
+                { "option": "df1's leftmost data when sorted numerically", "isCorrect": false }
             ]
         }
     },
@@ -85,8 +97,10 @@
         "content": {
             "question": "How do you do a right join using merge?",
             "answer": [
-                { "option": "pd.merge(df1, df2, how='right', left_index=True, right_index=True)", "isCorrect": true },
-                { "option": "pd.merge(df1, df2, join_type='right', left_index=True, right_index=True)", "isCorrect": false }
+                { "option": "pd.merge(df1, df2, join_type='right', left_index=True, right_index=True)", "isCorrect": false },
+                { "option": "pd.merge(df1, df2, join='right', left_index=True, right_index=True)", "isCorrect": false },
+                { "option": "pd.merge_df(df1, df2, how='right', left_index=True, right_index=True)", "isCorrect": false },
+                { "option": "pd.merge(df1, df2, how='right', left_index=True, right_index=True)", "isCorrect": true }
             ]
         }
     },
@@ -99,6 +113,8 @@
             "question": "Should you include index parameters if you are merging on a specific column?",
             "answer": [
                 { "option": "No", "isCorrect": true },
+                { "option": "Maybe", "isCorrect": false },
+                { "option": "Of course", "isCorrect": false },
                 { "option": "Yes", "isCorrect": false }
             ]
         }
@@ -111,6 +127,8 @@
         "content": {
             "question": "How does pandas preserve conflicting columns?",
             "answer": [
+                { "option": "It appends _a and _b", "isCorrect": false },
+                { "option": "It appends _first and _second", "isCorrect": false },
                 { "option": "It appends _x and _y", "isCorrect": true },
                 { "option": "It appends _1 and _2", "isCorrect": false }
             ]
@@ -125,7 +143,9 @@
             "question": "How does concat stitch together DataFrames?",
             "answer": [
                 { "option": "It joins two DataFrames vertically", "isCorrect": true },
-                { "option": "It's just an alias of merge", "isCorrect": false }
+                { "option": "It's just an alias of merge", "isCorrect": false },
+                { "option": "It doesn't", "isCorrect": false },
+                { "option": "There is no such function", "isCorrect": false }
             ]
         }
     },
@@ -137,7 +157,9 @@
         "content": {
             "question": "What function do we use to concatenate two DataFrames?",
             "answer": [
+                { "option": "pd.concatenate", "isCorrect": false },
                 { "option": "pd.concat", "isCorrect": true },
+                { "option": "pd.concat_df", "isCorrect": false },
                 { "option": "pd.cat", "isCorrect": false }
             ]
         }
@@ -151,7 +173,9 @@
             "question": "How do you handle ambiguous keys during a concat?",
             "answer": [
                 { "option": "Pass in an array of keys", "isCorrect": true },
-                { "option": "This will not happen during a concat", "isCorrect": false }
+                { "option": "This will not happen during a concat", "isCorrect": false },
+                { "option": "There is no such thing as ambiguous keys", "isCorrect": false },
+                { "option": "Pass a random seed value so that it can randomly generate keys", "isCorrect": false }
             ]
         }
     },
