@@ -216,7 +216,7 @@ const createVideoObserverCallback = () => {
           segments: segmentData,
           videoUrl: videoUrl,
         };
-        console.log(metadata);
+        console.log("metadata:", metadata);
         makePostReq("/metadata/playback", metadata);
       }
     }
