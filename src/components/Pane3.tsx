@@ -26,6 +26,8 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
       }
       setMode("display");
     }
+
+    console.log("length:", flashcards.length);
   }, [lmIndex, lmArray, flashcards.length]);
 
   const handlePrev = () => {
@@ -129,15 +131,15 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
 
     const newMcqFc: Flashcard = {
       lmId: "",
-      type: flashcards[fcIndex].type,
+      type: q2Add,
       content: { question: qBuffer, answer: [] },
     };
-    const newQaFc: Flashcard = { lmId: "", type: flashcards[fcIndex].type, content: { question: qBuffer, answer: "" } };
+    const newQaFc: Flashcard = { lmId: "", type: q2Add, content: { question: qBuffer, answer: "" } };
 
-    if (flashcards[fcIndex].type === "m") {
+    if (q2Add === "m") {
       newMcqFc.content.answer = JSON.parse(mcqAnsBuffer);
       newLmArray[lmIndex].flashcards.push(newMcqFc);
-    } else if (flashcards[fcIndex].type === "q") {
+    } else if (q2Add === "q") {
       newQaFc.content.answer = qaAnsBuffer;
       newLmArray[lmIndex].flashcards.push(newQaFc);
     }
@@ -174,7 +176,7 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
           {lmIndex >= 0 && mode === "display" && <CardDisplay card={flashcards[fcIndex]} />}
           {lmIndex >= 0 && mode === "add" && (
             <CardAdd
-              card={flashcards[fcIndex]}
+              // card={flashcards[fcIndex]}
               handleAddSubmit={handleAddSubmit}
               q2Add={q2Add}
               qBuffer={qBuffer}

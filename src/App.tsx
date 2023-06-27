@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Pane1, Pane2, Pane3 } from "./components";
 import { VideoLm } from "./types";
-import { makeGetReq } from "./utils";
+import { makeGetReqWithParam } from "./utils";
 import "./styles/App.css";
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
 
   useEffect(() => {
     // switch url to window.location.toString() in prod.
-    makeGetReq("/lm/video", [
+    makeGetReqWithParam("/lms/search", [
       ["videoUrl", "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes"],
     ])
       .then((res) => {
@@ -28,6 +28,20 @@ function App() {
       .catch((err) => {
         console.log("Error while fetching videoLM:", err);
       });
+
+    // prod:
+    // const b64url = btoa(window.location.toString());
+    // const b64url = btoa("https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes");
+    // makeGetReq(`/lms/videoId/${b64url}`)
+    //   .then((res) => {
+    //     setArr(res);
+    //     setIndex(0);
+    //     // send message to the service worker, so that it can update the state in chrome-services directory.
+    //     chrome.runtime.sendMessage({ message: "GET from App", data: res });
+    //   })
+    //   .catch((err) => {
+    //     console.log("Error while fetching videoLM:", err);
+    //   });
   }, []);
 
   // lmArray index handling.

@@ -1,9 +1,9 @@
 import { useEffect, FormEvent, Dispatch } from "react";
-import { Flashcard } from "../types";
+// import { Flashcard } from "../types";
 import "../styles/CardAdd.css";
 
 interface Props {
-  card: Flashcard;
+  // card: Flashcard;
   handleAddSubmit: (event: FormEvent) => void;
   q2Add: string;
   qBuffer: string;
@@ -15,7 +15,6 @@ interface Props {
 }
 
 const CardAdd = ({
-  card,
   handleAddSubmit,
   q2Add,
   qBuffer,
@@ -27,23 +26,21 @@ const CardAdd = ({
 }: Props) => {
   // initially, buffers will update once mcqAnswers and qaAnswers are loaded.
   useEffect(() => {
-    if (card) {
-      setQBuffer("<Your question here>");
-      setMcqAnsBuffer(
-        '[\n  {\n    "option": "<your answer here>",\n    "isCorrect": <your boolean here>\n  },\n  {\n    "option": "<your answer here>",\n    "isCorrect": <your boolean here>\n  }\n]'
-      );
-      setQaAnsBuffer("<Your answer here>");
-    }
-  }, [setQBuffer, setMcqAnsBuffer, setQaAnsBuffer, card]);
+    setQBuffer("<Your question here>");
+    setMcqAnsBuffer(
+      '[\n  {\n    "option": "<your answer here>",\n    "isCorrect": <your boolean here>\n  },\n  {\n    "option": "<your answer here>",\n    "isCorrect": <your boolean here>\n  }\n]'
+    );
+    setQaAnsBuffer("<Your answer here>");
+  }, [setQBuffer, setMcqAnsBuffer, setQaAnsBuffer]);
   return (
     <>
       <div id="cardAddContainer">
         <form className="cardForm" onSubmit={handleAddSubmit}>
           <textarea className="cardQInput" value={qBuffer} onChange={(e) => setQBuffer(e.target.value)} />
-          {card && q2Add === "m" && (
+          {q2Add === "m" && (
             <textarea className="cardAInput" value={mcqAnsBuffer} onChange={(e) => setMcqAnsBuffer(e.target.value)} />
           )}
-          {card && q2Add === "q" && (
+          {q2Add === "q" && (
             <textarea className="cardAInput" value={qaAnsBuffer} onChange={(e) => setQaAnsBuffer(e.target.value)} />
           )}
           <button className="submitBtn" type="submit">

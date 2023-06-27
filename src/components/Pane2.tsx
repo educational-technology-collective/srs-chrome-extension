@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { ConceptLabel } from ".";
-import { VideoLm, Concept } from "../types";
+import { VideoLm } from "../types";
 import "../styles/Pane2.css";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Pane2 = ({ lmArray, index, updateArr }: Props) => {
-  const [concepts, setConcepts] = useState([] as Concept[]);
+  const [concepts, setConcepts] = useState([] as string[]);
   useEffect(() => {
     if (index >= 0) {
       setConcepts(lmArray[index].concepts);
@@ -33,7 +33,7 @@ const Pane2 = ({ lmArray, index, updateArr }: Props) => {
     event.preventDefault();
 
     const newConcepts = JSON.parse(JSON.stringify(concepts));
-    newConcepts.push({ id: "", name: newConcept } as Concept);
+    newConcepts.push(newConcept);
     setConcepts(newConcepts);
 
     const newLmArray: VideoLm[] = JSON.parse(JSON.stringify(lmArray));

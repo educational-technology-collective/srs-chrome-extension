@@ -1,10 +1,10 @@
-import { Concept, VideoLm } from "../types";
+import { VideoLm } from "../types";
 import "../styles/ConceptLabel.css";
 
 interface Props {
-  concepts: Concept[];
+  concepts: string[];
   conceptIndex: number;
-  setConcepts: React.Dispatch<React.SetStateAction<Concept[]>>;
+  setConcepts: React.Dispatch<React.SetStateAction<string[]>>;
   lmArray: VideoLm[];
   lmIndex: number;
   updateArr: (value: VideoLm[]) => void;
@@ -12,7 +12,7 @@ interface Props {
 
 const ConceptLabel = ({ concepts, conceptIndex, setConcepts, lmArray, lmIndex, updateArr }: Props) => {
   const handleDelete = () => {
-    const newConcepts: Concept[] = JSON.parse(JSON.stringify(concepts));
+    const newConcepts: string[] = JSON.parse(JSON.stringify(concepts));
     newConcepts.splice(conceptIndex, 1);
     console.log("deleted:", newConcepts);
 
@@ -29,7 +29,7 @@ const ConceptLabel = ({ concepts, conceptIndex, setConcepts, lmArray, lmIndex, u
     <>
       <div className="conceptContainer">
         <div className="concept">
-          <span>{concepts[conceptIndex].name}</span>
+          <span>{concepts[conceptIndex]}</span>
         </div>
         <div className="delConceptBtnContainer">
           <button className="delConceptBtn" onClick={handleDelete}>
