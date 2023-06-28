@@ -10,6 +10,7 @@ export interface Flashcard {
     question: string;
     answer: McqAnswer[] | string;
   };
+  visibility: string;
 }
 
 export interface VideoLm {
@@ -19,6 +20,7 @@ export interface VideoLm {
   endTime: string;
   concepts: string[]; // for frontend use
   flashcards: Flashcard[]; // for frontend use
+  visibility: string;
 }
 
 export interface Lm {
