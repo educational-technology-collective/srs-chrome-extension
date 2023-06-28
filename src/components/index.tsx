@@ -1,7 +1,8 @@
 export { Pane1 } from "./Pane1";
 export { Pane2 } from "./Pane2";
 export { Pane3 } from "./Pane3";
-export { Dropdown } from "./Dropdown";
+export { LmDropdown } from "./LmDropdown";
+export { FcDropdown } from "./FcDropdown";
 export { ConceptLabel } from "./ConceptLabel";
 export { Card } from "./Card";
 export { CardDisplay } from "./CardDisplay";
