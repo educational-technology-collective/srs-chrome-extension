@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { CardDisplay, CardAdd, CardEdit } from ".";
+import { CardDisplay, CardAdd, CardEdit, FcDropdown } from ".";
 import { VideoLm, Flashcard } from "../types";
 import "../styles/Pane3.css";
 
@@ -12,7 +12,7 @@ interface Props {
 const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
   const [flashcards, setFlashcards] = useState([] as Flashcard[]);
   const [fcIndex, setFcIndex] = useState(-1);
-  const [mode, setMode] = useState("");
+  const [mode, setMode] = useState("display");
   const [q2Add, setQ2Add] = useState("m");
 
   useEffect(() => {
@@ -24,7 +24,6 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
       } else {
         setFcIndex(0);
       }
-      setMode("display");
     }
 
     console.log("length:", flashcards.length);
@@ -133,8 +132,15 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
       lmId: "",
       type: q2Add,
       content: { question: qBuffer, answer: [] },
+      visibility: "Development",
     };
-    const newQaFc: Flashcard = { lmId: "", type: q2Add, content: { question: qBuffer, answer: "" } };
+
+    const newQaFc: Flashcard = {
+      lmId: "",
+      type: q2Add,
+      content: { question: qBuffer, answer: "" },
+      visibility: "Development",
+    };
 
     if (q2Add === "m") {
       newMcqFc.content.answer = JSON.parse(mcqAnsBuffer);
@@ -200,25 +206,38 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
             />
           )}
         </div>
-        <div id="pane3BtnContainer">
-          {mode === "display" && (
-            <>
-              <button onClick={handleAddSelect}>Add</button>
-              <button onClick={handleEdit}>Edit</button>
-              <button onClick={handleDelete}>Delete</button>
-            </>
-          )}
-          {(mode === "edit" || mode === "add" || mode === "addSelect") && (
-            <>
-              {mode === "addSelect" && (
-                <>
-                  <button onClick={handleAddMcq}>MCQ</button>
-                  <button onClick={handleAddQa}>QA</button>
-                </>
-              )}
-              <button onClick={handleCancel}>Cancel</button>
-            </>
-          )}
+        <div id="pane3BottomBarContainer">
+          <div id="pane3VisibilityMenuContainer">
+            {mode === "display" && (
+              <FcDropdown
+                lmArray={lmArray}
+                updateArr={updateArr}
+                lmIndex={lmIndex}
+                flashcards={flashcards}
+                fcIndex={fcIndex}
+              />
+            )}
+          </div>
+          <div id="pane3BtnContainer">
+            {mode === "display" && (
+              <>
+                <button onClick={handleAddSelect}>Add</button>
+                <button onClick={handleEdit}>Edit</button>
+                <button onClick={handleDelete}>Delete</button>
+              </>
+            )}
+            {(mode === "edit" || mode === "add" || mode === "addSelect") && (
+              <>
+                {mode === "addSelect" && (
+                  <>
+                    <button onClick={handleAddMcq}>MCQ</button>
+                    <button onClick={handleAddQa}>QA</button>
+                  </>
+                )}
+                <button onClick={handleCancel}>Cancel</button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </>

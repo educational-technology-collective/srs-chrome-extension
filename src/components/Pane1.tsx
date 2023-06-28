@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { VideoLm } from "../types";
+import { LmDropdown } from ".";
 import "../styles/Pane1.css";
 
 interface Props {
@@ -83,6 +84,7 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
         videoUrl: videoUrlTempText,
         concepts: [],
         flashcards: [],
+        visibility: "Development",
       };
 
       newLmArray.push(newLm);
@@ -155,16 +157,21 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
                 </tr>
               </table>
             </div>
-            <div className="pane1BtnContainer">
-              <button id="lmAddBtn" onClick={handleAdd}>
-                Add
-              </button>
-              <button id="lmEditBtn" onClick={handleEdit}>
-                Edit
-              </button>
-              <button id="lmDelBtn" onClick={handleDelete}>
-                Delete
-              </button>
+            <div id="pane1BottomBarContainer">
+              <div id="pane1VisibilityMenuContainer">
+                <LmDropdown lmArray={lmArray} updateArr={updateArr} index={index} />
+              </div>
+              <div className="pane1BtnContainer">
+                <button id="lmAddBtn" onClick={handleAdd}>
+                  Add
+                </button>
+                <button id="lmEditBtn" onClick={handleEdit}>
+                  Edit
+                </button>
+                <button id="lmDelBtn" onClick={handleDelete}>
+                  Delete
+                </button>
+              </div>
             </div>
           </>
         )}
