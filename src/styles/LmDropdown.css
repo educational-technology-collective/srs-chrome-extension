@@ -1,0 +1,16 @@
+#dropdown {
+    width: 100%;
+}
+
+select {
+    height: 100%;
+    width: 100%;
+    font-size: 1em;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+option {
+    font-size: 1em;
+}
