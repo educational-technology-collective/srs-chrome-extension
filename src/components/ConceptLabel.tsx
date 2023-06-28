@@ -1,5 +1,6 @@
 import { VideoLm } from "../types";
 import "../styles/ConceptLabel.css";
+import { makePutReq } from "../utils";
 
 interface Props {
   concepts: string[];
@@ -22,7 +23,10 @@ const ConceptLabel = ({ concepts, conceptIndex, setConcepts, lmArray, lmIndex, u
     newLmArray[lmIndex].concepts = newConcepts;
     updateArr(newLmArray);
 
-    // TODO: DELETE request to DB.
+    // push changes to server
+    const payload = newLmArray[lmIndex];
+    console.log("payload:", payload);
+    // makePutReq("/lms", payload);
   };
 
   return (

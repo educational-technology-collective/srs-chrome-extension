@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { VideoLm } from "../types";
 import { LmDropdown } from ".";
 import "../styles/Pane1.css";
+import { makePostReq, makePutReq, makeDeleteReq } from "../utils";
 
 interface Props {
   lmArray: VideoLm[];
@@ -49,6 +50,9 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
   const handleDelete = () => {
     const newLmArray: VideoLm[] = JSON.parse(JSON.stringify(lmArray));
     if (index >= 0) {
+      const lmId = newLmArray[index].id;
+      console.log("lmId:", lmId);
+
       newLmArray.splice(index, 1);
       console.log("deleted:", newLmArray);
       setIdText("");
@@ -62,6 +66,8 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
         handleIndex(0);
       }
       updateArr(newLmArray);
+
+      // makeDeleteReq(`/lms/id/${lmId}`);
     }
   };
 
@@ -88,10 +94,21 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
       };
 
       newLmArray.push(newLm);
+      handleIndex(newLmArray.length - 1);
     }
 
     updateArr(newLmArray);
-    handleIndex(newLmArray.length - 1);
+
+    // push changes to server
+    if (mode === "add") {
+      const payload = newLmArray[newLmArray.length - 1];
+      console.log("payload:", payload);
+      // makePostReq("/lms", payload);
+    } else if (mode === "edit") {
+      const payload = newLmArray[index];
+      console.log("payload:", payload);
+      // makePutReq("/lms", payload);
+    }
 
     setMode("display");
   };

@@ -4,7 +4,6 @@ export { Pane3 } from "./Pane3";
 export { LmDropdown } from "./LmDropdown";
 export { FcDropdown } from "./FcDropdown";
 export { ConceptLabel } from "./ConceptLabel";
-export { Card } from "./Card";
 export { CardDisplay } from "./CardDisplay";
 export { CardAdd } from "./CardAdd";
 export { CardEdit } from "./CardEdit";

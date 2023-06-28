@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { CardDisplay, CardAdd, CardEdit, FcDropdown } from ".";
 import { VideoLm, Flashcard } from "../types";
 import "../styles/Pane3.css";
+import { makeDeleteReq, makePutReq } from "../utils";
 
 interface Props {
   lmArray: VideoLm[];
@@ -85,10 +86,16 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
     const newLmArray: VideoLm[] = JSON.parse(JSON.stringify(lmArray));
     const newFlashcards: Flashcard[] = JSON.parse(JSON.stringify(flashcards));
     if (fcIndex >= 0) {
+      const fcId = newFlashcards[fcIndex].id;
+      console.log("fcId:", fcId);
+
       newFlashcards.splice(fcIndex, 1);
       setFlashcards(newFlashcards);
       newLmArray[lmIndex].flashcards = JSON.parse(JSON.stringify(newFlashcards));
       updateArr(newLmArray);
+
+      // push changes to server
+      // makeDeleteReq(`/flashcards/id/${fcId}`);
     }
 
     if (flashcards.length === 1) {
@@ -122,8 +129,9 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
 
     updateArr(newLmArray);
 
-    // send PUT request to server
-    // const payload = newLmArray[lmIndex].flashcards[cardIndex];
+    // push changes to server
+    const payload = newLmArray[lmIndex].flashcards[fcIndex];
+    console.log("payload:", payload);
     // makePutReq("/flashcards", payload);
 
     setMode("display");
@@ -137,14 +145,16 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
     const newLmArray = JSON.parse(JSON.stringify(lmArray));
 
     const newMcqFc: Flashcard = {
-      lmId: "",
+      id: "",
+      lmId: lmArray[lmIndex].id,
       type: q2Add,
       content: { question: qBuffer, answer: [] },
       visibility: "Development",
     };
 
     const newQaFc: Flashcard = {
-      lmId: "",
+      id: "",
+      lmId: lmArray[lmIndex].id,
       type: q2Add,
       content: { question: qBuffer, answer: "" },
       visibility: "Development",
@@ -153,16 +163,21 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
     if (q2Add === "m") {
       newMcqFc.content.answer = JSON.parse(mcqAnsBuffer);
       newLmArray[lmIndex].flashcards.push(newMcqFc);
+
+      // push changes to server
+      const payload = newMcqFc;
+      console.log("payload:", payload);
+      // makePostReq("/flashcards", payload);
     } else if (q2Add === "q") {
       newQaFc.content.answer = qaAnsBuffer;
       newLmArray[lmIndex].flashcards.push(newQaFc);
+      // push changes to server
+      const payload = newQaFc;
+      console.log("payload:", payload);
+      // makePostReq("/flashcards", payload);
     }
 
     updateArr(newLmArray);
-
-    // sned POST request to server
-    // const payload = newLmArray[lmIndex].flashcards[cardIndex];
-    // makePostReq("/flashcards", payload);
 
     setMode("display");
     console.log("add submit");

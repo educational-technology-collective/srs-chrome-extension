@@ -19,6 +19,11 @@ const FcDropdown = ({ lmArray, updateArr, lmIndex, flashcards, fcIndex }: Props)
       const newLmArray: VideoLm[] = JSON.parse(JSON.stringify(lmArray));
       newLmArray[lmIndex].flashcards[fcIndex].visibility = e.value;
       updateArr(newLmArray);
+
+      // push changes to server
+      const payload = newLmArray[lmIndex].flashcards[fcIndex];
+      console.log("payload:", payload);
+      // makePutReq("/lms", payload);
     }
   };
 
