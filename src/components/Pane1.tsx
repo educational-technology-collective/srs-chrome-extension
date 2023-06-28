@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { VideoLm } from "../types";
+import { LmDropdown } from ".";
 import "../styles/Pane1.css";
+import { makePostReq, makePutReq, makeDeleteReq } from "../utils";
 
 interface Props {
   lmArray: VideoLm[];
@@ -48,6 +50,9 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
   const handleDelete = () => {
     const newLmArray: VideoLm[] = JSON.parse(JSON.stringify(lmArray));
     if (index >= 0) {
+      const lmId = newLmArray[index].id;
+      console.log("lmId:", lmId);
+
       newLmArray.splice(index, 1);
       console.log("deleted:", newLmArray);
       setIdText("");
@@ -61,6 +66,8 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
         handleIndex(0);
       }
       updateArr(newLmArray);
+
+      // makeDeleteReq(`/lms/id/${lmId}`);
     }
   };
 
@@ -83,13 +90,25 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
         videoUrl: videoUrlTempText,
         concepts: [],
         flashcards: [],
+        visibility: "Development",
       };
 
       newLmArray.push(newLm);
+      handleIndex(newLmArray.length - 1);
     }
 
     updateArr(newLmArray);
-    handleIndex(newLmArray.length - 1);
+
+    // push changes to server
+    if (mode === "add") {
+      const payload = newLmArray[newLmArray.length - 1];
+      console.log("payload:", payload);
+      // makePostReq("/lms", payload);
+    } else if (mode === "edit") {
+      const payload = newLmArray[index];
+      console.log("payload:", payload);
+      // makePutReq("/lms", payload);
+    }
 
     setMode("display");
   };
@@ -155,16 +174,21 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
                 </tr>
               </table>
             </div>
-            <div className="pane1BtnContainer">
-              <button id="lmAddBtn" onClick={handleAdd}>
-                Add
-              </button>
-              <button id="lmEditBtn" onClick={handleEdit}>
-                Edit
-              </button>
-              <button id="lmDelBtn" onClick={handleDelete}>
-                Delete
-              </button>
+            <div id="pane1BottomBarContainer">
+              <div id="pane1VisibilityMenuContainer">
+                <LmDropdown lmArray={lmArray} updateArr={updateArr} index={index} />
+              </div>
+              <div className="pane1BtnContainer">
+                <button id="lmAddBtn" onClick={handleAdd}>
+                  Add
+                </button>
+                <button id="lmEditBtn" onClick={handleEdit}>
+                  Edit
+                </button>
+                <button id="lmDelBtn" onClick={handleDelete}>
+                  Delete
+                </button>
+              </div>
             </div>
           </>
         )}

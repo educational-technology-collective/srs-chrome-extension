@@ -33,6 +33,16 @@
     margin-right: 0.5em;
 }
 
+#pane1BottomBarContainer {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 4px;
+}
+
+#pane1VisibilityMenuContainer {
+    flex-grow: 1;
+}
+
 .pane1BtnContainer {
     display: flex;
     flex-direction: row;

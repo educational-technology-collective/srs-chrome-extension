@@ -1,7 +1,8 @@
 import { FormEvent, useEffect, useState } from "react";
-import { CardDisplay, CardAdd, CardEdit } from ".";
+import { CardDisplay, CardAdd, CardEdit, FcDropdown } from ".";
 import { VideoLm, Flashcard } from "../types";
 import "../styles/Pane3.css";
+import { makeDeleteReq, makePutReq } from "../utils";
 
 interface Props {
   lmArray: VideoLm[];
@@ -12,7 +13,7 @@ interface Props {
 const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
   const [flashcards, setFlashcards] = useState([] as Flashcard[]);
   const [fcIndex, setFcIndex] = useState(-1);
-  const [mode, setMode] = useState("");
+  const [mode, setMode] = useState("display");
   const [q2Add, setQ2Add] = useState("m");
 
   useEffect(() => {
@@ -24,7 +25,6 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
       } else {
         setFcIndex(0);
       }
-      setMode("display");
     }
 
     console.log("length:", flashcards.length);
@@ -32,6 +32,10 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
 
   const handlePrev = () => {
     console.log(fcIndex);
+    if (flashcards.length === 0) {
+      return;
+    }
+
     if (fcIndex === 0) {
       setFcIndex(flashcards.length - 1);
     } else {
@@ -41,6 +45,10 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
   };
 
   const handleNext = () => {
+    if (flashcards.length === 0) {
+      return;
+    }
+
     setFcIndex((fcIndex + 1) % flashcards.length);
   };
 
@@ -78,10 +86,16 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
     const newLmArray: VideoLm[] = JSON.parse(JSON.stringify(lmArray));
     const newFlashcards: Flashcard[] = JSON.parse(JSON.stringify(flashcards));
     if (fcIndex >= 0) {
+      const fcId = newFlashcards[fcIndex].id;
+      console.log("fcId:", fcId);
+
       newFlashcards.splice(fcIndex, 1);
       setFlashcards(newFlashcards);
       newLmArray[lmIndex].flashcards = JSON.parse(JSON.stringify(newFlashcards));
       updateArr(newLmArray);
+
+      // push changes to server
+      // makeDeleteReq(`/flashcards/id/${fcId}`);
     }
 
     if (flashcards.length === 1) {
@@ -115,8 +129,9 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
 
     updateArr(newLmArray);
 
-    // send PUT request to server
-    // const payload = newLmArray[lmIndex].flashcards[cardIndex];
+    // push changes to server
+    const payload = newLmArray[lmIndex].flashcards[fcIndex];
+    console.log("payload:", payload);
     // makePutReq("/flashcards", payload);
 
     setMode("display");
@@ -130,25 +145,39 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
     const newLmArray = JSON.parse(JSON.stringify(lmArray));
 
     const newMcqFc: Flashcard = {
-      lmId: "",
+      id: "",
+      lmId: lmArray[lmIndex].id,
       type: q2Add,
       content: { question: qBuffer, answer: [] },
+      visibility: "Development",
     };
-    const newQaFc: Flashcard = { lmId: "", type: q2Add, content: { question: qBuffer, answer: "" } };
+
+    const newQaFc: Flashcard = {
+      id: "",
+      lmId: lmArray[lmIndex].id,
+      type: q2Add,
+      content: { question: qBuffer, answer: "" },
+      visibility: "Development",
+    };
 
     if (q2Add === "m") {
       newMcqFc.content.answer = JSON.parse(mcqAnsBuffer);
       newLmArray[lmIndex].flashcards.push(newMcqFc);
+
+      // push changes to server
+      const payload = newMcqFc;
+      console.log("payload:", payload);
+      // makePostReq("/flashcards", payload);
     } else if (q2Add === "q") {
       newQaFc.content.answer = qaAnsBuffer;
       newLmArray[lmIndex].flashcards.push(newQaFc);
+      // push changes to server
+      const payload = newQaFc;
+      console.log("payload:", payload);
+      // makePostReq("/flashcards", payload);
     }
 
     updateArr(newLmArray);
-
-    // sned POST request to server
-    // const payload = newLmArray[lmIndex].flashcards[cardIndex];
-    // makePostReq("/flashcards", payload);
 
     setMode("display");
     console.log("add submit");
@@ -200,25 +229,38 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
             />
           )}
         </div>
-        <div id="pane3BtnContainer">
-          {mode === "display" && (
-            <>
-              <button onClick={handleAddSelect}>Add</button>
-              <button onClick={handleEdit}>Edit</button>
-              <button onClick={handleDelete}>Delete</button>
-            </>
-          )}
-          {(mode === "edit" || mode === "add" || mode === "addSelect") && (
-            <>
-              {mode === "addSelect" && (
-                <>
-                  <button onClick={handleAddMcq}>MCQ</button>
-                  <button onClick={handleAddQa}>QA</button>
-                </>
-              )}
-              <button onClick={handleCancel}>Cancel</button>
-            </>
-          )}
+        <div id="pane3BottomBarContainer">
+          <div id="pane3VisibilityMenuContainer">
+            {mode === "display" && (
+              <FcDropdown
+                lmArray={lmArray}
+                updateArr={updateArr}
+                lmIndex={lmIndex}
+                flashcards={flashcards}
+                fcIndex={fcIndex}
+              />
+            )}
+          </div>
+          <div id="pane3BtnContainer">
+            {mode === "display" && (
+              <>
+                <button onClick={handleAddSelect}>Add</button>
+                <button onClick={handleEdit}>Edit</button>
+                <button onClick={handleDelete}>Delete</button>
+              </>
+            )}
+            {(mode === "edit" || mode === "add" || mode === "addSelect") && (
+              <>
+                {mode === "addSelect" && (
+                  <>
+                    <button onClick={handleAddMcq}>MCQ</button>
+                    <button onClick={handleAddQa}>QA</button>
+                  </>
+                )}
+                <button onClick={handleCancel}>Cancel</button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </>

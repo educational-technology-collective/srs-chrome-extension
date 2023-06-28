@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { ConceptLabel } from ".";
 import { VideoLm } from "../types";
 import "../styles/Pane2.css";
+import { makePostReq } from "../utils";
 
 interface Props {
   lmArray: VideoLm[];
@@ -42,7 +43,10 @@ const Pane2 = ({ lmArray, index, updateArr }: Props) => {
 
     setMode("display");
 
-    // TODO: post to DB
+    // push changes to server
+    const payload = newLmArray[index];
+    console.log("payload:", payload);
+    // makePutReq("/lms", payload);
   };
 
   return (
