@@ -31,6 +31,10 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
 
   const handlePrev = () => {
     console.log(fcIndex);
+    if (flashcards.length === 0) {
+      return;
+    }
+
     if (fcIndex === 0) {
       setFcIndex(flashcards.length - 1);
     } else {
@@ -40,6 +44,10 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
   };
 
   const handleNext = () => {
+    if (flashcards.length === 0) {
+      return;
+    }
+
     setFcIndex((fcIndex + 1) % flashcards.length);
   };
 

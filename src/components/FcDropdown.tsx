@@ -12,6 +12,7 @@ interface Props {
 
 // this is a dropdown menu that lists all the captured learning moments.
 const FcDropdown = ({ lmArray, updateArr, lmIndex, flashcards, fcIndex }: Props) => {
+  console.log("fcindex dropdown:", fcIndex);
   const handleChange = () => {
     if (lmIndex >= 0) {
       const e = document.getElementById("fcSelectMenu") as HTMLSelectElement;
@@ -28,7 +29,7 @@ const FcDropdown = ({ lmArray, updateArr, lmIndex, flashcards, fcIndex }: Props)
           name=""
           id="fcSelectMenu"
           onChange={handleChange}
-          value={fcIndex >= 0 ? flashcards[fcIndex].visibility : ""}
+          value={flashcards.length > 0 && fcIndex >= 0 ? flashcards[fcIndex].visibility : ""}
         >
           {fcIndex >= 0 && (
             <>
