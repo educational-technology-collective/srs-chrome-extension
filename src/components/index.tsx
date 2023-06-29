@@ -14,3 +14,4 @@ export { SaveButton } from "./SaveButton";
 export { LoginButton } from "./LoginButton";
 export { LogoutButton } from "./LogoutButton";
 export { Profile } from "./Profile";
+export { LandingPage } from "./LandingPage";

@@ -103,7 +103,7 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
       setFcIndex(0);
     }
 
-    setMode("delete");
+    setMode("display");
   };
 
   const handleCancel = () => {
