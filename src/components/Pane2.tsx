@@ -2,7 +2,6 @@ import { FormEvent, useEffect, useState } from "react";
 import { ConceptLabel } from ".";
 import { VideoLm } from "../types";
 import "../styles/Pane2.css";
-import { makePostReq } from "../utils";
 
 interface Props {
   lmArray: VideoLm[];

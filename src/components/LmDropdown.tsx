@@ -1,7 +1,6 @@
 import { DropdownItem } from "./DropdownItem";
 import { VideoLm } from "../types";
 import "../styles/LmDropdown.css";
-import { makePutReq } from "../utils";
 
 interface Props {
   lmArray: VideoLm[];

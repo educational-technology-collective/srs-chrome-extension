@@ -1,5 +1,6 @@
 import { McqAnswerField, QaAnswerField } from ".";
 import { Flashcard, McqAnswer } from "../types";
+import "../styles/CardDisplay.css";
 
 interface Props {
   card: Flashcard;

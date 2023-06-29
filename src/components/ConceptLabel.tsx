@@ -1,6 +1,5 @@
 import { VideoLm } from "../types";
 import "../styles/ConceptLabel.css";
-import { makePutReq } from "../utils";
 
 interface Props {
   concepts: string[];
