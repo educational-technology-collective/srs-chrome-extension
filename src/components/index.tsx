@@ -13,3 +13,4 @@ export { DeleteButton } from "./DeleteButton";
 export { SaveButton } from "./SaveButton";
 export { LoginButton } from "./LoginButton";
 export { LogoutButton } from "./LogoutButton";
+export { Profile } from "./Profile";
