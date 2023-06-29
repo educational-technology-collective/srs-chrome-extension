@@ -6,6 +6,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import "./styles/App.css";
 
 function App() {
+  chrome.storage.session.get(["accessToken"]).then((result) => {
+    console.log("Value currently is " + result.accessToken);
+  });
+
   const { isAuthenticated, user } = useAuth0();
   // we may need a state to track current url to trigger a full rerender.
   // this way the GET request will be sent again.

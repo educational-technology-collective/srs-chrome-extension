@@ -19,6 +19,7 @@ const Profile = () => {
     })
     .then((data) => {
       console.log(data.access_token);
+      chrome.storage.session.set({ accessToken: data.access_token });
     });
   //   const [userMetadata, setUserMetadata] = useState(null);
 
