@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { VideoLm } from "../types";
 import { LmDropdown } from ".";
 import "../styles/Pane1.css";
-import { makePostReq, makePutReq, makeDeleteReq } from "../utils";
 
 interface Props {
   lmArray: VideoLm[];

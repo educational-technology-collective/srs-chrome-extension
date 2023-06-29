@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { Pane1, Pane2, Pane3 } from "./components";
+import { LandingPage, LogoutButton, Pane1, Pane2, Pane3, Profile } from "./components";
 import { VideoLm } from "./types";
 import { makeGetReqWithParam } from "./utils";
+import { useAuth0 } from "@auth0/auth0-react";
 import "./styles/App.css";
 
 function App() {
+  const { isAuthenticated, user } = useAuth0();
   // we may need a state to track current url to trigger a full rerender.
   // this way the GET request will be sent again.
   const lmArray: VideoLm[] = [];
@@ -39,17 +41,32 @@ function App() {
 
   return (
     <>
-      <div id="pane1">
-        <Pane1 lmArray={arr} updateArr={updateArr} handleIndex={handleIndex} index={index} />
-      </div>
-      <div id="pane2">
-        <Pane2 lmArray={arr} index={index} updateArr={updateArr} />
-      </div>
-      <div id="pane3">
-        <Pane3 lmArray={arr} lmIndex={index} updateArr={updateArr} />
-        {/* <DeleteButton name={"Delete this learning moment"} index={index} deleteArr={deleteArr} /> */}
-        {/* <SaveButton name={"Save this learning moment"} index={index} saveArr={saveArr} /> */}
-      </div>
+      {!isAuthenticated ? (
+        <div id="landingPage">
+          <LandingPage />
+        </div>
+      ) : (
+        // <div id="loginBtnContainer">
+        //   <LoginButton />
+        // </div>
+        <>
+          <div id="pane1">
+            <Pane1 lmArray={arr} updateArr={updateArr} handleIndex={handleIndex} index={index} />
+          </div>
+          <div id="pane2">
+            <Pane2 lmArray={arr} index={index} updateArr={updateArr} />
+          </div>
+          <div id="pane3">
+            <Pane3 lmArray={arr} lmIndex={index} updateArr={updateArr} />
+          </div>
+          <Profile />
+          <div id="pane4">
+            <p>Welcone, {user?.name}.</p>
+            <div id="spacer"></div>
+            <LogoutButton />
+          </div>
+        </>
+      )}
     </>
   );
 }

@@ -1,0 +1,11 @@
+#landingPageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#appIcon {
+    width: 100px;
+    height: 100px;
+}

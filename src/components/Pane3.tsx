@@ -2,7 +2,6 @@ import { FormEvent, useEffect, useState } from "react";
 import { CardDisplay, CardAdd, CardEdit, FcDropdown } from ".";
 import { VideoLm, Flashcard } from "../types";
 import "../styles/Pane3.css";
-import { makeDeleteReq, makePutReq } from "../utils";
 
 interface Props {
   lmArray: VideoLm[];
@@ -104,7 +103,7 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
       setFcIndex(0);
     }
 
-    setMode("delete");
+    setMode("display");
   };
 
   const handleCancel = () => {
