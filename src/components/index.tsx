@@ -1,6 +1,7 @@
 export { LmPane } from "./LmPane";
 export { Pane2 } from "./Pane2";
 export { FcPane } from "./FcPane";
+export { PreviewPane } from "./PreviewPane";
 export { LmDropdown } from "./LmDropdown";
 export { FcDropdown } from "./FcDropdown";
 export { ConceptLabel } from "./ConceptLabel";
