@@ -1,11 +1,11 @@
-#pane1Container {
+#lmPaneContainer {
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 100%;
 }
 
-#pane1Navbar {
+#lmPaneNavbar {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -18,7 +18,7 @@
     margin: 0;
 }
 
-#pane1DisplayContainer, #editFormContainer, #addFormContainer {
+#lmPaneDisplayContainer, #editFormContainer, #addFormContainer {
     flex-grow: 1;
 }
 
@@ -33,17 +33,17 @@
     margin-right: 0.5em;
 }
 
-#pane1BottomBarContainer {
+#lmPaneBottomBarContainer {
     display: flex;
     flex-direction: row;
     margin-bottom: 4px;
 }
 
-#pane1VisibilityMenuContainer {
+#lmPaneVisibilityMenuContainer {
     flex-grow: 1;
 }
 
-.pane1BtnContainer {
+.lmPaneBtnContainer {
     display: flex;
     flex-direction: row;
     justify-content: right;

@@ -1,6 +1,6 @@
-export { Pane1 } from "./Pane1";
+export { LmPane } from "./LmPane";
 export { Pane2 } from "./Pane2";
-export { Pane3 } from "./Pane3";
+export { FcPane } from "./FcPane";
 export { LmDropdown } from "./LmDropdown";
 export { FcDropdown } from "./FcDropdown";
 export { ConceptLabel } from "./ConceptLabel";

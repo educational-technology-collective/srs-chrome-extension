@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { VideoLm } from "../types";
 import { LmDropdown } from ".";
-import "../styles/Pane1.css";
+import "../styles/LmPane.css";
 
 interface Props {
   lmArray: VideoLm[];
@@ -10,7 +10,7 @@ interface Props {
   index: number;
 }
 
-const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
+const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
   const [idText, setIdText] = useState("");
   const [startTimeText, setStartTimeText] = useState("");
   const [endTimeText, setEndTimeText] = useState("");
@@ -126,8 +126,8 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
 
   return (
     <>
-      <div id="pane1Container">
-        <div id="pane1Navbar">
+      <div id="lmPaneContainer">
+        <div id="lmPaneNavbar">
           {/* <Dropdown lmArray={lmArray} handleIndex={handleIndex} index={index} /> */}
           <p id="lmHeader">Learning Moments:</p>
           <div className="navbarSpacer"></div>
@@ -145,7 +145,7 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
         </div>
         {mode === "display" && (
           <>
-            <div id="pane1DisplayContainer">
+            <div id="lmPaneDisplayContainer">
               <table className="table">
                 <tr>
                   <td>
@@ -173,11 +173,11 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
                 </tr>
               </table>
             </div>
-            <div id="pane1BottomBarContainer">
-              <div id="pane1VisibilityMenuContainer">
+            <div id="lmPaneBottomBarContainer">
+              <div id="lmPaneVisibilityMenuContainer">
                 <LmDropdown lmArray={lmArray} updateArr={updateArr} index={index} />
               </div>
-              <div className="pane1BtnContainer">
+              <div className="lmPaneBtnContainer">
                 <button id="lmAddBtn" onClick={handleAdd}>
                   Add
                 </button>
@@ -234,7 +234,7 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
                   </tr>
                 </table>
               </form>
-              <div className="pane1BtnContainer">
+              <div className="lmPaneBtnContainer">
                 <button className="submitBtn" onClick={handleSubmit}>
                   Submit
                 </button>
@@ -288,7 +288,7 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
                   </tr>
                 </table>
               </form>
-              <div className="pane1BtnContainer">
+              <div className="lmPaneBtnContainer">
                 <button className="submitBtn" onClick={handleSubmit}>
                   Submit
                 </button>
@@ -304,4 +304,4 @@ const Pane1 = ({ lmArray, updateArr, handleIndex, index }: Props) => {
   );
 };
 
-export { Pane1 };
+export { LmPane };

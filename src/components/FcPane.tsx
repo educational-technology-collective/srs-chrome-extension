@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { CardDisplay, CardAdd, CardEdit, FcDropdown } from ".";
 import { VideoLm, Flashcard } from "../types";
-import "../styles/Pane3.css";
+import "../styles/FcPane.css";
 
 interface Props {
   lmArray: VideoLm[];
@@ -9,7 +9,7 @@ interface Props {
   updateArr: (value: VideoLm[]) => void;
 }
 
-const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
+const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
   const [flashcards, setFlashcards] = useState([] as Flashcard[]);
   const [fcIndex, setFcIndex] = useState(-1);
   const [mode, setMode] = useState("display");
@@ -184,8 +184,8 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
 
   return (
     <>
-      <div id="pane3Container">
-        <div id="pane3Navbar">
+      <div id="fcPaneContainer">
+        <div id="fcPaneNavbar">
           <p id="flashcardHeader">Flashcard:</p>
           <div className="navbarSpacer"></div>
           <div id="cardBtnContainer">
@@ -200,7 +200,7 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
             </button>
           </div>
         </div>
-        <div id="pane3FcContainer">
+        <div id="fcPaneFcContainer">
           {lmIndex >= 0 && mode === "display" && <CardDisplay card={flashcards[fcIndex]} />}
           {lmIndex >= 0 && mode === "add" && (
             <CardAdd
@@ -228,8 +228,8 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
             />
           )}
         </div>
-        <div id="pane3BottomBarContainer">
-          <div id="pane3VisibilityMenuContainer">
+        <div id="fcPaneBottomBarContainer">
+          <div id="fcPaneVisibilityMenuContainer">
             {mode === "display" && (
               <FcDropdown
                 lmArray={lmArray}
@@ -240,7 +240,7 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
               />
             )}
           </div>
-          <div id="pane3BtnContainer">
+          <div id="fcPaneBtnContainer">
             {mode === "display" && (
               <>
                 <button onClick={handleAddSelect}>Add</button>
@@ -266,4 +266,4 @@ const Pane3 = ({ lmArray, lmIndex, updateArr }: Props) => {
   );
 };
 
-export { Pane3 };
+export { FcPane };
