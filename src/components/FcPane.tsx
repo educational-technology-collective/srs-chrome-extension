@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { CardDisplay, CardAdd, CardEdit, FcDropdown } from ".";
+import { CardDisplay, CardAdd, CardEdit, FcDropdown, PreviewPane } from ".";
 import { VideoLm, Flashcard } from "../types";
 import "../styles/FcPane.css";
 
@@ -260,6 +260,9 @@ const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
               </>
             )}
           </div>
+        </div>
+        <div id="previewPane">
+          <PreviewPane />
         </div>
       </div>
     </>

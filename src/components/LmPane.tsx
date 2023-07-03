@@ -15,6 +15,7 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
   const [startTimeText, setStartTimeText] = useState("");
   const [endTimeText, setEndTimeText] = useState("");
   const [videoUrlText, setVideoUrlText] = useState("");
+  const [conceptsText, setConceptsText] = useState("");
 
   useEffect(() => {
     console.log("lmArray", lmArray, index);
@@ -23,12 +24,21 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
       setStartTimeText(lmArray[index].startTime);
       setEndTimeText(lmArray[index].endTime);
       setVideoUrlText(lmArray[index].videoUrl);
+
+      lmArray[index].concepts.forEach((concept, i) => {
+        if (i === 0) {
+          setConceptsText(concept);
+        } else {
+          setConceptsText(conceptsText + ", " + concept);
+        }
+      });
     }
   }, [index, lmArray]);
 
   const [startTimeTempText, setStartTimeTempText] = useState("");
   const [endTimeTempText, setEndTimeTempText] = useState("");
   const [videoUrlTempText, setVideoUrlTempText] = useState("");
+  const [conceptsTempText, setConceptsTempText] = useState("");
 
   const [mode, setMode] = useState("display");
 
@@ -36,6 +46,15 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
     setStartTimeTempText(lmArray[index].startTime);
     setEndTimeTempText(lmArray[index].endTime);
     setVideoUrlTempText(lmArray[index].videoUrl);
+    let ctt = "";
+    lmArray[index].concepts.forEach((concept, i) => {
+      if (i === 0) {
+        ctt = concept;
+      } else {
+        ctt += ", " + concept;
+      }
+    });
+    setConceptsTempText(ctt);
     setMode("edit");
   };
 
@@ -43,6 +62,7 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
     setStartTimeTempText("");
     setEndTimeTempText("");
     setVideoUrlTempText("");
+    setConceptsTempText("");
     setMode("add");
   };
 
@@ -58,6 +78,7 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
       setStartTimeText("");
       setEndTimeText("");
       setVideoUrlText("");
+      setConceptsText("");
 
       if (lmArray.length === 1) {
         handleIndex(-1);
@@ -81,13 +102,14 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
       newLmArray[index].startTime = startTimeTempText;
       newLmArray[index].endTime = endTimeTempText;
       newLmArray[index].videoUrl = videoUrlTempText;
+      newLmArray[index].concepts = conceptsTempText.split(", ");
     } else if (mode === "add") {
       const newLm: VideoLm = {
         id: "",
         startTime: startTimeTempText,
         endTime: endTimeTempText,
         videoUrl: videoUrlTempText,
-        concepts: [],
+        concepts: conceptsTempText.split(", "),
         flashcards: [],
         visibility: "Development",
       };
@@ -171,6 +193,12 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
                   </td>
                   <td>{videoUrlText}</td>
                 </tr>
+                <tr>
+                  <td>
+                    <span className="label">Concepts:</span>
+                  </td>
+                  <td>{conceptsText}</td>
+                </tr>
               </table>
             </div>
             <div id="lmPaneBottomBarContainer">
@@ -194,7 +222,7 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
         {mode === "edit" && (
           <>
             <div id="editFormContainer">
-              <form>
+              <form id="editForm">
                 <table className="table">
                   <tr>
                     <td>
@@ -206,42 +234,60 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
                     <td>
                       <span className="label">Start:</span>
                     </td>
-                    <textarea
-                      rows={1}
-                      value={startTimeTempText}
-                      onChange={(e) => setStartTimeTempText(e.target.value)}
-                    ></textarea>
+                    <td className="item">
+                      <textarea
+                        id="startTextarea"
+                        value={startTimeTempText}
+                        onChange={(e) => setStartTimeTempText(e.target.value)}
+                      ></textarea>
+                    </td>
                   </tr>
                   <tr>
                     <td>
                       <span className="label">End:</span>
                     </td>
-                    <textarea
-                      rows={1}
-                      value={endTimeTempText}
-                      onChange={(e) => setEndTimeTempText(e.target.value)}
-                    ></textarea>
+                    <td>
+                      <textarea
+                        id="endTextarea"
+                        value={endTimeTempText}
+                        onChange={(e) => setEndTimeTempText(e.target.value)}
+                      ></textarea>
+                    </td>
                   </tr>
                   <tr>
                     <td>
                       <span className="label">URL:</span>
                     </td>
-                    <textarea
-                      rows={1}
-                      value={videoUrlTempText}
-                      onChange={(e) => setVideoUrlTempText(e.target.value)}
-                    ></textarea>
+                    <td>
+                      <textarea
+                        id="urlTextarea"
+                        value={videoUrlTempText}
+                        onChange={(e) => setVideoUrlTempText(e.target.value)}
+                      ></textarea>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span className="label">Concepts:</span>
+                    </td>
+                    <td>
+                      <textarea
+                        id="conceptsTextarea"
+                        value={conceptsTempText}
+                        onChange={(e) => setConceptsTempText(e.target.value)}
+                      ></textarea>
+                    </td>
                   </tr>
                 </table>
               </form>
-              <div className="lmPaneBtnContainer">
-                <button className="submitBtn" onClick={handleSubmit}>
-                  Submit
-                </button>
-                <button id="lmCancelBtn" onClick={handleCancel}>
-                  Cancel
-                </button>
-              </div>
+            </div>
+            <div className="lmPaneBtnContainer">
+              <button className="submitBtn" onClick={handleSubmit}>
+                Submit
+              </button>
+              <button id="lmCancelBtn" onClick={handleCancel}>
+                Cancel
+              </button>
             </div>
           </>
         )}

@@ -54,3 +54,7 @@
 #fcPaneVisibilityMenuContainer {
     flex-grow: 1;
 }
+
+#previewPane {
+    height: 60%;
+}
