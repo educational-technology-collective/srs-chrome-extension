@@ -168,7 +168,17 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
         {mode === "display" && (
           <>
             <div id="lmPaneDisplayContainer">
-              <table className="table">
+              <span className="lmLeftCol lmIdRow">ID:</span>
+              <span className="lmRightCol lmIdRow">{idText}</span>
+              <span className="lmLeftCol lmStartRow">Start:</span>
+              <span className="lmRightCol lmStartRow">{startTimeText}</span>
+              <span className="lmLeftCol lmEndRow">End:</span>
+              <span className="lmRightCol lmEndRow">{endTimeText}</span>
+              <span className="lmLeftCol lmUrlRow">URL:</span>
+              <span className="lmRightCol lmUrlRow">{videoUrlText}</span>
+              <span className="lmLeftCol lmConceptsRow">Concepts:</span>
+              <span className="lmRightCol lmConceptsRow">{conceptsText}</span>
+              {/* <table className="table">
                 <tr>
                   <td>
                     <span className="label">ID:</span>
@@ -199,7 +209,7 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
                   </td>
                   <td>{conceptsText}</td>
                 </tr>
-              </table>
+              </table> */}
             </div>
             <div id="lmPaneBottomBarContainer">
               <div id="lmPaneVisibilityMenuContainer">
@@ -222,7 +232,37 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
         {mode === "edit" && (
           <>
             <div id="editFormContainer">
-              <form id="editForm">
+              <span className="lmLeftCol lmIdRow">ID:</span>
+              <span className="lmRightCol lmIdRow">{idText}</span>
+              <span className="lmLeftCol lmStartRow">Start:</span>
+              <textarea
+                className="lmRightCol lmStartRow"
+                value={startTimeTempText}
+                onChange={(e) => setStartTimeTempText(e.target.value)}
+              ></textarea>
+              <span className="lmLeftCol lmEndRow">End:</span>
+              <textarea
+                className="lmRightCol lmEndRow"
+                value={endTimeTempText}
+                onChange={(e) => setEndTimeTempText(e.target.value)}
+              ></textarea>
+              <span className="lmLeftCol lmUrlRow">URL:</span>
+              <textarea
+                className="lmRightCol lmUrlRow"
+                value={videoUrlTempText}
+                onChange={(e) => {
+                  setVideoUrlTempText(e.target.value);
+                }}
+              ></textarea>
+              <span className="lmLeftCol lmConceptsRow">Concepts:</span>
+              <textarea
+                className="lmRightCol lmConceptsRow"
+                value={conceptsTempText}
+                onChange={(e) => {
+                  setConceptsTempText(e.target.value);
+                }}
+              ></textarea>
+              {/* <form id="editForm">
                 <table className="table">
                   <tr>
                     <td>
@@ -279,22 +319,55 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
                     </td>
                   </tr>
                 </table>
-              </form>
+              </form> */}
             </div>
-            <div className="lmPaneBtnContainer">
-              <button className="submitBtn" onClick={handleSubmit}>
-                Submit
-              </button>
-              <button id="lmCancelBtn" onClick={handleCancel}>
-                Cancel
-              </button>
+            <div id="lmPaneBottomBarContainer">
+              <div id="lmPaneVisibilityMenuContainer"></div>
+              <div className="lmPaneBtnContainer">
+                <button className="submitBtn" onClick={handleSubmit}>
+                  Submit
+                </button>
+                <button id="lmCancelBtn" onClick={handleCancel}>
+                  Cancel
+                </button>
+              </div>
             </div>
           </>
         )}
         {mode === "add" && (
           <>
             <div id="addFormContainer">
-              <form>
+              <span className="lmLeftCol lmIdRow">ID:</span>
+              <span className="lmRightCol lmIdRow">ID will automatically be assigned.</span>
+              <span className="lmLeftCol lmStartRow">Start:</span>
+              <textarea
+                className="lmRightCol lmStartRow"
+                value={startTimeTempText}
+                onChange={(e) => setStartTimeTempText(e.target.value)}
+              ></textarea>
+              <span className="lmLeftCol lmEndRow">End:</span>
+              <textarea
+                className="lmRightCol lmEndRow"
+                value={endTimeTempText}
+                onChange={(e) => setEndTimeTempText(e.target.value)}
+              ></textarea>
+              <span className="lmLeftCol lmUrlRow">URL:</span>
+              <textarea
+                className="lmRightCol lmUrlRow"
+                value={videoUrlTempText}
+                onChange={(e) => {
+                  setVideoUrlTempText(e.target.value);
+                }}
+              ></textarea>
+              <span className="lmLeftCol lmConceptsRow">Concepts:</span>
+              <textarea
+                className="lmRightCol lmConceptsRow"
+                value={conceptsTempText}
+                onChange={(e) => {
+                  setConceptsTempText(e.target.value);
+                }}
+              ></textarea>
+              {/* <form>
                 <table className="table">
                   <tr>
                     <td>
@@ -333,7 +406,10 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
                     ></textarea>
                   </tr>
                 </table>
-              </form>
+              </form> */}
+            </div>
+            <div id="lmPaneBottomBarContainer">
+              <div id="lmPaneVisibilityMenuContainer"></div>
               <div className="lmPaneBtnContainer">
                 <button className="submitBtn" onClick={handleSubmit}>
                   Submit

@@ -262,7 +262,7 @@ const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
           </div>
         </div>
         <div id="previewPane">
-          <PreviewPane />
+          {lmIndex >= 0 && flashcards.length >= 0 && fcIndex >= 0 && <PreviewPane flashcard={flashcards[fcIndex]} />}
         </div>
       </div>
     </>

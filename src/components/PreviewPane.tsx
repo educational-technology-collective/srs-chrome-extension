@@ -1,13 +1,16 @@
-import { marked } from "marked";
+import { Flashcard } from "../types";
+import JacobCard from "./from-haytham/JacobCard";
+import "../styles/PreviewPane.css";
 
-const PreviewPane = () => {
-  const str = "**THIS IS A MARKDOWN.** *This is in italics.*\n# Heading 1\n## Heading 2";
-  const rendered = marked.parse(str);
+interface Props {
+  flashcard: Flashcard;
+}
 
+const PreviewPane = ({ flashcard }: Props) => {
   return (
     <>
       <div id="previewPaneContainer">
-        <div dangerouslySetInnerHTML={{ __html: rendered }}></div>
+        <JacobCard obj={flashcard} />
       </div>
     </>
   );
