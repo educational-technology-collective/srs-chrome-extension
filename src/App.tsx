@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { LandingPage, LogoutButton, LmPane, FcPane, PreviewPane, Profile } from "./components";
+import { LandingPage, LogoutButton, LmPane, FcPane } from "./components";
 import { VideoLm } from "./types";
 import { makeGetReqWithParam } from "./utils";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -59,11 +59,7 @@ function App() {
           <div id="fcPane">
             <FcPane lmArray={arr} lmIndex={index} updateArr={updateArr} />
           </div>
-          <Profile />
-          <div id="previewPane">
-            <PreviewPane />
-          </div>
-          <div id="pane4">
+          <div id="authPane">
             <p>Welcone, {user?.name}.</p>
             <div id="spacer"></div>
             <LogoutButton />
