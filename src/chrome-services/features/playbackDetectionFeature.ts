@@ -81,7 +81,7 @@ const createTimestampObserverCallback = () => {
 
     if (timestamp && lmPoolMap.has(timestamp)) {
       console.log("lm at", timestamp);
-      const id = lmPoolMap.get(timestamp)?.id;
+      const id = lmPoolMap.get(timestamp)?._id;
       if (id) {
         makeGetReq("/event/lm", [
           ["lmId", id],
