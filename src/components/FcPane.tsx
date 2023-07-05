@@ -3,6 +3,7 @@ import { CardDisplay, CardAdd, CardEdit, FcDropdown, PreviewPane } from ".";
 import { VideoLm, Flashcard } from "../types";
 import "../styles/FcPane.css";
 import { createPortal } from "react-dom";
+import { renderToStaticMarkup } from "react-dom/server";
 
 interface Props {
   lmArray: VideoLm[];
@@ -199,17 +200,14 @@ const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
     // send message to the service worker, so that it can update the state in chrome-services directory.
   };
   if (lmIndex >= 0 && flashcards.length >= 0 && fcIndex >= 0) {
-    // chrome.runtime.sendMessage({
-    //   message: "preview",
-    //   data: renderToStaticMarkup(
-    //     <>
-    //       <script noModule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
-    //       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
-    //       <PreviewPane flashcard={flashcards[fcIndex]} />
-    //     </>
-    //   ),
-    // });
-    // createPortal(<PreviewPane flashcard={flashcards[fcIndex]} />, document.body);
+    chrome.runtime.sendMessage({
+      message: "preview",
+      data: renderToStaticMarkup(
+        <>
+          <PreviewPane flashcard={flashcards[fcIndex]} />
+        </>
+      ),
+    });
   }
 
   return (
