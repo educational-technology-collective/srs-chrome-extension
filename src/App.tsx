@@ -7,6 +7,7 @@ import "./styles/App.css";
 
 function App() {
   console.log("width:", window.innerWidth);
+  console.log("height:", window.innerHeight);
   const { isAuthenticated, user } = useAuth0();
   // we may need a state to track current url to trigger a full rerender.
   // this way the GET request will be sent again.
@@ -14,6 +15,8 @@ function App() {
   const [arr, setArr] = useState(lmArray);
 
   const updateArr = (value: VideoLm[]) => {
+    // value.sort((a, b) => (a.startTime > b.startTime ? 1 : a.endTime > b.endTime ? 1 : -1));
+    // console.log("sorted:", value);
     setArr(value);
   };
 
@@ -23,7 +26,7 @@ function App() {
       ["videoUrl", "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes"],
     ])
       .then((res) => {
-        setArr(res);
+        updateArr(res);
         setIndex(0);
         // send message to the service worker, so that it can update the state in chrome-services directory.
         chrome.runtime.sendMessage({ message: "GET from App", data: res });
@@ -51,20 +54,23 @@ function App() {
         //   <LoginButton />
         // </div>
         <>
-          <div id="lmPane">
-            <LmPane lmArray={arr} updateArr={updateArr} handleIndex={handleIndex} index={index} />
-          </div>
-          {/* <div id="pane2">
+          <div id="leftEditor">
+            <div id="lmPane">
+              <LmPane lmArray={arr} updateArr={updateArr} handleIndex={handleIndex} index={index} />
+            </div>
+            {/* <div id="pane2">
             <Pane2 lmArray={arr} index={index} updateArr={updateArr} />
           </div> */}
-          <div id="fcPane">
-            <FcPane lmArray={arr} lmIndex={index} updateArr={updateArr} />
+            <div id="fcPane">
+              <FcPane lmArray={arr} lmIndex={index} updateArr={updateArr} />
+            </div>
+            <div id="authPane">
+              <p>Welcone, {user?.name}.</p>
+              <div id="spacer"></div>
+              <LogoutButton />
+            </div>
           </div>
-          <div id="authPane">
-            <p>Welcone, {user?.name}.</p>
-            <div id="spacer"></div>
-            <LogoutButton />
-          </div>
+          <div id="rightPreview"></div>
         </>
       )}
     </>
