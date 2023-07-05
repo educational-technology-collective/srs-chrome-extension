@@ -4,7 +4,7 @@ export interface McqAnswer {
 }
 
 export interface Flashcard {
-  id: string;
+  _id: string;
   lmId: string;
   type: string;
   content: {
@@ -15,7 +15,7 @@ export interface Flashcard {
 }
 
 export interface VideoLm {
-  id: string;
+  _id: string;
   videoUrl: string;
   startTime: string;
   endTime: string;
