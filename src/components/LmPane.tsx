@@ -20,7 +20,7 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
   useEffect(() => {
     console.log("lmArray", lmArray, index);
     if (index >= 0) {
-      setIdText(lmArray[index].id);
+      setIdText(lmArray[index]._id);
       setStartTimeText(lmArray[index].startTime);
       setEndTimeText(lmArray[index].endTime);
       setVideoUrlText(lmArray[index].videoUrl);
@@ -69,7 +69,7 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
   const handleDelete = () => {
     const newLmArray: VideoLm[] = JSON.parse(JSON.stringify(lmArray));
     if (index >= 0) {
-      const lmId = newLmArray[index].id;
+      const lmId = newLmArray[index]._id;
       console.log("lmId:", lmId);
 
       newLmArray.splice(index, 1);
@@ -105,7 +105,7 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
       newLmArray[index].concepts = conceptsTempText.split(", ");
     } else if (mode === "add") {
       const newLm: VideoLm = {
-        id: "",
+        _id: "",
         startTime: startTimeTempText,
         endTime: endTimeTempText,
         videoUrl: videoUrlTempText,

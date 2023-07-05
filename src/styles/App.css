@@ -1,12 +1,28 @@
 #root {
   width: 100%;
-  min-height: 100%;
+  /* min-height: 100%; */
   margin: 4px;
   /* padding: 0.5rem; */
   text-align: center;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
+}
+
+#leftEditor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+  /* overflow: hidden; */
+}
+
+#rightPreview {
+  max-width: fit-content;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: scroll;
+  flex-grow: 1;
 }
 
 #landingPage {
@@ -19,7 +35,7 @@
 
 #lmPane {
   width: 100%;
-  height: 30%;
+  height: 45%;
   /* border: solid 1px white; */
   word-wrap: break-word;
 }
@@ -35,10 +51,9 @@
 
 #fcPane {
   width: 100%;
-  height: 40%;
+  height: 50%;
   /* border: solid 1px white; */
   word-wrap: break-word;
-  flex-grow: 1;
   /* display: flex;
   flex-direction: column;
   justify-content: center; */
