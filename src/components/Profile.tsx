@@ -3,41 +3,23 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const Profile = () => {
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
-  // fetch("https://dev-cra0zttj8xlwi6sh.us.auth0.com/oauth/token", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     client_id: "kZlm2RJ9t9HcP06wNgXi8t8G7Ksu38oo",
-  //     client_secret: "LMebFEF-rSR0TU48vBipxqgKo3n4grjtKAUWjP0o2LGowaqLTj0lPLVco69tNLeH",
-  //     audience: "https://auth0-jwt-authorizer",
-  //     grant_type: "client_credentials",
-  //   }),
-  // })
-  //   .then((res) => {
-  //     return res.json();
-  //   })
-  //   .then((data) => {
-  //     console.log(data.access_token);
-  //     chrome.storage.session.set({ accessToken: data.access_token });
-  //   });
 
   useEffect(() => {
-    const getUserMetadata = async () => {
+    const getAccessToken = async () => {
       try {
+        // get access token from Auth0 so that we can access protected API routes.
         const accessToken = await getAccessTokenSilently({
           authorizationParams: {
             audience: "https://auth0-jwt-authorizer",
           },
         });
-        console.log("accessToken:", accessToken);
+        chrome.storage.session.set({ accessToken: accessToken });
       } catch (e) {
         console.log(e);
       }
     };
 
-    getUserMetadata();
+    getAccessToken();
   }, [getAccessTokenSilently, user?.sub]);
 
   if (isLoading) {
