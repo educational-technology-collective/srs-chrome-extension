@@ -17,7 +17,7 @@ const LmDropdown = ({ lmArray, updateArr, index }: Props) => {
       newLmArray[index].visibility = e.value;
       updateArr(newLmArray);
 
-      // push changes to server
+      // push changes to server.
       const payload = newLmArray[index];
       console.log("payload:", payload);
       // makePutReq("/lms", payload);
