@@ -1,9 +1,8 @@
 import { FormEvent, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { CardDisplay, CardAdd, CardEdit, FcDropdown, PreviewPane } from ".";
 import { VideoLm, Flashcard } from "../types";
 import "../styles/FcPane.css";
-import { createPortal } from "react-dom";
-import { renderToStaticMarkup } from "react-dom/server";
 
 interface Props {
   lmArray: VideoLm[];
@@ -12,6 +11,7 @@ interface Props {
 }
 
 const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
+  // set the necessary information as states.
   const [flashcards, setFlashcards] = useState([] as Flashcard[]);
   const [fcIndex, setFcIndex] = useState(-1);
   const [mode, setMode] = useState("display");
@@ -19,16 +19,14 @@ const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
 
   useEffect(() => {
     if (lmIndex >= 0) {
+      // save the list of flashcards associated with the currently rendered LM.
       setFlashcards(lmArray[lmIndex].flashcards);
       if (flashcards.length === 0) {
-        console.log("triggered");
         setFcIndex(-1);
       } else {
         setFcIndex(0);
       }
     }
-
-    console.log("length:", flashcards.length);
   }, [lmIndex, lmArray, flashcards.length]);
 
   const handlePrev = () => {
@@ -41,18 +39,16 @@ const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
     } else {
       setFcIndex((fcIndex - 1) % flashcards.length);
     }
-    console.log(fcIndex);
   };
 
   const handleNext = () => {
-    console.log("fcindex before:", fcIndex);
     if (flashcards.length === 0) {
       return;
     }
     setFcIndex((fcIndex + 1) % flashcards.length);
-    console.log("fcindex after:", fcIndex);
   };
 
+  // temporary buffer to store add and edit information.
   const [qBuffer, setQBuffer] = useState("");
   const [mcqAnsBuffer, setMcqAnsBuffer] = useState("");
   const [qaAnsBuffer, setQaAnsBuffer] = useState("");
@@ -75,7 +71,6 @@ const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
     if (flashcards.length === 0) {
       return;
     }
-
     setMode("edit");
   };
 
@@ -84,12 +79,11 @@ const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
       return;
     }
 
+    // create a new flashcard array without the flashcard that we deleted.
+    // then apply those changes to a new LM array.
     const newLmArray: VideoLm[] = JSON.parse(JSON.stringify(lmArray));
     const newFlashcards: Flashcard[] = JSON.parse(JSON.stringify(flashcards));
     if (fcIndex >= 0) {
-      const fcId = newFlashcards[fcIndex]._id;
-      console.log("fcId:", fcId);
-
       newFlashcards.splice(fcIndex, 1);
       setFlashcards(newFlashcards);
       newLmArray[lmIndex].flashcards = JSON.parse(JSON.stringify(newFlashcards));
@@ -118,7 +112,7 @@ const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
   const handleEditSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    // update lmArray object
+    // update lmArray object.
     const newLmArray = JSON.parse(JSON.stringify(lmArray));
 
     newLmArray[lmIndex].flashcards[fcIndex].content.question = qBuffer;
@@ -142,9 +136,10 @@ const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
   const handleAddSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    // update lmArray object
+    // update lmArray object.
     const newLmArray = JSON.parse(JSON.stringify(lmArray));
 
+    // build new flashcards.
     const newMcqFc: Flashcard = {
       _id: "",
       lmId: lmArray[lmIndex]._id,
@@ -165,14 +160,14 @@ const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
       newMcqFc.content.answer = JSON.parse(mcqAnsBuffer);
       newLmArray[lmIndex].flashcards.push(newMcqFc);
 
-      // push changes to server
+      // push changes to server.
       const payload = newMcqFc;
       console.log("payload:", payload);
       // makePostReq("/flashcards", payload);
     } else if (q2Add === "q") {
       newQaFc.content.answer = qaAnsBuffer;
       newLmArray[lmIndex].flashcards.push(newQaFc);
-      // push changes to server
+      // push changes to server.
       const payload = newQaFc;
       console.log("payload:", payload);
       // makePostReq("/flashcards", payload);
@@ -192,21 +187,18 @@ const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
   // externalWindow?.document.body.appendChild(previewWindow);
 
   // const [preview, setPreview] = useState<HTMLDivElement | null>(null);
-  const handlePreview = () => {
-    // const previewWindow = document.createElement("div");
-    // const externalWindow = window.open("", "_blank", "width=390,height=844");
-    // externalWindow?.document.body.appendChild(previewWindow);
-    // setPreview(previewWindow);
-    // send message to the service worker, so that it can update the state in chrome-services directory.
-  };
+  // const handlePreview = () => {
+  //   const previewWindow = document.createElement("div");
+  //   const externalWindow = window.open("", "_blank", "width=390,height=844");
+  //   externalWindow?.document.body.appendChild(previewWindow);
+  //   setPreview(previewWindow);
+  // };
+
+  // send message to the service worker, so that it can update the state in chrome-services directory.
   if (lmIndex >= 0 && flashcards.length >= 0 && fcIndex >= 0) {
     chrome.runtime.sendMessage({
       message: "preview",
-      data: renderToStaticMarkup(
-        <>
-          <PreviewPane flashcard={flashcards[fcIndex]} />
-        </>
-      ),
+      data: flashcards[fcIndex],
     });
   }
 
@@ -232,7 +224,6 @@ const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
           {lmIndex >= 0 && mode === "display" && <CardDisplay card={flashcards[fcIndex]} />}
           {lmIndex >= 0 && mode === "add" && (
             <CardAdd
-              // card={flashcards[fcIndex]}
               handleAddSubmit={handleAddSubmit}
               q2Add={q2Add}
               qBuffer={qBuffer}
@@ -301,9 +292,11 @@ const FcPane = ({ lmArray, lmIndex, updateArr }: Props) => {
           {/* {lmIndex >= 0 &&
             flashcards.length >= 0 &&
             fcIndex >= 0 &&
-            preview &&
-            createPortal(<PreviewPane flashcard={flashcards[fcIndex]} />, preview)} */}
-          <button onClick={handlePreview}>Open Preview</button>
+            createPortal(
+              <PreviewPane flashcard={flashcards[fcIndex]} />,
+              document.getElementById("myDiv") as HTMLElement
+            )} */}
+          {/* <button onClick={handlePreview}>Open Preview</button> */}
         </div>
       </div>
     </>
