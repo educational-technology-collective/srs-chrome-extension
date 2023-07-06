@@ -11,6 +11,7 @@ interface Props {
 }
 
 const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
+  // each field of a currently rendered LM is stored as a state.
   const [idText, setIdText] = useState("");
   const [startTimeText, setStartTimeText] = useState("");
   const [endTimeText, setEndTimeText] = useState("");
@@ -18,7 +19,6 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
   const [conceptsText, setConceptsText] = useState("");
 
   useEffect(() => {
-    console.log("lmArray", lmArray, index);
     if (index >= 0) {
       setIdText(lmArray[index]._id);
       setStartTimeText(lmArray[index].startTime);
@@ -35,14 +35,17 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
     }
   }, [index, lmArray]);
 
+  // temporary text states used for adding and editing LMs.
   const [startTimeTempText, setStartTimeTempText] = useState("");
   const [endTimeTempText, setEndTimeTempText] = useState("");
   const [videoUrlTempText, setVideoUrlTempText] = useState("");
   const [conceptsTempText, setConceptsTempText] = useState("");
 
+  // toggle between three modes: display, add, edit.
   const [mode, setMode] = useState("display");
 
   const handleEdit = () => {
+    // pre-populate fields with existing values.
     setStartTimeTempText(lmArray[index].startTime);
     setEndTimeTempText(lmArray[index].endTime);
     setVideoUrlTempText(lmArray[index].videoUrl);
@@ -59,6 +62,7 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
   };
 
   const handleAdd = () => {
+    // flush the buffer to provide empty fields.
     setStartTimeTempText("");
     setEndTimeTempText("");
     setVideoUrlTempText("");
@@ -67,13 +71,12 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
   };
 
   const handleDelete = () => {
+    // create a new LM array without the LM that we deleted.
+    // then set that as the most recent array.
     const newLmArray: VideoLm[] = JSON.parse(JSON.stringify(lmArray));
-    if (index >= 0) {
-      const lmId = newLmArray[index]._id;
-      console.log("lmId:", lmId);
 
+    if (index >= 0) {
       newLmArray.splice(index, 1);
-      console.log("deleted:", newLmArray);
       setIdText("");
       setStartTimeText("");
       setEndTimeText("");
@@ -85,6 +88,7 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
       } else {
         handleIndex(0);
       }
+
       updateArr(newLmArray);
 
       // makeDeleteReq(`/lms/id/${lmId}`);
@@ -96,6 +100,7 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
   };
 
   const handleSubmit = () => {
+    // create a new LM array with the LM we added or edited.
     const newLmArray: VideoLm[] = JSON.parse(JSON.stringify(lmArray));
 
     if (mode === "edit") {
@@ -120,7 +125,7 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
 
     updateArr(newLmArray);
 
-    // push changes to server
+    // push changes to server.
     if (mode === "add") {
       const payload = newLmArray[newLmArray.length - 1];
       console.log("payload:", payload);
@@ -150,7 +155,6 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
     <>
       <div id="lmPaneContainer">
         <div id="lmPaneNavbar">
-          {/* <Dropdown lmArray={lmArray} handleIndex={handleIndex} index={index} /> */}
           <p id="lmHeader">Learning Moments:</p>
           <div className="navbarSpacer"></div>
           <div id="lmBtnContainer">
@@ -178,38 +182,6 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
               <span className="lmRightCol lmUrlRow">{videoUrlText}</span>
               <span className="lmLeftCol lmConceptsRow">Concepts:</span>
               <span className="lmRightCol lmConceptsRow">{conceptsText}</span>
-              {/* <table className="table">
-                <tr>
-                  <td>
-                    <span className="label">ID:</span>
-                  </td>
-                  <td>{idText}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <span className="label">Start:</span>
-                  </td>
-                  <td>{startTimeText}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <span className="label">End:</span>
-                  </td>
-                  <td>{endTimeText}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <span className="label">URL:</span>
-                  </td>
-                  <td>{videoUrlText}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <span className="label">Concepts:</span>
-                  </td>
-                  <td>{conceptsText}</td>
-                </tr>
-              </table> */}
             </div>
             <div id="lmPaneBottomBarContainer">
               <div id="lmPaneVisibilityMenuContainer">
@@ -262,64 +234,6 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
                   setConceptsTempText(e.target.value);
                 }}
               ></textarea>
-              {/* <form id="editForm">
-                <table className="table">
-                  <tr>
-                    <td>
-                      <span className="label">ID:</span>
-                    </td>
-                    <td>{idText}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span className="label">Start:</span>
-                    </td>
-                    <td className="item">
-                      <textarea
-                        id="startTextarea"
-                        value={startTimeTempText}
-                        onChange={(e) => setStartTimeTempText(e.target.value)}
-                      ></textarea>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span className="label">End:</span>
-                    </td>
-                    <td>
-                      <textarea
-                        id="endTextarea"
-                        value={endTimeTempText}
-                        onChange={(e) => setEndTimeTempText(e.target.value)}
-                      ></textarea>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span className="label">URL:</span>
-                    </td>
-                    <td>
-                      <textarea
-                        id="urlTextarea"
-                        value={videoUrlTempText}
-                        onChange={(e) => setVideoUrlTempText(e.target.value)}
-                      ></textarea>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span className="label">Concepts:</span>
-                    </td>
-                    <td>
-                      <textarea
-                        id="conceptsTextarea"
-                        value={conceptsTempText}
-                        onChange={(e) => setConceptsTempText(e.target.value)}
-                      ></textarea>
-                    </td>
-                  </tr>
-                </table>
-              </form> */}
             </div>
             <div id="lmPaneBottomBarContainer">
               <div id="lmPaneVisibilityMenuContainer"></div>
@@ -367,46 +281,6 @@ const LmPane = ({ lmArray, updateArr, handleIndex, index }: Props) => {
                   setConceptsTempText(e.target.value);
                 }}
               ></textarea>
-              {/* <form>
-                <table className="table">
-                  <tr>
-                    <td>
-                      <span className="label">ID:</span>
-                    </td>
-                    <td>ID will be automatically assigned :D</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span className="label">Start:</span>
-                    </td>
-                    <textarea
-                      rows={1}
-                      value={startTimeTempText}
-                      onChange={(e) => setStartTimeTempText(e.target.value)}
-                    ></textarea>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span className="label">End:</span>
-                    </td>
-                    <textarea
-                      rows={1}
-                      value={endTimeTempText}
-                      onChange={(e) => setEndTimeTempText(e.target.value)}
-                    ></textarea>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span className="label">URL:</span>
-                    </td>
-                    <textarea
-                      rows={1}
-                      value={videoUrlTempText}
-                      onChange={(e) => setVideoUrlTempText(e.target.value)}
-                    ></textarea>
-                  </tr>
-                </table>
-              </form> */}
             </div>
             <div id="lmPaneBottomBarContainer">
               <div id="lmPaneVisibilityMenuContainer"></div>
