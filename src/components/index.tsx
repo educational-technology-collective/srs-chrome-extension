@@ -4,7 +4,7 @@ export { FcPane } from "./FcPane";
 export { PreviewPane } from "./PreviewPane";
 export { LmDropdown } from "./LmDropdown";
 export { FcDropdown } from "./FcDropdown";
-// export { ConceptLabel } from "./ConceptLabel";
+export { ConceptLabel } from "./ConceptLabel";
 export { CardDisplay } from "./CardDisplay";
 export { CardAdd } from "./CardAdd";
 export { CardEdit } from "./CardEdit";
