@@ -12,15 +12,15 @@ const Choices: React.FC<{
   // console.log("choices:", choices);
 
   // Function that Shuffles the Array of Choices
-  const shuffleArray = (array: any) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
-    return array;
-  };
+  // const shuffleArray = (array: any) => {
+  //   for (let i = array.length - 1; i > 0; i--) {
+  //     const j = Math.floor(Math.random() * (i + 1));
+  //     const temp = array[i];
+  //     array[i] = array[j];
+  //     array[j] = temp;
+  //   }
+  //   return array;
+  // };
 
   // const [randomArray, setArray] = useState([]);
 
@@ -37,7 +37,7 @@ const Choices: React.FC<{
   return (
     <div className={containerStyle}>
       {/* Mapping the Choices Based on Whether they are correct or not */}
-      {shuffleArray(answer).map((choice: individualChoice, index: number) =>
+      {answer.map((choice: individualChoice, index: number) =>
         choice.isCorrect ? (
           <CorrectChoice
             option={choice.option}
