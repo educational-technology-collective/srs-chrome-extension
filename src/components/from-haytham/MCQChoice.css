@@ -1,0 +1,26 @@
+/* Text Styling for Individual Choice */
+.choice-text {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+
+/* Styling for the button before any clicking */
+.choice-button {
+  flex-grow: 1;
+}
+.initial-button {
+  --background: slateblue;
+}
+
+/* Styling for the correct button after clicking */
+.correct-button {
+  --background: darkgreen;
+  --background-activated: darkgreen;
+}
+
+/* Styling for the incorrect button after clicking */
+.incorrect-button {
+  --background: crimson;
+  --background-activated: crimson;
+}

@@ -106,3 +106,20 @@ chrome.runtime.onMessage.addListener((request) => {
   })();
   return true;
 });
+
+// receiving preview information from the frontend
+chrome.runtime.onMessage.addListener((request) => {
+  (async () => {
+    if (request.message === "preview") {
+      // pass to content script
+      const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+      if (tab.id) {
+        // we can't send Map as data in the Chrome message passing API.
+        // it has to be JSON-serializable.
+        // so we convert it to an object before pushing message.
+        await chrome.tabs.sendMessage(tab.id, { message: "preview", data: request.data });
+      }
+    }
+  })();
+  return true;
+});

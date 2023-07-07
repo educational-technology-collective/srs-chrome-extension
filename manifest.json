@@ -13,13 +13,13 @@
         }
     },
     "background": {
-        "service_worker": "./assets/serviceWorker.js",
+        "service_worker": "src/chrome-services/serviceWorker.ts",
         "type": "module"
     },
     "content_scripts": [
         {
             "matches": ["http://*/*", "https://*/*"],
-            "js": ["./assets/content.js"]
+            "js": ["src/chrome-services/content.ts"]
         }
     ],
     "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsU9se9Tibf6J26Ms6h8VCZ+4qRRoEl4TcwNMtKW5C8thgFh2W6V2pUBiawJ9Jcnu+H/rysBtxeXbp5KGzPw4LDSWIwr1rnX5qXWkxB+mCqRZIa4x+oWN6cof1Z6lOA0WxnR67RuL3OP+3puHJziQ8a0sjML5wgnn0BCesbBKzShukwWWXw7WKrdWYOPa/LPleB9uH7+OD1Be87bibUYU7HfqI1sqkwWxpwivOXE+1tQAcLcXI479VA4QaAXiws4cm8/GdNLPR93ZB6r+7HHbYtCmvEazV9VPXWcmGVa9ReJtEoW24aCiUVO1+cQlco3KpT44ayuSopHGioTauPHSCwIDAQAB",

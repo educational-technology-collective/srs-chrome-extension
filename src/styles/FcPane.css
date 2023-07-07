@@ -1,11 +1,11 @@
-#pane3Container {
+#fcPaneContainer {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-#pane3Navbar {
+#fcPaneNavbar {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -35,22 +35,26 @@
     margin-right: 0.5em;
 }
 
-#pane3FcContainer {
+#fcPaneFcContainer {
     width: 100%;
     flex-grow: 1;
 }
 
-#pane3BtnContainer {
+#fcPaneBtnContainer {
     display: flex;
     flex-direction: row;
     justify-content: right;
 }
 
-#pane3BottomBarContainer {
+#fcPaneBottomBarContainer {
     display: flex;
     flex-direction: row;
 }
 
-#pane3VisibilityMenuContainer {
+#fcPaneVisibilityMenuContainer {
     flex-grow: 1;
+}
+
+#previewPane {
+    height: 20%;
 }

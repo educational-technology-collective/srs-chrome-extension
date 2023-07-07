@@ -1,0 +1,133 @@
+#lmPaneContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+#lmPaneNavbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#lmHeader {
+    text-align: left;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0;
+}
+
+#lmPaneDisplayContainer, #editFormContainer, #addFormContainer {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 25% 75%;
+    grid-template-rows: 15% 15% 15% 25% 30%;
+    text-align: left;
+}
+
+.lmLeftCol {
+    grid-column: 1 / 2;
+    font-weight: bold;
+}
+
+.lmRightCol {
+    grid-column: 2 / 3;
+    overflow-y: auto;
+    
+}
+
+.lmIdRow {
+    grid-row: 1 / 2;
+}
+
+.lmStartRow {
+    grid-row: 2 / 3;
+}
+
+.lmEndRow {
+    grid-row: 3 / 4;
+}
+
+.lmUrlRow {
+    grid-row: 4 / 5;
+    overflow: auto;
+}
+
+.lmConceptsRow {
+    grid-row: 5 / 6;
+    overflow: auto;
+}
+
+#lmBtnContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#lmCounter {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+#lmPaneBottomBarContainer {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 4px;
+}
+
+#lmPaneVisibilityMenuContainer {
+    flex-grow: 1;
+}
+
+/* #editForm {
+    height: 100%;
+}
+
+#startTextarea {
+    resize: none;
+    width: 100%;
+    height: 1em;
+}
+
+#endTextarea {
+    resize: none;
+    width: 100%;
+    height: 1em;
+}
+
+#urlTextarea {
+    resize: none;
+    width: 100%;
+    word-wrap: break-word;
+}
+
+#conceptsTextarea {
+    resize: none;
+    width: 100%;
+    height: 80%;
+    word-wrap: break-word;
+}
+
+.table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    text-align: left;
+} */
+
+.lmPaneBtnContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    height: 100%;
+}
+
+/* .label {
+    font-weight: bold;
+}
+
+td {
+    padding-right: 0.1em;
+    vertical-align: top;
+} */

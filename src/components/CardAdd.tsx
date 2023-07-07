@@ -1,9 +1,7 @@
 import { useEffect, FormEvent, Dispatch } from "react";
-// import { Flashcard } from "../types";
 import "../styles/CardAdd.css";
 
 interface Props {
-  // card: Flashcard;
   handleAddSubmit: (event: FormEvent) => void;
   q2Add: string;
   qBuffer: string;
@@ -32,6 +30,7 @@ const CardAdd = ({
     );
     setQaAnsBuffer("<Your answer here>");
   }, [setQBuffer, setMcqAnsBuffer, setQaAnsBuffer]);
+
   return (
     <>
       <div id="cardAddContainer">
