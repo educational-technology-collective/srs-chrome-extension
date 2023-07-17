@@ -5,8 +5,6 @@ const LoginButton = () => {
 
   const handleClick = () => {
     loginWithPopup();
-    // chrome.runtime.sendMessage({ message: "get_auth_token" });
-    // chrome.runtime.sendMessage({ message: "get_profile" });
   };
 
   return (
