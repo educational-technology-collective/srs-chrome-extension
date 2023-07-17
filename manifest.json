@@ -1,12 +1,13 @@
 {
     "name": "Ambient Learning",
-    "description": "The expert-facing side of the spaced repetiiton system project",
+    "description": "The student-facing side of the spaced repetition system project",
     "version": "1.0",
     "manifest_version": 3,
     "icons": {
         "128": "logo.png"
     },
     "action": {
+        "default_popup": "index.html",
         "default_title": "Click me",
         "default_icon": {
             "128": "logo.png"
@@ -27,10 +28,7 @@
         "client_id":"1057792936287-9nn88vj3njumpt3lkuu8ln3i5g82gv4k.apps.googleusercontent.com",
         "scopes": ["profile", "email", "openid"]
     },
-    "permissions": ["activeTab", "tabs", "storage", "sidePanel", "identity", "identity.email"],
-    "side_panel": {
-        "default_path": "index.html"
-    },
+    "permissions": ["activeTab", "tabs", "storage"],
     "web_accessible_resources": [
         {
             "resources": ["index.html"],
