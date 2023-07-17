@@ -44,6 +44,16 @@ const setLmPoolMap = (value: Map<string, VideoLm>) => {
   lmPoolMap = new Map([...value]);
 };
 
+let userEmail: string;
+const setUserEmail = (value: string) => {
+  userEmail = value;
+};
+
+let accessToken: string;
+const setAccessToken = (value: string) => {
+  accessToken = value;
+};
+
 export { segmentData, setSegmentData, pushSegmentData };
 export { fullTranscript, setFullTranscript, concatFullTranscript };
 export { ivqData, setIvqData, pushIvqData };
@@ -51,3 +61,5 @@ export { prevTimestamp, setPrevTimestamp };
 export { hasSeeked, setHasSeeked };
 export { isMetadata, setIsMetadata };
 export { lmPoolMap, setLmPoolMap };
+export { userEmail, setUserEmail };
+export { accessToken, setAccessToken };
