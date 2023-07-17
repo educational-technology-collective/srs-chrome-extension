@@ -1,6 +1,6 @@
-import { handleErrorNullElement, VideoLm } from "../../types";
-import { lmPoolMap, setLmPoolMap } from "../states";
-import { makeGetReq } from "../requests";
+import { handleErrorNullElement, playbackDatum, VideoLm } from "../../types";
+import { lmPoolMap, setLmPoolMap, userEmail } from "../states";
+import { makeGetReqWithParam, makePostReq } from "../requests";
 
 export const detectPlayback = () => {
   let timestampDetector = createTimestampDetector();
@@ -9,35 +9,50 @@ export const detectPlayback = () => {
     subtree: true,
   });
 
+  // get LMs
+  makeGetReqWithParam("/lms/search", [["videoUrl", window.location.toString()]]).then((res) => {
+    // convert VideoLm[] to Object for constant-time lookup
+    // key = endTime, val = LM object
+    const lmMap = new Map();
+    res.forEach((lm: VideoLm) => {
+      lmMap.set(lm.endTime, lm);
+    });
+
+    setLmPoolMap(lmMap);
+  });
+
   // Chrome message passing API.
-  // listens to the pool of LMs passed by the service worker.
-  const listener = (request: any) => {
-    if (request.message === "lmPoolMap") {
-      // save LM pool to state
-      const m: Map<string, VideoLm> = new Map(Object.entries(request.data));
-      setLmPoolMap(m);
-    } else {
-      timestampDetector.disconnect();
+  chrome.runtime.onMessage.addListener((request: any) => {
+    timestampDetector.disconnect();
 
-      const url = request.message;
-      const videoUrlRegex = /^https:\/\/www.coursera.org\/learn\/.*\/lecture\/.*$/;
+    const url = request.message;
+    const videoUrlRegex = /^https:\/\/www.coursera.org\/learn\/.*\/lecture\/.*$/;
 
-      // check if url is a video.
-      if (url && videoUrlRegex.test(url)) {
-        console.log("url from ts", url);
-      }
-
-      timestampDetector = createTimestampDetector();
-      timestampDetector.observe(document.body, {
-        childList: true,
-        subtree: true,
-      });
+    // check if url is a video.
+    if (url && videoUrlRegex.test(url)) {
+      console.log("url from ts", url);
     }
 
-    return true;
-  };
+    timestampDetector = createTimestampDetector();
+    timestampDetector.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
 
-  chrome.runtime.onMessage.addListener(listener);
+    // get LMs
+    makeGetReqWithParam("/lms/search", [["videoUrl", window.location.toString()]]).then((res) => {
+      // convert VideoLm[] to Object for constant-time lookup
+      // key = endTime, val = LM object
+      const lmMap = new Map();
+      res.forEach((lm: VideoLm) => {
+        lmMap.set(lm.endTime, lm);
+      });
+
+      setLmPoolMap(lmMap);
+    });
+
+    return true;
+  });
 };
 
 // creates a MutationObserver that detects timestamp.
@@ -81,12 +96,26 @@ const createTimestampObserverCallback = () => {
 
     if (timestamp && lmPoolMap.has(timestamp)) {
       console.log("lm at", timestamp);
-      const id = lmPoolMap.get(timestamp)?._id;
-      if (id) {
-        makeGetReq("/event/lm", [
-          ["lmId", id],
-          ["userEmail", "srsdevteam@gmail.com"],
-        ]);
+      const lmId = lmPoolMap.get(timestamp)?._id;
+      if (lmId) {
+        const flashcardPayload = {
+          lmId: lmId,
+        };
+
+        const telemetryPayload: playbackDatum = {
+          userEmail: userEmail,
+          lmId: lmId,
+          timestamp: timestamp,
+          videoUrl: window.location.toString(),
+          type: "playback",
+        };
+
+        console.log("postreq is sent from playback");
+        console.log("postreq is sent from playback", userEmail);
+
+        chrome.runtime.sendMessage({ message: "numLms from content script" });
+        makePostReq(`/users/${userEmail}/flashcards`, flashcardPayload);
+        makePostReq("/telemetry/lms/playback", telemetryPayload);
       }
     }
   };

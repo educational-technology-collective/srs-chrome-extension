@@ -3,6 +3,14 @@ export interface SegmentDatum {
   segment: string;
 }
 
+export interface playbackDatum {
+  userEmail: string;
+  lmId: string;
+  timestamp: string;
+  videoUrl: string;
+  type: string;
+}
+
 export interface IvqDatum {
   timestamp: string;
   question: string;
