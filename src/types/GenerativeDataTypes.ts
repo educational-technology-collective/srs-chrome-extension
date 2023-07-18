@@ -16,11 +16,13 @@ export interface Flashcard {
 
 export interface VideoLm {
   _id: string;
-  videoUrl: string;
-  startTime: string;
-  endTime: string;
-  concepts: string[]; // for frontend use
-  flashcards: Flashcard[]; // for frontend use
+  type: string;
+  content: {
+    videoUrl: string;
+    startTime: string;
+    endTime: string;
+    concepts: string[];
+  };
   visibility: string;
 }
 

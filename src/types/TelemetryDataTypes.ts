@@ -4,11 +4,8 @@ export interface SegmentDatum {
 }
 
 export interface playbackDatum {
-  userEmail: string;
-  lmId: string;
   timestamp: string;
   videoUrl: string;
-  type: string;
 }
 
 export interface IvqDatum {
@@ -18,14 +15,12 @@ export interface IvqDatum {
 }
 
 export interface PlayPauseDatum {
-  userEmail: string;
   action: string;
   timestamp: string;
   videoUrl: string;
 }
 
 export interface SkipRewindDatum {
-  userEmail: string;
   action: string;
   startTimestamp: string;
   endTimestamp: string;
