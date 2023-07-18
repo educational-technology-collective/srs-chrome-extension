@@ -12,8 +12,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     clientId="R4nxhWYh6Sl8ZiBtl3nIJSI8l16pbIOM"
     authorizationParams={{
       redirect_uri: window.location.origin,
+      audience: "https://auth0-jwt-authorizer",
     }}
     useRefreshTokens={true}
+    // useRefreshTokensFallback={true}
     cacheLocation="localstorage"
   >
     <React.StrictMode>

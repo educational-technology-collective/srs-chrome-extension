@@ -7,60 +7,68 @@ import { useState } from "react";
 const App = () => {
   const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
   // const [url, setUrl] = useState("");
-  const [numLms, setNumLms] = useState(0);
+  const [numLms] = useState(0);
 
   if (isAuthenticated && user) {
+    // interface tok {
+    //   body: {
+    //     access_token: string;
+    //     refresh_token: string;
+    //     scope: string;
+    //     expires_in: number;
+    //     token_type: string;
+    //     audience: string;
+    //     oauthTokenScope: string;
+    //     client_id: string;
+    //   };
+    //   expiresAt: number;
+    // }
+    // interface auth0Err {
+    //   error: string;
+    //   error_description: string;
+    // }
     // send user email and token to the content script.
     (async () => {
       try {
         // get access token from Auth0 so that we can access protected API routes.
-        const accessToken = await getAccessTokenSilently({
-          authorizationParams: {
-            audience: "https://auth0-jwt-authorizer",
-          },
-        });
+        const accessToken = await getAccessTokenSilently();
+        // const accessToken: tok = JSON.parse(
+        //   window.localStorage.getItem(
+        //     "@@auth0spajs@@::R4nxhWYh6Sl8ZiBtl3nIJSI8l16pbIOM::default::openid profile email offline_access"
+        //   ) as string
+        // );
 
-        const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+        console.log("email:", user.email);
+        console.log("token:", accessToken);
+
+        // const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+        const [tab] = await chrome.tabs.query({ url: "https://www.coursera.org/learn/*/lecture/*" });
+        console.log("app.tsx", tab);
+        // send user data to service worker.
         if (tab.id) {
-          const res = await chrome.tabs.sendMessage(tab.id, {
+          await chrome.tabs.sendMessage(tab.id, {
             message: "user data from frontend",
             data: { userEmail: user.email, accessToken: accessToken },
           });
-          console.log(res);
         }
       } catch (e) {
-        console.log(e);
+        console.log("error", e);
+        // if ((e as auth0Err).error === "missing_refresh_token" || (e as auth0Err).error === "invalid_grant") {
+        //   loginWithPopup();
+        // }
       }
     })();
   }
 
-  // useEffect(() => {
-  //   chrome.storage.local.get(["lms"]).then((obj) => {
-  //     if (obj.lms && obj.lms.url === url) {
-  //       setUrl(obj.lms.numLms);
-  //     }
-  //   });
-  // }, [url]);
-
   // chrome.runtime.onMessage.addListener((request: any) => {
   //   (async () => {
-  //     console.log("request", request);
-  //     if (request.message === "url from service worker") {
-  //       setUrl(request.data);
+  //     if (request.message === "numLms from service worker") {
+  //       setNumLms(numLms + 1);
+  //       // chrome.storage.local.set({ lms: { url: url, numLms: numLms + 1 } });
   //     }
   //   })();
   //   return true;
   // });
-
-  chrome.runtime.onMessage.addListener((request: any) => {
-    (async () => {
-      if (request.message === "numLms from service worker") {
-        setNumLms(numLms + 1);
-        // chrome.storage.local.set({ lms: { url: url, numLms: numLms + 1 } });
-      }
-    })();
-    return true;
-  });
 
   return (
     <>
