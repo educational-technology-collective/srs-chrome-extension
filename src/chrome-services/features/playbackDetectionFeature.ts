@@ -15,43 +15,46 @@ export const detectPlayback = () => {
     // key = endTime, val = LM object
     const lmMap = new Map();
     res.forEach((lm: VideoLm) => {
-      lmMap.set(lm.endTime, lm);
+      lmMap.set(lm.content.endTime, lm);
     });
 
     setLmPoolMap(lmMap);
+    console.log("lmMap:", lmMap);
   });
 
   // Chrome message passing API.
   chrome.runtime.onMessage.addListener((request: any) => {
-    timestampDetector.disconnect();
+    if (request.message === "tab updated") {
+      timestampDetector.disconnect();
 
-    const url = request.message;
-    const videoUrlRegex = /^https:\/\/www.coursera.org\/learn\/.*\/lecture\/.*$/;
+      const url = request.message;
+      const videoUrlRegex = /^https:\/\/www.coursera.org\/learn\/.*\/lecture\/.*$/;
 
-    // check if url is a video.
-    if (url && videoUrlRegex.test(url)) {
-      console.log("url from ts", url);
-    }
+      // check if url is a video.
+      if (url && videoUrlRegex.test(url)) {
+        console.log("url from ts", url);
+      }
 
-    timestampDetector = createTimestampDetector();
-    timestampDetector.observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
-
-    // get LMs
-    makeGetReqWithParam("/lms/search", [["videoUrl", window.location.toString()]]).then((res) => {
-      // convert VideoLm[] to Object for constant-time lookup
-      // key = endTime, val = LM object
-      const lmMap = new Map();
-      res.forEach((lm: VideoLm) => {
-        lmMap.set(lm.endTime, lm);
+      timestampDetector = createTimestampDetector();
+      timestampDetector.observe(document.body, {
+        childList: true,
+        subtree: true,
       });
 
-      setLmPoolMap(lmMap);
-    });
+      // get LMs
+      makeGetReqWithParam("/lms/search", [["videoUrl", window.location.toString()]]).then((res) => {
+        // convert VideoLm[] to Object for constant-time lookup
+        // key = endTime, val = LM object
+        const lmMap = new Map();
+        res.forEach((lm: VideoLm) => {
+          lmMap.set(lm.content.endTime, lm);
+        });
 
-    return true;
+        setLmPoolMap(lmMap);
+      });
+
+      return true;
+    }
   });
 };
 
@@ -102,12 +105,16 @@ const createTimestampObserverCallback = () => {
           lmId: lmId,
         };
 
-        const telemetryPayload: playbackDatum = {
-          userEmail: userEmail,
-          lmId: lmId,
+        const telemetryContent: playbackDatum = {
           timestamp: timestamp,
           videoUrl: window.location.toString(),
+        };
+
+        const telemetryPayload = {
+          userEmail: userEmail,
+          lmId: lmId,
           type: "playback",
+          content: telemetryContent,
         };
 
         console.log("postreq is sent from playback");
@@ -115,7 +122,7 @@ const createTimestampObserverCallback = () => {
 
         chrome.runtime.sendMessage({ message: "numLms from content script" });
         makePostReq(`/users/${userEmail}/flashcards`, flashcardPayload);
-        makePostReq("/telemetry/lms/playback", telemetryPayload);
+        makePostReq("/telemetry/lms", telemetryPayload);
       }
     }
   };
