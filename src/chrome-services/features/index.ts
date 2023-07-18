@@ -6,3 +6,4 @@ export * from "./copyPasteDetectionFeature";
 export * from "./chunkTranscriptFeature";
 export * from "./sidebarFeature";
 export * from "./getUserData";
+export * from "./utils";
