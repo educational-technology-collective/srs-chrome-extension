@@ -1,47 +1,72 @@
-import { VideoLm } from "../types";
+// import { VideoLm } from "../types";
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
   (async () => {
     if (changeInfo.url) {
-      const response = await chrome.tabs.sendMessage(tabId, { message: changeInfo.url });
+      const response = await chrome.tabs.sendMessage(tabId, { message: "tab updated", data: changeInfo.url });
       console.log(response);
       return true;
     }
   })();
+  // chrome.tabs.query({ active: true, lastFocusedWindow: true }).then((tab) => {
+  //   console.log(tab);
+  // });
+  // (async () => {
+  //   const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+  //   console.log(tab);
+  // })();
 });
 
-chrome.action.onClicked.addListener((tab) => {
-  console.log("activated");
-  (async () => {
-    if (tab.id) {
-      console.log("activated");
-      const response = await chrome.tabs.sendMessage(tab.id, "toggle");
-      console.log(response);
-      return true;
-    }
-  })();
-});
+(async () => {
+  await chrome.storage.session.set({ this: "that" });
+})();
 
-chrome.runtime.onMessage.addListener((request: any) => {
-  (async () => {
-    if (request.message === "numLms from content script") {
-      // chrome.storage.local.set({ lms: { url: url, numLms: numLms + 1 } });
-      await chrome.runtime.sendMessage({ message: "numLms from service worker" });
-    }
-  })();
-  return true;
-});
-
-// send current page URL to the frontend.
 chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
   (async () => {
     if (changeInfo.status) {
       const url = (await chrome.tabs.get(tabId)).url;
-      await chrome.runtime.sendMessage({ message: "url from service worker", data: url });
+      await chrome.tabs.sendMessage(tabId, { message: "url from service worker", data: url });
     }
   })();
   return true;
 });
+
+// chrome.runtime.onMessage.addListener((request: any) => {
+//   (async () => {
+//     if (request.message === "user data from frontend") {
+//       const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+//       console.log(tab);
+//       if (tab.id) {
+//         await chrome.tabs.sendMessage(tab.id, {
+//           message: "user data from service worker",
+//           data: request.data,
+//         });
+//       }
+//     }
+//   })();
+//   return true;
+// });
+
+// chrome.runtime.onMessage.addListener((request: any) => {
+//   (async () => {
+//     if (request.message === "numLms from content script") {
+//       // chrome.storage.local.set({ lms: { url: url, numLms: numLms + 1 } });
+//       await chrome.runtime.sendMessage({ message: "numLms from service worker" });
+//     }
+//   })();
+//   return true;
+// });
+
+// send current page URL to the frontend.
+// chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+//   (async () => {
+//     if (changeInfo.status) {
+//       const url = (await chrome.tabs.get(tabId)).url;
+//       await chrome.runtime.sendMessage({ message: "url from service worker", data: url });
+//     }
+//   })();
+//   return true;
+// });
 
 // user authentication.
 
@@ -105,28 +130,28 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
 // });
 
 // receiving LM pool from the frontend
-chrome.runtime.onMessage.addListener((request) => {
-  (async () => {
-    if (request.message === "GET from App") {
-      // convert VideoLm[] to Object for constant-time lookup
-      // key = endTime, val = LM object
-      const lmPoolMap = new Map();
-      request.data.forEach((lm: VideoLm) => {
-        lmPoolMap.set(lm.endTime, lm);
-      });
+// chrome.runtime.onMessage.addListener((request) => {
+//   (async () => {
+//     if (request.message === "GET from App") {
+//       // convert VideoLm[] to Object for constant-time lookup
+//       // key = endTime, val = LM object
+//       const lmPoolMap = new Map();
+//       request.data.forEach((lm: VideoLm) => {
+//         lmPoolMap.set(lm.content.endTime, lm);
+//       });
 
-      // pass to content script
-      const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-      if (tab.id) {
-        // we can't send Map as data in the Chrome message passing API.
-        // it has to be JSON-serializable.
-        // so we convert it to an object before pushing message.
-        await chrome.tabs.sendMessage(tab.id, { message: "lmPoolMap", data: Object.fromEntries(lmPoolMap) });
-      }
-    }
-  })();
-  return true;
-});
+//       // pass to content script
+//       const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+//       if (tab.id) {
+//         // we can't send Map as data in the Chrome message passing API.
+//         // it has to be JSON-serializable.
+//         // so we convert it to an object before pushing message.
+//         await chrome.tabs.sendMessage(tab.id, { message: "lmPoolMap", data: Object.fromEntries(lmPoolMap) });
+//       }
+//     }
+//   })();
+//   return true;
+// });
 
 // get LMs for the new URL
 // chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
