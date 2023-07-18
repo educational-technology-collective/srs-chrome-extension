@@ -1,11 +1,11 @@
-import { API_GATEWAY } from "./constants";
+import { API_GATEWAY_DEV } from "./constants";
 
 // makes a POST request to the given endpoint of the AWS Lambda instance.
 // endpoint should lead with a slash.
 export const makePostReq = async (endpoint: string, payload: object) => {
   try {
-    const url = API_GATEWAY + endpoint;
-    const token = window.sessionStorage.getItem("accessToken");
+    const url = API_GATEWAY_DEV + endpoint;
+    const token = window.localStorage.getItem("accessToken");
     const resp = await fetch(url, {
       method: "POST",
       headers: {
@@ -27,7 +27,7 @@ export const makePostReq = async (endpoint: string, payload: object) => {
 // endpoint should lead with a slash.
 export const makeGetReq = async (endpoint: string) => {
   try {
-    const url = API_GATEWAY + endpoint;
+    const url = API_GATEWAY_DEV + endpoint;
     const resp = await fetch(url, {
       method: "GET",
       headers: {
@@ -57,7 +57,7 @@ export const makeGetReqWithParam = async (endpoint: string, params: string[][]) 
     });
     paramStr = paramStr.substring(0, paramStr.length - 1);
     console.log(paramStr);
-    const url = API_GATEWAY + endpoint + paramStr;
+    const url = API_GATEWAY_DEV + endpoint + paramStr;
     const resp = await fetch(url, {
       method: "GET",
       headers: {
@@ -77,8 +77,8 @@ export const makeGetReqWithParam = async (endpoint: string, params: string[][]) 
 // endpoint should lead with a slash.
 export const makePutReq = async (endpoint: string, payload: object) => {
   try {
-    const url = API_GATEWAY + endpoint;
-    const token = window.sessionStorage.getItem("accessToken");
+    const url = API_GATEWAY_DEV + endpoint;
+    const token = window.localStorage.getItem("accessToken");
     const resp = await fetch(url, {
       method: "PUT",
       headers: {
@@ -100,8 +100,8 @@ export const makePutReq = async (endpoint: string, payload: object) => {
 // endpoint should lead with a slash.
 export const makeDeleteReq = async (endpoint: string) => {
   try {
-    const url = API_GATEWAY + endpoint;
-    const token = window.sessionStorage.getItem("accessToken");
+    const url = API_GATEWAY_DEV + endpoint;
+    const token = window.localStorage.getItem("accessToken");
     const resp = await fetch(url, {
       method: "DELETE",
       headers: {
@@ -132,8 +132,8 @@ export const makeDeleteReqWithParam = async (endpoint: string, params: string[][
     });
     paramStr = paramStr.substring(0, paramStr.length - 1);
     console.log(paramStr);
-    const url = API_GATEWAY + endpoint + paramStr;
-    const token = window.sessionStorage.getItem("accessToken");
+    const url = API_GATEWAY_DEV + endpoint + paramStr;
+    const token = window.localStorage.getItem("accessToken");
     const resp = await fetch(url, {
       method: "DELETE",
       headers: {
