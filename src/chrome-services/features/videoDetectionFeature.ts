@@ -12,6 +12,7 @@ import {
   setIsMetadata,
 } from "../states";
 import { makePostReq } from "../requests";
+import { getLmId } from ".";
 
 export const detectVideo = () => {
   let videoDetector = createVideoDetector();
@@ -29,39 +30,40 @@ export const detectVideo = () => {
     sender: chrome.runtime.MessageSender,
     sendResponse: (response: responseObject) => void
   ) => {
-    console.log("received:", request);
-    console.log(sender.tab ? "from a content script:" + sender.tab.url : "from an extension");
+    if (request.message === "tab updated") {
+      console.log("received:", request);
+      console.log(sender.tab ? "from a content script:" + sender.tab.url : "from an extension");
 
-    // disconnect any previously created detectors so that the browser can clean them up once we re-assign these below.
-    // this also prevents observers from "stacking", which leads to multiple observes at once.
-    videoDetector.disconnect();
+      // disconnect any previously created detectors so that the browser can clean them up once we re-assign these below.
+      // this also prevents observers from "stacking", which leads to multiple observes at once.
+      videoDetector.disconnect();
 
-    const url = request.message;
-    const videoUrlRegex = /^https:\/\/www.coursera.org\/learn\/.*\/lecture\/.*$/;
+      const url = request.message;
+      const videoUrlRegex = /^https:\/\/www.coursera.org\/learn\/.*\/lecture\/.*$/;
 
-    // check if url is a video.
-    if (url && videoUrlRegex.test(url)) {
-      // reset detectors and pass in fresh, empty arrays to fill.
-      setSegmentData([]);
-      setFullTranscript("");
-      setIsMetadata(true);
+      // check if url is a video.
+      if (url && videoUrlRegex.test(url)) {
+        // reset detectors and pass in fresh, empty arrays to fill.
+        setSegmentData([]);
+        setFullTranscript("");
+        setIsMetadata(true);
 
-      videoDetector = createVideoDetector();
+        videoDetector = createVideoDetector();
 
-      // turn the new detectors on
-      videoDetector.observe(document.body, {
-        childList: true,
-        subtree: true,
-      });
+        // turn the new detectors on
+        videoDetector.observe(document.body, {
+          childList: true,
+          subtree: true,
+        });
 
-      sendResponse({ message: "url is a lecture video" });
-      return true;
-    } else {
-      sendResponse({ message: "url is not a lecture video" });
-      return true;
+        sendResponse({ message: "url is a lecture video" });
+        return true;
+      } else {
+        sendResponse({ message: "url is not a lecture video" });
+        return true;
+      }
     }
   };
-
   chrome.runtime.onMessage.addListener(listener);
 };
 
@@ -133,14 +135,20 @@ const createVideoObserverCallback = () => {
 
     if (isVideoPlaying && isUserActive) {
       const ppd: PlayPauseDatum = {
-        userEmail: "user@gmail.com",
         timestamp: timestamp,
         videoUrl: videoUrl,
         action: "play",
       };
 
-      console.log("ppd:", ppd);
-      makePostReq("/telemetry/playback", ppd);
+      const ppdPayload = {
+        userEmail: window.localStorage.getItem("userEmail"),
+        lmId: getLmId(timestamp),
+        type: "videoAction",
+        content: ppd,
+      };
+
+      console.log("ppdPayload:", ppdPayload);
+      makePostReq("/telemetry/lms", ppdPayload);
 
       // handle seeking while video is playing.
       if (hasSeeked && isVideoSeeking) {
@@ -150,7 +158,6 @@ const createVideoObserverCallback = () => {
           setHasSeeked(false);
 
           const srd: SkipRewindDatum = {
-            userEmail: "user@gmail.com",
             startTimestamp: prevTimestamp,
             endTimestamp: timestamp,
             videoUrl: videoUrl,
@@ -163,23 +170,36 @@ const createVideoObserverCallback = () => {
             srd.action = "rewind";
           }
 
+          const srdPayload = {
+            userEmail: window.localStorage.getItem("userEmail"),
+            lmId: getLmId(timestamp),
+            type: "videoAction",
+            content: srd,
+          };
+
           setPrevTimestamp(timestamp);
-          console.log("srd:", srd);
-          makePostReq("/telemetry/playback", srd);
+          console.log("srdPayload:", srdPayload);
+          makePostReq("/telemetry/lms", srdPayload);
         }
       }
     }
 
     if (isVideoPaused && isUserActive) {
       const ppd: PlayPauseDatum = {
-        userEmail: "user@gmail.com",
         timestamp: timestamp,
         videoUrl: videoUrl,
         action: "pause",
       };
 
-      console.log("ppd:", ppd);
-      makePostReq("/telemetry/playback", ppd);
+      const ppdPayload = {
+        userEmail: window.localStorage.getItem("userEmail"),
+        lmId: getLmId(timestamp),
+        type: "videoAction",
+        content: ppd,
+      };
+
+      console.log("ppdPayload:", ppdPayload);
+      makePostReq("/telemetry/lms", ppdPayload);
 
       // handle skipping while video is paused.
       if (hasSeeked && !isVideoSeeking) {
@@ -187,7 +207,6 @@ const createVideoObserverCallback = () => {
         setHasSeeked(false);
 
         const srd: SkipRewindDatum = {
-          userEmail: "user@gmail.com",
           startTimestamp: prevTimestamp,
           endTimestamp: timestamp,
           videoUrl: videoUrl,
@@ -200,8 +219,15 @@ const createVideoObserverCallback = () => {
           srd.action = "rewind";
         }
 
-        console.log("srd:", srd);
-        makePostReq("/telemetry/playback", srd);
+        const srdPayload = {
+          userEmail: window.localStorage.getItem("userEmail"),
+          lmId: getLmId(timestamp),
+          type: "videoAction",
+          content: srd,
+        };
+
+        console.log("srdPayload:", srdPayload);
+        makePostReq("/telemetry/lms", srdPayload);
       }
     }
 
@@ -217,7 +243,7 @@ const createVideoObserverCallback = () => {
           videoUrl: videoUrl,
         };
         console.log("metadata:", metadata);
-        makePostReq("/metadata/playback", metadata);
+        makePostReq("/metadata/lms", metadata);
       }
     }
   };

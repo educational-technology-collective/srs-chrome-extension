@@ -3,6 +3,11 @@ export interface SegmentDatum {
   segment: string;
 }
 
+export interface playbackDatum {
+  timestamp: string;
+  videoUrl: string;
+}
+
 export interface IvqDatum {
   timestamp: string;
   question: string;
@@ -10,14 +15,12 @@ export interface IvqDatum {
 }
 
 export interface PlayPauseDatum {
-  userEmail: string;
   action: string;
   timestamp: string;
   videoUrl: string;
 }
 
 export interface SkipRewindDatum {
-  userEmail: string;
   action: string;
   startTimestamp: string;
   endTimestamp: string;

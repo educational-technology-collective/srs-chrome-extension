@@ -17,38 +17,39 @@ export const detectTranscript = () => {
     sender: chrome.runtime.MessageSender,
     sendResponse: (response: responseObject) => void
   ) => {
-    console.log("received:", request);
-    console.log(sender.tab ? "from a content script:" + sender.tab.url : "from an extension");
+    if (request.message === "tab updated") {
+      console.log("received:", request);
+      console.log(sender.tab ? "from a content script:" + sender.tab.url : "from an extension");
 
-    // disconnect any previously created detectors so that the browser can clean them up once we re-assign these below.
-    // this also prevents observers from "stacking", which leads to multiple observes at once.
-    transcriptDetector.disconnect();
+      // disconnect any previously created detectors so that the browser can clean them up once we re-assign these below.
+      // this also prevents observers from "stacking", which leads to multiple observes at once.
+      transcriptDetector.disconnect();
 
-    const url = request.message;
-    const videoUrlRegex = /^https:\/\/www.coursera.org\/learn\/.*\/lecture\/.*$/;
+      const url = request.message;
+      const videoUrlRegex = /^https:\/\/www.coursera.org\/learn\/.*\/lecture\/.*$/;
 
-    // check if url is a video.
-    if (url && videoUrlRegex.test(url)) {
-      // reset detectors and pass in fresh, empty arrays to fill.
-      setSegmentData([]);
-      setFullTranscript("");
+      // check if url is a video.
+      if (url && videoUrlRegex.test(url)) {
+        // reset detectors and pass in fresh, empty arrays to fill.
+        setSegmentData([]);
+        setFullTranscript("");
 
-      transcriptDetector = createTranscriptDetector();
+        transcriptDetector = createTranscriptDetector();
 
-      // turn the new detectors on
-      transcriptDetector.observe(document.body, {
-        childList: true,
-        subtree: true,
-      });
+        // turn the new detectors on
+        transcriptDetector.observe(document.body, {
+          childList: true,
+          subtree: true,
+        });
 
-      sendResponse({ message: "url is a lecture video" });
-      return true;
-    } else {
-      sendResponse({ message: "url is not a lecture video" });
-      return true;
+        sendResponse({ message: "url is a lecture video" });
+        return true;
+      } else {
+        sendResponse({ message: "url is not a lecture video" });
+        return true;
+      }
     }
   };
-
   chrome.runtime.onMessage.addListener(listener);
 };
 

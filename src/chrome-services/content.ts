@@ -6,7 +6,7 @@ import {
   detectCopy,
   detectPaste,
   chunkTranscript,
-  // renderPreview,
+  getUserData,
 } from "./features";
 
 // on initial load of the page.
@@ -20,4 +20,4 @@ detectIvq();
 detectCopy();
 detectPaste();
 chunkTranscript(60);
-// renderPreview();
+getUserData();
