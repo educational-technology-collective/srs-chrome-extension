@@ -1,4 +1,10 @@
-import { handleErrorNullElement, PlayPauseDatum, SkipRewindDatum, requestObject, responseObject } from "../../types";
+import {
+  handleErrorNullElement,
+  PlayPauseDatum,
+  SkipRewindDatum,
+  requestObject,
+  responseObject,
+} from "../../types";
 import {
   prevTimestamp,
   setPrevTimestamp,
@@ -12,7 +18,7 @@ import {
   setIsMetadata,
 } from "../states";
 import { makePostReq } from "../requests";
-import { getLmId } from ".";
+import { getCourseraPlaybackLmId } from ".";
 
 export const detectVideo = () => {
   let videoDetector = createVideoDetector();
@@ -23,34 +29,44 @@ export const detectVideo = () => {
   });
 
   // Chrome message passing API.
-  // listens to message passed by the service worker.
-  // responds with a message telling whether a link is a video or not.
+  // Listens to message passed by the service worker.
+  // Responds with a message telling whether a link is a video or not.
   const listener = (
     request: requestObject,
     sender: chrome.runtime.MessageSender,
     sendResponse: (response: responseObject) => void
   ) => {
-    if (request.message === "tab updated") {
+    if (request.message === "url from service worker") {
       console.log("received:", request);
-      console.log(sender.tab ? "from a content script:" + sender.tab.url : "from an extension");
+      console.log(
+        sender.tab
+          ? "from a content script:" + sender.tab.url
+          : "from an extension"
+      );
 
-      // disconnect any previously created detectors so that the browser can clean them up once we re-assign these below.
-      // this also prevents observers from "stacking", which leads to multiple observes at once.
+      // Disconnect any previously created detectors so that the browser can clean them up once we re-assign these below.
+      // This also prevents observers from "stacking", which leads to multiple observes at once.
       videoDetector.disconnect();
 
       const url = request.message;
-      const videoUrlRegex = /^https:\/\/www.coursera.org\/learn\/.*\/lecture\/.*$/;
+      const learnVideoUrlRegex =
+        /^https:\/\/www.coursera.org\/learn\/siads505\/lecture\/.*$/;
+      const teachVideoUrlRegex =
+        /^https:\/\/www.coursera.org\/teach\/siads505\/.*\/lecture\/.*$/;
 
-      // check if url is a video.
-      if (url && videoUrlRegex.test(url)) {
-        // reset detectors and pass in fresh, empty arrays to fill.
+      // Check if url is a video.
+      if (
+        url &&
+        (learnVideoUrlRegex.test(url) || teachVideoUrlRegex.test(url))
+      ) {
+        // Reset detectors and pass in fresh, empty arrays to fill.
         setSegmentData([]);
         setFullTranscript("");
         setIsMetadata(true);
 
         videoDetector = createVideoDetector();
 
-        // turn the new detectors on
+        // Turn the new detectors on
         videoDetector.observe(document.body, {
           childList: true,
           subtree: true,
@@ -67,8 +83,8 @@ export const detectVideo = () => {
   chrome.runtime.onMessage.addListener(listener);
 };
 
-// creates a MutationObserver that detects video end.
-// this allows us to track video progress to see when it's done.
+// Creates a MutationObserver that detects video end.
+// This allows us to track video progress to see when it's done.
 const createVideoDetector = () => {
   const videoDetector = new MutationObserver(() => {
     if (document.querySelector('[aria-label="Video Player"]')) {
@@ -76,7 +92,7 @@ const createVideoDetector = () => {
       videoDetector.disconnect();
       console.log("video detected");
 
-      // observe the video to detect playback end
+      // Observe the video to detect playback end
       if (video) {
         const videoObserver = createVideoObserver();
         videoObserver.observe(video, {
@@ -92,15 +108,15 @@ const createVideoDetector = () => {
   return videoDetector;
 };
 
-// creates a video observer that detects video end and writes segmentData and fullTranscript to vidLearningData.
+// Creates a video observer that detects video end and writes segmentData and fullTranscript to vidLearningData.
 const createVideoObserver = () => {
   const vc = createVideoObserverCallback();
   const videoObserver = new MutationObserver(vc);
   return videoObserver;
 };
 
-// callback function for videoObserver.
-// checks if the video is over and sets the state to true if so.
+// Callback function for videoObserver.
+// Checks if the video is over and sets the state to true if so.
 const createVideoObserverCallback = () => {
   const videoObserverCallback: MutationCallback = (mutationList) => {
     const mutation = mutationList[0];
@@ -124,9 +140,9 @@ const createVideoObserverCallback = () => {
     if (isVideoSeeking) {
       setIsMetadata(false);
 
-      // saves the timestamp when the video started seeking.
-      // if video seeks from timestamp A to B, this saves A, and marks as hasSeeked.
-      // we rely on this information to determine whether the video has been seeked forward or backward (skipped or rewound).
+      // Saves the timestamp when the video started seeking.
+      // If video seeks from timestamp A to B, this saves A, and marks as hasSeeked.
+      // We rely on this information to determine whether the video has been seeked forward or backward (skipped or rewound).
       if (!hasSeeked) {
         setPrevTimestamp(timestamp);
         setHasSeeked(true);
@@ -142,7 +158,7 @@ const createVideoObserverCallback = () => {
 
       const ppdPayload = {
         userEmail: window.localStorage.getItem("userEmail"),
-        lmId: getLmId(timestamp),
+        lm_id: getCourseraPlaybackLmId(timestamp),
         type: "videoAction",
         content: ppd,
       };
@@ -150,7 +166,7 @@ const createVideoObserverCallback = () => {
       console.log("ppdPayload:", ppdPayload);
       makePostReq("/telemetry/lms", ppdPayload);
 
-      // handle seeking while video is playing.
+      // Handle seeking while video is playing.
       if (hasSeeked && isVideoSeeking) {
         setIsMetadata(false);
 
@@ -172,7 +188,7 @@ const createVideoObserverCallback = () => {
 
           const srdPayload = {
             userEmail: window.localStorage.getItem("userEmail"),
-            lmId: getLmId(timestamp),
+            lm_id: getCourseraPlaybackLmId(timestamp),
             type: "videoAction",
             content: srd,
           };
@@ -193,7 +209,7 @@ const createVideoObserverCallback = () => {
 
       const ppdPayload = {
         userEmail: window.localStorage.getItem("userEmail"),
-        lmId: getLmId(timestamp),
+        lm_id: getCourseraPlaybackLmId(timestamp),
         type: "videoAction",
         content: ppd,
       };
@@ -201,7 +217,7 @@ const createVideoObserverCallback = () => {
       console.log("ppdPayload:", ppdPayload);
       makePostReq("/telemetry/lms", ppdPayload);
 
-      // handle skipping while video is paused.
+      // Handle skipping while video is paused.
       if (hasSeeked && !isVideoSeeking) {
         setIsMetadata(false);
         setHasSeeked(false);
@@ -221,7 +237,7 @@ const createVideoObserverCallback = () => {
 
         const srdPayload = {
           userEmail: window.localStorage.getItem("userEmail"),
-          lmId: getLmId(timestamp),
+          lm_id: getCourseraPlaybackLmId(timestamp),
           type: "videoAction",
           content: srd,
         };
@@ -232,10 +248,8 @@ const createVideoObserverCallback = () => {
     }
 
     if (isVideoDone) {
-      // observer.disconnect();
-
       if (isMetadata) {
-        // no play/pause/skip/rewind, so it must be for metadata collection.
+        // No play/pause/skip/rewind, so it must be for metadata collection.
         setIsMetadata(false);
         const metadata = {
           fullTranscript: fullTranscript,

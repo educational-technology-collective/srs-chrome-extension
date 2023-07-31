@@ -1,8 +1,8 @@
-import { VideoLm } from "../../types";
-import { lmPoolMap } from "../states";
+import { CourseraPlaybackLm } from "../../types";
+import { courseraPlaybackLmPoolMap } from "../states";
 
-// compares two LM's timestamps.
-// returns true if t1 > t2, else returns false.
+// Compares two LM's timestamps.
+// Returns true if t1 > t2, else returns false.
 const compareLmTimestamp = (t1: string, t2: string) => {
   // convert time string to time
   const lm1TimeStrs = t1.split(":");
@@ -16,7 +16,8 @@ const compareLmTimestamp = (t1: string, t2: string) => {
     lm1StartTime = +lm1TimeStrs[0] * 60 + +lm1TimeStrs[1];
   } else {
     // HH:MM:SS
-    lm1StartTime = +lm1TimeStrs[0] * 60 * 60 + +lm1TimeStrs[1] * 60 + +lm1TimeStrs[2];
+    lm1StartTime =
+      +lm1TimeStrs[0] * 60 * 60 + +lm1TimeStrs[1] * 60 + +lm1TimeStrs[2];
   }
 
   // convert time string to time
@@ -31,25 +32,28 @@ const compareLmTimestamp = (t1: string, t2: string) => {
     lm2StartTime = +lm2TimeStrs[0] * 60 + +lm2TimeStrs[1];
   } else {
     // HH:MM:SS
-    lm2StartTime = +lm2TimeStrs[0] * 60 * 60 + +lm2TimeStrs[1] * 60 + +lm2TimeStrs[2];
+    lm2StartTime =
+      +lm2TimeStrs[0] * 60 * 60 + +lm2TimeStrs[1] * 60 + +lm2TimeStrs[2];
   }
 
   return lm1StartTime > lm2StartTime;
 };
 
-// return an LM ID given a timestamp
-const getLmId = (timestamp: string) => {
-  let prevPair: [string | null, VideoLm | null] = [null, null];
+// Return an LM ID given a timestamp.
+const getCourseraPlaybackLmId = (timestamp: string) => {
+  let prevPair: [string | null, CourseraPlaybackLm | null] = [null, null];
 
-  for (const [k, v] of lmPoolMap) {
-    // when k is first greater than timestamp
-    if (compareLmTimestamp(k, timestamp)) {
-      if (prevPair[1] != null) {
-        return prevPair[1]._id;
+  if (courseraPlaybackLmPoolMap) {
+    courseraPlaybackLmPoolMap.forEach((v, k) => {
+      // When k is first greater than timestamp
+      if (compareLmTimestamp(k, timestamp)) {
+        if (prevPair[1] != null) {
+          return prevPair[1]._id;
+        }
       }
-    }
-    prevPair = [k, v];
+      prevPair = [k, v];
+    });
   }
 };
 
-export { compareLmTimestamp, getLmId };
+export { compareLmTimestamp, getCourseraPlaybackLmId };

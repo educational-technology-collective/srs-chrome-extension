@@ -1,34 +1,35 @@
-// import { VideoLm } from "../types";
+// chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+//   (async () => {
+//     if (changeInfo.url) {
+//       const response = await chrome.tabs.sendMessage(tabId, { message: "tab updated", data: changeInfo.url });
+//       console.log(response);
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
-  (async () => {
-    if (changeInfo.url) {
-      const response = await chrome.tabs.sendMessage(tabId, { message: "tab updated", data: changeInfo.url });
-      console.log(response);
-      return true;
-    }
-  })();
-  // chrome.tabs.query({ active: true, lastFocusedWindow: true }).then((tab) => {
-  //   console.log(tab);
-  // });
-  // (async () => {
-  //   const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-  //   console.log(tab);
-  // })();
-});
-
-(async () => {
-  await chrome.storage.session.set({ this: "that" });
-})();
+//       return true;
+//     }
+//   })();
+//   // chrome.tabs.query({ active: true, lastFocusedWindow: true }).then((tab) => {
+//   //   console.log(tab);
+//   // });
+//   // (async () => {
+//   //   const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+//   //   console.log(tab);
+//   // })();
+// });
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
   (async () => {
     if (changeInfo.status) {
       const url = (await chrome.tabs.get(tabId)).url;
-      await chrome.tabs.sendMessage(tabId, { message: "url from service worker", data: url });
+      console.log(url);
+      chrome.storage.local.set({ url: url });
+      const res = await chrome.tabs.sendMessage(tabId, {
+        message: "url from service worker",
+        data: url,
+      });
+      console.log(res);
+      // return true;
     }
   })();
-  return true;
 });
 
 // chrome.runtime.onMessage.addListener((request: any) => {

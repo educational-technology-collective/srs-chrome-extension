@@ -1,52 +1,25 @@
 import { useAuth0 } from "@auth0/auth0-react";
+
 import { LandingPage, MainPage } from "./components";
 import "./styles/App.css";
-import { useState } from "react";
-// import { makeGetReq } from "./utils";
+import { responseObject } from "./types";
 
 const App = () => {
   const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
-  // const [url, setUrl] = useState("");
-  const [numLms] = useState(0);
 
   if (isAuthenticated && user) {
-    // interface tok {
-    //   body: {
-    //     access_token: string;
-    //     refresh_token: string;
-    //     scope: string;
-    //     expires_in: number;
-    //     token_type: string;
-    //     audience: string;
-    //     oauthTokenScope: string;
-    //     client_id: string;
-    //   };
-    //   expiresAt: number;
-    // }
-    // interface auth0Err {
-    //   error: string;
-    //   error_description: string;
-    // }
-    // send user email and token to the content script.
+    // Send user email and token to the content script.
     (async () => {
       try {
-        // get access token from Auth0 so that we can access protected API routes.
+        // Get access token from Auth0 so that we can access protected API routes.
         const accessToken = await getAccessTokenSilently();
-        // const accessToken: tok = JSON.parse(
-        //   window.localStorage.getItem(
-        //     "@@auth0spajs@@::R4nxhWYh6Sl8ZiBtl3nIJSI8l16pbIOM::default::openid profile email offline_access"
-        //   ) as string
-        // );
 
-        console.log("email:", user.email);
-        console.log("token:", accessToken);
+        const [tab] = await chrome.tabs.query({
+          url: "https://www.coursera.org/learn/*/lecture/*",
+        });
 
-        // const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-        const [tab] = await chrome.tabs.query({ url: "https://www.coursera.org/learn/*/lecture/*" });
-        console.log("app.tsx", tab);
-        // send user data to service worker.
         if (tab.id) {
-          await chrome.tabs.sendMessage(tab.id, {
+          chrome.tabs.sendMessage(tab.id, {
             message: "user data from frontend",
             data: { userEmail: user.email, accessToken: accessToken },
           });
@@ -60,20 +33,44 @@ const App = () => {
     })();
   }
 
-  // chrome.runtime.onMessage.addListener((request: any) => {
-  //   (async () => {
-  //     if (request.message === "numLms from service worker") {
-  //       setNumLms(numLms + 1);
-  //       // chrome.storage.local.set({ lms: { url: url, numLms: numLms + 1 } });
-  //     }
-  //   })();
-  //   return true;
-  // });
+  chrome.runtime.onMessage.addListener(
+    (
+      request: any,
+      _sender: chrome.runtime.MessageSender,
+      sendResponse: (response: responseObject) => void
+    ) => {
+      (async () => {
+        if (request.message === "lm triggered from content script") {
+          const videoUrl = request.data.videoUrl;
+          const lm_id = request.data.lm_id;
+
+          const collectedLms = await chrome.storage.local.get([videoUrl]);
+          console.log(collectedLms);
+
+          if (Object.keys(collectedLms).length === 0) {
+            console.log(1);
+            await chrome.storage.local.set({
+              [videoUrl]: [lm_id] as string[],
+            });
+          } else if (!collectedLms[videoUrl].includes(lm_id)) {
+            console.log(2);
+            collectedLms[videoUrl].push(lm_id);
+            await chrome.storage.local.set({
+              [videoUrl]: collectedLms[videoUrl],
+            });
+          }
+        }
+
+        sendResponse({ message: "lm received" });
+      })();
+      return true;
+    }
+  );
 
   return (
     <>
       {!isAuthenticated && <LandingPage />}
-      {isAuthenticated && <MainPage user={user} numLms={numLms} />}
+      {isAuthenticated && <MainPage user={user} />}
     </>
   );
 };
