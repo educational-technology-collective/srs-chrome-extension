@@ -5,19 +5,17 @@ import {
   detectIvq,
   detectCopy,
   detectPaste,
-  chunkTranscript,
-  // sideBar,
+  getUserData,
 } from "./features";
 
-// on initial load of the page.
+// On initial load of the page.
 console.log("extension loaded");
 
-// add new features here.
-detectTranscript();
+// Add new features here.
+getUserData();
 detectPlayback();
+detectTranscript();
 detectVideo();
 detectIvq();
 detectCopy();
 detectPaste();
-chunkTranscript(60);
-// sideBar();

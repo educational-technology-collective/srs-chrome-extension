@@ -1,4 +1,4 @@
-import { SegmentDatum, IvqDatum, VideoLm } from "../types";
+import { SegmentDatum, IvqDatum, CourseraPlaybackLm } from "../types";
 
 let segmentData: SegmentDatum[] = [];
 const setSegmentData = (value: SegmentDatum[]) => {
@@ -39,9 +39,11 @@ const setIsMetadata = (value: boolean) => {
   isMetadata = value;
 };
 
-let lmPoolMap: Map<string, VideoLm>;
-const setLmPoolMap = (value: Map<string, VideoLm>) => {
-  lmPoolMap = new Map([...value]);
+let courseraPlaybackLmPoolMap: Map<string, CourseraPlaybackLm>;
+const setCourseraPlaybackLmPoolMap = (
+  value: Map<string, CourseraPlaybackLm>
+) => {
+  courseraPlaybackLmPoolMap = new Map([...value]);
 };
 
 export { segmentData, setSegmentData, pushSegmentData };
@@ -50,4 +52,4 @@ export { ivqData, setIvqData, pushIvqData };
 export { prevTimestamp, setPrevTimestamp };
 export { hasSeeked, setHasSeeked };
 export { isMetadata, setIsMetadata };
-export { lmPoolMap, setLmPoolMap };
+export { courseraPlaybackLmPoolMap, setCourseraPlaybackLmPoolMap };

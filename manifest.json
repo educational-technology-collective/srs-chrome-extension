@@ -1,25 +1,26 @@
 {
-    "name": "Chrome React SEO Extension",
-    "description": "The power of React and TypeScript for building interactive Chrome extensions",
+    "name": "Ambient Learning",
+    "description": "The student-facing side of the spaced repetition system project",
     "version": "1.0",
     "manifest_version": 3,
     "icons": {
         "128": "logo.png"
     },
     "action": {
+        "default_popup": "index.html",
         "default_title": "Click me",
         "default_icon": {
             "128": "logo.png"
         }
     },
     "background": {
-        "service_worker": "./assets/serviceWorker.js",
+        "service_worker": "src/chrome-services/serviceWorker.ts",
         "type": "module"
     },
     "content_scripts": [
         {
             "matches": ["http://*/*", "https://*/*"],
-            "js": ["./assets/content.js"]
+            "js": ["src/chrome-services/content.ts"]
         }
     ],
     "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsU9se9Tibf6J26Ms6h8VCZ+4qRRoEl4TcwNMtKW5C8thgFh2W6V2pUBiawJ9Jcnu+H/rysBtxeXbp5KGzPw4LDSWIwr1rnX5qXWkxB+mCqRZIa4x+oWN6cof1Z6lOA0WxnR67RuL3OP+3puHJziQ8a0sjML5wgnn0BCesbBKzShukwWWXw7WKrdWYOPa/LPleB9uH7+OD1Be87bibUYU7HfqI1sqkwWxpwivOXE+1tQAcLcXI479VA4QaAXiws4cm8/GdNLPR93ZB6r+7HHbYtCmvEazV9VPXWcmGVa9ReJtEoW24aCiUVO1+cQlco3KpT44ayuSopHGioTauPHSCwIDAQAB",
@@ -27,10 +28,7 @@
         "client_id":"1057792936287-9nn88vj3njumpt3lkuu8ln3i5g82gv4k.apps.googleusercontent.com",
         "scopes": ["profile", "email", "openid"]
     },
-    "permissions": ["activeTab", "tabs", "storage", "sidePanel", "identity", "identity.email"],
-    "side_panel": {
-        "default_path": "index.html"
-    },
+    "permissions": ["activeTab", "tabs", "storage"],
     "web_accessible_resources": [
         {
             "resources": ["index.html"],

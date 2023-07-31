@@ -1,114 +1,78 @@
-import { useState, useEffect } from "react";
-import { Pane1, Pane2, Pane3 } from "./components";
-import { VideoLm } from "./types";
-import { makeGetReq } from "./utils";
+import { useAuth0 } from "@auth0/auth0-react";
+
+import { LandingPage, MainPage } from "./components";
 import "./styles/App.css";
+import { responseObject } from "./types";
 
-function App() {
-  // we may need a state to track current url to trigger a full rerender.
-  // this way the GET request will be sent again.
-  const lmArray: VideoLm[] = [];
-  const [arr, setArr] = useState(lmArray);
+const App = () => {
+  const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
 
-  const updateArr = (value: VideoLm[]) => {
-    setArr(value);
-  };
+  if (isAuthenticated && user) {
+    // Send user email and token to the content script.
+    (async () => {
+      try {
+        // Get access token from Auth0 so that we can access protected API routes.
+        const accessToken = await getAccessTokenSilently();
 
-  useEffect(() => {
-    // switch url to window.location.toString() in prod.
-    makeGetReq("/lm/video", [
-      ["videoUrl", "https://www.coursera.org/learn/python-data-analysis/lecture/Kgwr5/merging-dataframes"],
-    ])
-      .then((res) => {
-        setArr(res);
-        setIndex(0);
-        // send message to the service worker, so that it can update the state in chrome-services directory.
-        chrome.runtime.sendMessage({ message: "GET from App", data: res });
-      })
-      .catch((err) => {
-        console.log("Error while fetching videoLM:", err);
-      });
-  }, []);
+        const [tab] = await chrome.tabs.query({
+          url: "https://www.coursera.org/learn/*/lecture/*",
+        });
 
-  // lmArray index handling.
-  // this index is used to access specific elements of the lmArray.
-  const [index, setIndex] = useState(-1);
-  const handleIndex = (value: number) => {
-    setIndex(value);
-  };
+        if (tab.id) {
+          chrome.tabs.sendMessage(tab.id, {
+            message: "user data from frontend",
+            data: { userEmail: user.email, accessToken: accessToken },
+          });
+        }
+      } catch (e) {
+        console.log("error", e);
+        // if ((e as auth0Err).error === "missing_refresh_token" || (e as auth0Err).error === "invalid_grant") {
+        //   loginWithPopup();
+        // }
+      }
+    })();
+  }
 
-  // updates the lmArray itself.
-  // used to delete elements from the array.
-  // const deleteArr = (i: number) => {
-  //   if (i === -1) {
-  //     return;
-  //   }
+  chrome.runtime.onMessage.addListener(
+    (
+      request: any,
+      _sender: chrome.runtime.MessageSender,
+      sendResponse: (response: responseObject) => void
+    ) => {
+      (async () => {
+        if (request.message === "lm triggered from content script") {
+          const videoUrl = request.data.videoUrl;
+          const lm_id = request.data.lm_id;
 
-  //   const newLmArray = arr.map((lm, idx) => {
-  //     if (i === idx) {
-  //       lm.deleted = true;
-  //       return lm;
-  //     } else {
-  //       return lm;
-  //     }
-  //   });
+          const collectedLms = await chrome.storage.local.get([videoUrl]);
+          console.log(collectedLms);
 
-  //   setArr(newLmArray);
-  //   setIndex(-1);
-  //   alert("deleted!");
-  // };
+          if (Object.keys(collectedLms).length === 0) {
+            console.log(1);
+            await chrome.storage.local.set({
+              [videoUrl]: [lm_id] as string[],
+            });
+          } else if (!collectedLms[videoUrl].includes(lm_id)) {
+            console.log(2);
+            collectedLms[videoUrl].push(lm_id);
+            await chrome.storage.local.set({
+              [videoUrl]: collectedLms[videoUrl],
+            });
+          }
+        }
 
-  // save elements.
-  // const saveArr = (i: number) => {
-  //   if (i === -1) {
-  //     return;
-  //   }
-
-  //   const newLmArray = arr.map((lm, idx) => {
-  //     if (i === idx) {
-  //       lm.saved = true;
-  //       return lm;
-  //     } else {
-  //       return lm;
-  //     }
-  //   });
-
-  //   setArr(newLmArray);
-  //   console.log(newLmArray);
-  //   alert("saved!");
-  // };
-
-  // determines whether an answer choice is clicked or not.
-  // makes sure that the choice turns green or red, or transparent when reset.
-  // const handleClick = (i: number, acIndex: number) => {
-  //   const newLmArray = arr.map((lm, idx) => {
-  //     if (i === idx) {
-  //       lm.mdFlashcard[0].answerChoices[acIndex].isClicked = true;
-  //       return lm;
-  //     } else {
-  //       return lm;
-  //     }
-  //   });
-
-  //   setArr(newLmArray);
-  // };
+        sendResponse({ message: "lm received" });
+      })();
+      return true;
+    }
+  );
 
   return (
     <>
-      <div id="pane1">
-        <Pane1 lmArray={arr} updateArr={updateArr} handleIndex={handleIndex} index={index} />
-      </div>
-      <div id="pane2">
-        <Pane2 lmArray={arr} index={index} updateArr={updateArr} />
-      </div>
-      {/* <Mcq lmArray={arr} index={index} handleClick={handleClick} /> */}
-      <div id="pane3">
-        <Pane3 lmArray={arr} lmIndex={index} updateArr={updateArr} />
-        {/* <DeleteButton name={"Delete this learning moment"} index={index} deleteArr={deleteArr} /> */}
-        {/* <SaveButton name={"Save this learning moment"} index={index} saveArr={saveArr} /> */}
-      </div>
+      {!isAuthenticated && <LandingPage />}
+      {isAuthenticated && <MainPage user={user} />}
     </>
   );
-}
+};
 
 export default App;

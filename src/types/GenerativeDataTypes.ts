@@ -4,28 +4,39 @@ export interface McqAnswer {
 }
 
 export interface Flashcard {
-  lmId: string;
+  _id: string;
+  lm_id: string;
   type: string;
   content: {
     question: string;
     answer: McqAnswer[] | string;
   };
-}
-
-export interface Concept {
-  id: string;
-  name: string;
-}
-
-export interface VideoLm {
-  id: string;
-  videoUrl: string;
-  startTime: string;
-  endTime: string;
-  concepts: Concept[]; // for frontend use
-  flashcards: Flashcard[]; // for frontend use
+  visibility: string;
 }
 
 export interface Lm {
-  id: string;
+  _id: string;
+  platform: string;
+  contentType: string;
+  content: object;
+  visibility: string;
+}
+
+export interface CourseraPlaybackLm extends Lm {
+  content: {
+    videoUrl: string;
+    startTime: string;
+    endTime: string;
+    concepts: string[];
+  };
+}
+
+export interface CourseraIvqLm extends Lm {
+  content: {
+    videoUrl: string;
+    timestamp: string;
+    question: string;
+    answer: string;
+    concepts: [];
+  };
 }

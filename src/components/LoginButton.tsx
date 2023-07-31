@@ -1,7 +1,10 @@
+import { useAuth0 } from "@auth0/auth0-react";
+
 const LoginButton = () => {
+  const { loginWithPopup } = useAuth0();
+
   const handleClick = () => {
-    chrome.runtime.sendMessage({ message: "get_auth_token" });
-    chrome.runtime.sendMessage({ message: "get_profile" });
+    loginWithPopup();
   };
 
   return (
