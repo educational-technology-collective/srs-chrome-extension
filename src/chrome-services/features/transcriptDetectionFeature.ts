@@ -1,5 +1,14 @@
-import { handleErrorNullElement, requestObject, responseObject } from "../../types";
-import { segmentData, setSegmentData, setFullTranscript, concatFullTranscript } from "../states";
+import {
+  handleErrorNullElement,
+  requestObject,
+  responseObject,
+} from "../../types";
+import {
+  segmentData,
+  setSegmentData,
+  setFullTranscript,
+  concatFullTranscript,
+} from "../states";
 
 export const detectTranscript = () => {
   let transcriptDetector = createTranscriptDetector();
@@ -10,8 +19,8 @@ export const detectTranscript = () => {
   });
 
   // Chrome message passing API.
-  // listens to message passed by the service worker.
-  // responds with a message telling whether a link is a video or not.
+  // Listens to message passed by the service worker.
+  // Responds with a message telling whether a link is a video or not.
   const listener = (
     request: requestObject,
     sender: chrome.runtime.MessageSender,
@@ -19,24 +28,29 @@ export const detectTranscript = () => {
   ) => {
     if (request.message === "tab updated") {
       console.log("received:", request);
-      console.log(sender.tab ? "from a content script:" + sender.tab.url : "from an extension");
+      console.log(
+        sender.tab
+          ? "from a content script:" + sender.tab.url
+          : "from an extension"
+      );
 
-      // disconnect any previously created detectors so that the browser can clean them up once we re-assign these below.
-      // this also prevents observers from "stacking", which leads to multiple observes at once.
+      // Disconnect any previously created detectors so that the browser can clean them up once we re-assign these below.
+      // This also prevents observers from "stacking", which leads to multiple observes at once.
       transcriptDetector.disconnect();
 
       const url = request.message;
-      const videoUrlRegex = /^https:\/\/www.coursera.org\/learn\/.*\/lecture\/.*$/;
+      const videoUrlRegex =
+        /^https:\/\/www.coursera.org\/learn\/.*\/lecture\/.*$/;
 
-      // check if url is a video.
+      // Check if url is a video.
       if (url && videoUrlRegex.test(url)) {
-        // reset detectors and pass in fresh, empty arrays to fill.
+        // Reset detectors and pass in fresh, empty arrays to fill.
         setSegmentData([]);
         setFullTranscript("");
 
         transcriptDetector = createTranscriptDetector();
 
-        // turn the new detectors on
+        // Turn the new detectors on
         transcriptDetector.observe(document.body, {
           childList: true,
           subtree: true,
@@ -53,8 +67,8 @@ export const detectTranscript = () => {
   chrome.runtime.onMessage.addListener(listener);
 };
 
-// creates a MutationObserver that detects transcript load.
-// this allows us to wait until the transcript is loaded in the DOM.
+// Creates a MutationObserver that detects transcript load.
+// This allows us to wait until the transcript is loaded in the DOM.
 const createTranscriptDetector = () => {
   const transcriptDetector = new MutationObserver(() => {
     if (document.querySelector(".rc-Transcript")) {
@@ -62,7 +76,7 @@ const createTranscriptDetector = () => {
       transcriptDetector.disconnect();
       console.log("transcript detected");
 
-      // observes the loaded transcript for highlighted phrases
+      // Observes the loaded transcript for highlighted phrases
       if (transcript) {
         const transcriptObserver = createTranscriptObserver();
         transcriptObserver.observe(transcript, {
@@ -86,8 +100,8 @@ const createTranscriptObserver = () => {
   return transcriptObserver;
 };
 
-// callback function for transcriptObserver.
-// checks if the rc-Phrase div has "active" class and prints the phrase content if so.
+// Callback function for transcriptObserver.
+// Checks if the rc-Phrase div has "active" class and prints the phrase content if so.
 const createTranscriptObserverCallback = () => {
   const transcriptObserverCallback: MutationCallback = (mutationList) => {
     for (const mutation of mutationList) {
@@ -102,26 +116,24 @@ const createTranscriptObserverCallback = () => {
 
             if (segmentElement) {
               segment = segmentElement.innerHTML;
-              // console.log(segment);
             } else {
               handleErrorNullElement("segmentElement");
             }
 
-            const timestampElement = document.querySelector(".current-time-display");
+            const timestampElement = document.querySelector(
+              ".current-time-display"
+            );
             let timestamp = "";
 
             if (timestampElement) {
               timestamp = timestampElement.innerHTML;
-              // console.log(timestamp);
             } else {
               handleErrorNullElement("timestampElement");
             }
 
             segmentData.push({ timestamp: timestamp, segment: segment });
-            // console.log(segmentData);
 
             concatFullTranscript(segment);
-            // console.log(fullTranscript);
           }
         }
       }
