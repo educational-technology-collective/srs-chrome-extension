@@ -1,7 +1,8 @@
 import { User } from "@auth0/auth0-react";
+import { useState } from "react";
+
 import { LogoutButton } from ".";
 import "../styles/MainPage.css";
-import { useState } from "react";
 
 interface Props {
   user: User | undefined;

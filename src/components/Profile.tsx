@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { AUTH0_AUDIENCE } from "../utils";
 
 const Profile = () => {
-  const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+  const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
+    useAuth0();
 
   useEffect(() => {
     const getAccessToken = async () => {
@@ -10,7 +12,7 @@ const Profile = () => {
         // get access token from Auth0 so that we can access protected API routes.
         const accessToken = await getAccessTokenSilently({
           authorizationParams: {
-            audience: "https://auth0-jwt-authorizer",
+            audience: AUTH0_AUDIENCE,
           },
         });
         chrome.storage.session.set({ accessToken: accessToken });
