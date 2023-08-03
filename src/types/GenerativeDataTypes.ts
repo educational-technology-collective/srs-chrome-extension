@@ -24,6 +24,8 @@ export interface Lm {
 
 export interface CourseraPlaybackLm extends Lm {
   content: {
+    courseTitle: string;
+    videoTitle: string;
     videoUrl: string;
     startTime: string;
     endTime: string;

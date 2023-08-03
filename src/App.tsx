@@ -1,8 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { responseObject } from "./types";
 
 import { LandingPage, MainPage } from "./components";
 import "./styles/App.css";
-import { responseObject } from "./types";
 
 const App = () => {
   const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();

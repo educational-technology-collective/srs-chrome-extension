@@ -118,10 +118,6 @@ const createTimestampObserverCallback = () => {
       console.log("lm at", timestamp);
       const lm_id = courseraPlaybackLmPoolMap.get(timestamp)?._id;
       if (lm_id) {
-        const flashcardPayload = {
-          lm_id: lm_id,
-        };
-
         const userEmail = window.localStorage.getItem("userEmail");
 
         // No need to await because it's not expecting a response.
@@ -133,7 +129,8 @@ const createTimestampObserverCallback = () => {
           console.log(res.message);
         })();
 
-        makePostReq(`/users/${userEmail}/flashcards`, flashcardPayload);
+        makePostReq(`/${userEmail}/${lm_id}`, {});
+
         console.log("postreq is sent from playback", userEmail);
       }
     }
