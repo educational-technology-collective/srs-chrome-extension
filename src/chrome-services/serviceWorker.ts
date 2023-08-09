@@ -32,6 +32,49 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
   })();
 });
 
+chrome.runtime.onMessage.addListener(
+  (
+    request: any,
+  ) => {
+    (async () => {
+      if (request.message === "lm triggered from content script") {
+        console.log("lm triggered from content script")
+
+        // Simualte a blink by using setTimeouts.
+        await chrome.action.setIcon({
+          path: "ambient-learning-icon-notification-asparagus-ring-128px.png",
+        });
+        
+        setTimeout(async () => {
+          await chrome.action.setIcon({
+            path: "ambient-learning-icon-plain-128px.png",
+          });
+        }, 500);
+
+        setTimeout(async () => {
+          await chrome.action.setIcon({
+            path: "ambient-learning-icon-notification-asparagus-ring-128px.png",
+          });
+        }, 1000);
+
+        setTimeout(async () => {
+          await chrome.action.setIcon({
+            path: "ambient-learning-icon-plain-128px.png",
+          });
+        }, 1500);
+
+
+        setTimeout(async () => {
+          await chrome.action.setIcon({
+            path: "ambient-learning-icon-notification-asparagus-ring-128px.png",
+          });
+        }, 2000);
+      }
+    })();
+    return true;
+  }
+);
+
 // chrome.runtime.onMessage.addListener((request: any) => {
 //   (async () => {
 //     if (request.message === "user data from frontend") {

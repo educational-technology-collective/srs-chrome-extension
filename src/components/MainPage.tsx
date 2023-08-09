@@ -1,5 +1,4 @@
 import { User } from "@auth0/auth0-react";
-import { useState } from "react";
 
 import { LogoutButton } from ".";
 import "../styles/MainPage.css";
@@ -9,22 +8,22 @@ interface Props {
 }
 
 const MainPage = ({ user }: Props) => {
-  const [numLms, setNumLms] = useState(0);
-
-  // Get the number of LMs for this video stored in chrome.storage.local.
-  chrome.storage.local
-    .get(["url"])
-    .then((urlKeyVal) => {
-      const url: string = urlKeyVal["url"];
-      chrome.storage.local.get([url]).then((collectedLmsKeyVal) => {
-        if (Object.keys(collectedLmsKeyVal).length > 0) {
-          setNumLms(collectedLmsKeyVal[url].length);
-        }
-      });
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+//  const [numLms, setNumLms] = useState(0);
+//
+//  // Get the number of LMs for this video stored in chrome.storage.local.
+//  chrome.storage.local
+//    .get(["url"])
+//    .then((urlKeyVal) => {
+//      const url: string = urlKeyVal["url"];
+//      chrome.storage.local.get([url]).then((collectedLmsKeyVal) => {
+//        if (Object.keys(collectedLmsKeyVal).length > 0) {
+//          setNumLms(collectedLmsKeyVal[url].length);
+//        }
+//      });
+//    })
+//    .catch((e) => {
+//      console.log(e);
+//    });
 
   return (
     <>
@@ -34,9 +33,8 @@ const MainPage = ({ user }: Props) => {
         </div>
         <div id="lms">
           <p>
-            Did you know that you've experienced{" "}
-            <span style={{ fontWeight: "bold" }}>{numLms}</span> learning
-            moments from this video?
+            Did you know that you've experienced learning moments from this 
+            video?
           </p>
         </div>
         <div id="fcs">
