@@ -1,7 +1,7 @@
 {
     "name": "Ambient Learning Agent",
     "description": "Learn once. Recall anytime.",
-    "version": "1.0",
+    "version": "0.1.0",
     "manifest_version": 3,
     "icons": {
         "128": "ambient-learning-icon-plain-128px.png"
