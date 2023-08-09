@@ -15,7 +15,7 @@ const getUserData = () => {
       window.localStorage.setItem("accessToken", request.data.accessToken);
 
       // Add user to database.
-      makePostReq(`/users/${request.data.userEmail}`, {});
+      makePostReq(`/${request.data.userEmail}`, {});
     }
 
     return undefined;

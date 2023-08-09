@@ -120,7 +120,6 @@ const createTimestampObserverCallback = () => {
       if (lm_id) {
         const userEmail = window.localStorage.getItem("userEmail");
 
-        // No need to await because it's not expecting a response.
         (async () => {
           const res = await chrome.runtime.sendMessage({
             message: "lm triggered from content script",
