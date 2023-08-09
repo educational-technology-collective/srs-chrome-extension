@@ -1,5 +1,4 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { responseObject } from "./types";
 
 import { LandingPage, MainPage } from "./components";
 import "./styles/App.css";
@@ -33,39 +32,13 @@ const App = () => {
     })();
   }
 
-  chrome.runtime.onMessage.addListener(
-    (
-      request: any,
-      _sender: chrome.runtime.MessageSender,
-      sendResponse: (response: responseObject) => void
-    ) => {
-      (async () => {
-        if (request.message === "lm triggered from content script") {
-          const videoUrl = request.data.videoUrl;
-          const lm_id = request.data.lm_id;
+  // Reset icon.
+  (async () => {
+    await chrome.action.setIcon({
+      path: "ambient-learning-icon-plain-128px.png",
+    });
+  })();
 
-          const collectedLms = await chrome.storage.local.get([videoUrl]);
-          console.log(collectedLms);
-
-          if (Object.keys(collectedLms).length === 0) {
-            console.log(1);
-            await chrome.storage.local.set({
-              [videoUrl]: [lm_id] as string[],
-            });
-          } else if (!collectedLms[videoUrl].includes(lm_id)) {
-            console.log(2);
-            collectedLms[videoUrl].push(lm_id);
-            await chrome.storage.local.set({
-              [videoUrl]: collectedLms[videoUrl],
-            });
-          }
-        }
-
-        sendResponse({ message: "lm received" });
-      })();
-      return true;
-    }
-  );
 
   return (
     <>

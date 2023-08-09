@@ -1,10 +1,5 @@
 import {
-  detectTranscript,
   detectPlayback,
-  detectVideo,
-  detectIvq,
-  detectCopy,
-  detectPaste,
   getUserData,
 } from "./features";
 
@@ -14,8 +9,8 @@ console.log("extension loaded");
 // Add new features here.
 getUserData();
 detectPlayback();
-detectTranscript();
-detectVideo();
-detectIvq();
-detectCopy();
-detectPaste();
+// detectTranscript();
+// detectVideo();
+// detectIvq();
+// detectCopy();
+// detectPaste();
