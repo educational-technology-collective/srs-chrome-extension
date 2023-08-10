@@ -1,6 +1,6 @@
 {
     "name": "Ambient Learning Agent",
-    "description": "Learn once. Recall anytime.",
+    "description": "Your personal lerning companion.",
     "version": "0.1.0",
     "manifest_version": 3,
     "icons": {
@@ -19,7 +19,7 @@
     },
     "content_scripts": [
         {
-            "matches": ["http://*/*", "https://*/*"],
+            "matches": ["https://www.coursera.org/*"],
             "js": ["src/chrome-services/content.ts"]
         }
     ],
