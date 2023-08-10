@@ -30,7 +30,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/educational-technology-collective/srs-chrome-extension">
-    <img src="public/logo.svg" alt="Logo" width="80" height="80">
+    <img src="public/ambient-laerning-icon-plain.png" alt="Logo" width="80" height="80">
     <br />
   </a>
 
