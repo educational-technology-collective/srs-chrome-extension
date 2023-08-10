@@ -6,7 +6,11 @@ const LandingPage = () => {
     <>
       <div id="landingPageContainer">
         <div id="appIconContainer">
-          <img id="appIcon" src="/logo.png" alt="SRS Chrome Extension" />
+          <img
+            id="appIcon"
+            src="ambient-learning-icon-plain.png"
+            alt="SRS Chrome Extension"
+          />
         </div>
         <h1>Ambient Learning</h1>
         <p>Your personalized learning companion.</p>
