@@ -30,11 +30,11 @@
 <br />
 <div align="center">
   <a href="https://github.com/educational-technology-collective/srs-chrome-extension">
-    <img src="public/ambient-laerning-icon-plain.png" alt="Logo" width="80" height="80">
+    <img src="public/ambient-learning-icon-plain.png" alt="Logo" width="80" height="80">
     <br />
   </a>
 
-<h3 align="center">SRS Chrome Extension</h3>
+<h3 align="center">Ambient Learning Agent</h3>
 
   <p align="center">
     Your personal learning companion.
@@ -84,7 +84,7 @@
 
 <!-- Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description` -->
 
-SRS Chrome Extension is an agent that lives inside your browser, generating learning moments from your activities. It provides you personalized learning assisstance.
+Unlock your full learning potential! Ambient Learning Agent uses automated detection technology to identify your most opportune moments for learning. Seamlessly integrated into your daily routine, it delivers personalized flashcards to the Ambient Learning mobile app that align perfectly with your current studies. Say goodbye to missed learning opportunities and hello to effortless knowledge retention. Start your journey towards effortless and effective learning today!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -120,20 +120,41 @@ This is an example of how to list things you need to use the software and how to
   npm install npm@latest -g
   ``` -->
 
+### Installing the Chrome Extension
+
+Closed-alpha test users would've received the distribution as a `.crx` file.
+
+1. Unzip the `.crx` file using utilities such as 7zip.
+2. Go to the extensions page. Type `chrome://extensions` in the Chrome address bar and hit enter.
+3. Click on the developer mode toggle on the top right of the page.
+4. Click on the `Load unpacked` button on the top left of the page.
+5. Select the unzipped folder when prompted.
+6. Congratulations! You have the extension installed. Click on the puzzle piece icon on the toolbar. You should see the Ambient Learning Agent extension inside. Click on the pin icon on the right to pin it to the toolbar.
+7. Now go to the Coursera SIADS 505 page [here](https://www.coursera.org/learn/siads505/home/week/1).
+8. Click on the Ambient Learning Agent icon on the toolbar. A popup with a login page will show. Log into your `umich.edu` Google account and start watching lectures.
+
 ### Installation
 
-1. Clone the repo
+1. Clone the repo.
    ```sh
    git clone https://github.com/educational-technology-collective/srs-chrome-extension.git
    ```
-2. Install NPM packages
+2. `cd` into the project directory and install NPM packages
    ```sh
+   cd srs-chrome-extension
    npm install
    ```
 3. Build the project
    ```sh
    npm run build
    ```
+4. Go to the extensions page. Type `chrome://extensions` in the Chrome address bar and hit enter.
+5. Click on the developer mode toggle on the top right of the page.
+6. Click on the `Load unpacked` button on the top left of the page.
+7. Select the `dist` folder when prompted.
+8. Congratulations! You have the extension installed. Click on the puzzle piece icon on the toolbar. You should see the Ambient Learning Agent extension inside. Click on the pin icon on the right to pin it to the toolbar.
+9. Now go to the Coursera SIADS 505 page [here](https://www.coursera.org/learn/siads505/home/week/1).
+10. Click on the Ambient Learning Agent icon on the toolbar. A popup with a login page will show. Log into your `umich.edu` Google account and start watching lectures.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -186,7 +207,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-June Hyung (Jacob) Kim - [@jpoly1219](https://github.com/jpoly1219) - jpoly@umich.edu
+[Ambient Learning Support Page](https://sites.google.com/view/ambienthelp/home)
 
 <!-- Project Link: [https://github.com/educational-technology-collective/srs-chrome-extension.git](https://github.com/educational-technology-collective/srs-chrome-extension.git) -->
 
@@ -197,8 +218,9 @@ June Hyung (Jacob) Kim - [@jpoly1219](https://github.com/jpoly1219) - jpoly@umic
 ## Acknowledgments
 
 - [Dr. Christopher Brooks - University of Michigan School of Information](https://christopherbrooks.ca)
+- June Hyung (Jacob) Kim - [@jpoly1219](https://github.com/jpoly1219)
 - [Educational Technology Collective - University of Michigan School of Information](https://edtech.labs.si.umich.edu)
-- [Logo created by Porto Mineiro under CC BY-SA 4.0 - Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Icon_S_blue.svg)
+- [Logo: maple PNG Designed By 588ku](https://pngtree.com/freepng/red-maple-tree_4742154.html?share=3?sol=downref&id=bef)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
