@@ -6,11 +6,13 @@ export const makePostReq = async (endpoint: string, payload: object) => {
   try {
     const url = API_GATEWAY_DEV + endpoint;
     const token = window.localStorage.getItem("accessToken");
+    console.log("token from pr:", token);
     const resp = await fetch(url, {
       method: "POST",
+      mode: "no-cors",
       headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        // Authorization: `Bearer ${token}`,
+        "Content-Type": "text/plain",
       },
       body: JSON.stringify(payload),
     });
@@ -48,7 +50,10 @@ export const makeGetReq = async (endpoint: string) => {
 // params is an array of param-paramValue pair.
 // for example, if my URL parameter is ?param1=pv1&param2=pv2,
 // params = [["param1", "pv1"], ["param2", "pv2"]]
-export const makeGetReqWithParam = async (endpoint: string, params: string[][]) => {
+export const makeGetReqWithParam = async (
+  endpoint: string,
+  params: string[][]
+) => {
   try {
     let paramStr = "?";
     params.forEach((param) => {
@@ -123,7 +128,10 @@ export const makeDeleteReq = async (endpoint: string) => {
 // params is an array of param-paramValue pair.
 // for example, if my URL parameter is ?param1=pv1&param2=pv2,
 // params = [["param1", "pv1"], ["param2", "pv2"]]
-export const makeDeleteReqWithParam = async (endpoint: string, params: string[][]) => {
+export const makeDeleteReqWithParam = async (
+  endpoint: string,
+  params: string[][]
+) => {
   try {
     let paramStr = "?";
     params.forEach((param) => {
