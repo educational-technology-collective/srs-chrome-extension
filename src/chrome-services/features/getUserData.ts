@@ -1,5 +1,3 @@
-import { makePostReq } from "../../utils";
-
 // Get user data from the React frontend.
 const getUserData = () => {
   chrome.runtime.onMessage.addListener((request: any) => {
@@ -13,9 +11,6 @@ const getUserData = () => {
       // Save updated user data to localstorage.
       window.localStorage.setItem("userEmail", request.data.userEmail);
       window.localStorage.setItem("accessToken", request.data.accessToken);
-
-      // Add user to database.
-      makePostReq(`/${request.data.userEmail}`, {});
     }
 
     return undefined;
