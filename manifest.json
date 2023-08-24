@@ -1,34 +1,34 @@
 {
-    "name": "Ambient Learning Agent",
-    "description": "Your personal lerning companion.",
-    "version": "0.1.0",
-    "manifest_version": 3,
-    "icons": {
-        "128": "ambient-learning-icon-plain-128px.png"
-    },
-    "action": {
-        "default_popup": "index.html",
-        "default_title": "Click me",
-        "default_icon": {
-            "128": "ambient-learning-icon-plain-128px.png"
-        }
-    },
-    "background": {
-        "service_worker": "src/chrome-services/serviceWorker.ts",
-        "type": "module"
-    },
-    "content_scripts": [
-        {
-            "matches": ["https://www.coursera.org/*"],
-            "js": ["src/chrome-services/content.ts"]
-        }
-    ],
-    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlQ2K7IUpAOjB3AKZHLFUiW3a3fxN0hLTo1CMkvo6iY6Sy3A8rrDH8Dqzo6bhn+bKYT8Lhz5Y5Z/onOZge78rvdY0/5JMS1bfek9ucN8pfSaOytfFda9Ve1vgpqRsHVS2WDgCpYpPC0BZfdcU4UpZdl4/6H/BO7Jr8e/evt3e54FiU2r+pDF/0PUFKEJ6aV65QFlKcyy5uHuC5qb0za9fosGM+2Dhsem00jiZ4b2+xCR1zzX9203+6u5Chbmu9SJI64WCv67a6fLCWM/0ryzUdiw+PF3ns9fKtm7EHr1htROzLVltiYT0sAzl52xhMw9qeicjcU+V+tNRWNk8+96B/wIDAQAB",
-    "permissions": ["activeTab", "tabs", "storage"],
-    "web_accessible_resources": [
-        {
-            "resources": ["index.html"],
-            "matches": ["https://*/*"]
-        }
-    ]
+  "name": "Ambient Learning Agent",
+  "description": "Your personal learning companion.",
+  "version": "0.1.3",
+  "manifest_version": 3,
+  "icons": {
+    "128": "ambient-learning-icon-plain-128px.png"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Click me",
+    "default_icon": {
+      "128": "ambient-learning-icon-plain-128px.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/chrome-services/serviceWorker.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.coursera.org/*"],
+      "js": ["src/chrome-services/content.ts"]
+    }
+  ],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlQ2K7IUpAOjB3AKZHLFUiW3a3fxN0hLTo1CMkvo6iY6Sy3A8rrDH8Dqzo6bhn+bKYT8Lhz5Y5Z/onOZge78rvdY0/5JMS1bfek9ucN8pfSaOytfFda9Ve1vgpqRsHVS2WDgCpYpPC0BZfdcU4UpZdl4/6H/BO7Jr8e/evt3e54FiU2r+pDF/0PUFKEJ6aV65QFlKcyy5uHuC5qb0za9fosGM+2Dhsem00jiZ4b2+xCR1zzX9203+6u5Chbmu9SJI64WCv67a6fLCWM/0ryzUdiw+PF3ns9fKtm7EHr1htROzLVltiYT0sAzl52xhMw9qeicjcU+V+tNRWNk8+96B/wIDAQAB",
+  "permissions": ["activeTab", "tabs", "storage"],
+  "web_accessible_resources": [
+    {
+      "resources": ["index.html"],
+      "matches": ["https://*/*"]
+    }
+  ]
 }
