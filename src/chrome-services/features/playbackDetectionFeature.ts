@@ -118,7 +118,7 @@ const createTimestampObserverCallback = () => {
       console.log("lm at", timestamp);
       const lm_id = courseraPlaybackLmPoolMap.get(timestamp)?._id;
       if (lm_id) {
-        const userEmail = window.localStorage.getItem("userEmail");
+        // const userEmail = window.localStorage.getItem("userEmail");
 
         (async () => {
           const res = await chrome.runtime.sendMessage({
@@ -128,9 +128,10 @@ const createTimestampObserverCallback = () => {
           console.log(res.message);
         })();
 
-        makePostReq(`/${userEmail}/${lm_id}`, {});
-
-        console.log("postreq is sent from playback", userEmail);
+        chrome.storage.local.get(["userEmail"]).then((userEmail) => {
+          makePostReq(`/${userEmail.userEmail}/${lm_id}`, {});
+          console.log("postreq is sent from playback", userEmail);
+        });
       }
     }
   };

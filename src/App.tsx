@@ -15,20 +15,20 @@ const App = () => {
         // Get access token from Auth0 so that we can access protected API routes.
         const accessToken = await getAccessTokenSilently();
 
+        // Clear Chrome localstorage.
+        chrome.storage.local.remove("userEmail");
+        chrome.storage.local.remove("accessToken");
+
+        // Save updated user data to Chrome localstorage.
+        chrome.storage.local.set({ userEmail: user.email as string });
+        chrome.storage.local.set({ accessToken: accessToken });
+
         // Add user to database.
-        // Clear localstorage.
-        window.localStorage.removeItem("userEmail");
-        window.localStorage.removeItem("accessToken");
-
-        // Save updated user data to localstorage.
-        window.localStorage.setItem("userEmail", user.email as string);
-        window.localStorage.setItem("accessToken", accessToken);
-        console.log(window.localStorage.getItem("accessToken"));
-
         makePostReq(`/${user.email}`, {});
 
+        /*
         const [tab] = await chrome.tabs.query({
-          url: "https://www.coursera.org/learn/*/lecture/*",
+          url: "https://www.coursera.org/*",
         });
 
         if (tab.id) {
@@ -37,6 +37,7 @@ const App = () => {
             data: { userEmail: user.email, accessToken: accessToken },
           });
         }
+        */
       } catch (e) {
         console.log("error", e);
         // if ((e as auth0Err).error === "missing_refresh_token" || (e as auth0Err).error === "invalid_grant") {
