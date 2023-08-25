@@ -5,11 +5,12 @@ import { API_GATEWAY_DEV } from "./constants";
 export const makePostReq = async (endpoint: string, payload: object) => {
   try {
     const url = API_GATEWAY_DEV + endpoint;
-    const token = window.localStorage.getItem("accessToken");
+    // const token = window.localStorage.getItem("accessToken");
+    const token = await chrome.storage.local.get(["accessToken"]);
     const resp = await fetch(url, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
@@ -48,7 +49,10 @@ export const makeGetReq = async (endpoint: string) => {
 // params is an array of param-paramValue pair.
 // for example, if my URL parameter is ?param1=pv1&param2=pv2,
 // params = [["param1", "pv1"], ["param2", "pv2"]]
-export const makeGetReqWithParam = async (endpoint: string, params: string[][]) => {
+export const makeGetReqWithParam = async (
+  endpoint: string,
+  params: string[][]
+) => {
   try {
     let paramStr = "?";
     params.forEach((param) => {
@@ -78,11 +82,12 @@ export const makeGetReqWithParam = async (endpoint: string, params: string[][]) 
 export const makePutReq = async (endpoint: string, payload: object) => {
   try {
     const url = API_GATEWAY_DEV + endpoint;
-    const token = window.localStorage.getItem("accessToken");
+    // const token = window.localStorage.getItem("accessToken");
+    const token = await chrome.storage.local.get(["accessToken"]);
     const resp = await fetch(url, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
@@ -101,11 +106,12 @@ export const makePutReq = async (endpoint: string, payload: object) => {
 export const makeDeleteReq = async (endpoint: string) => {
   try {
     const url = API_GATEWAY_DEV + endpoint;
-    const token = window.localStorage.getItem("accessToken");
+    // const token = window.localStorage.getItem("accessToken");
+    const token = await chrome.storage.local.get(["accessToken"]);
     const resp = await fetch(url, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.accessToken}`,
         Accept: "application/json",
       },
     });
@@ -123,7 +129,10 @@ export const makeDeleteReq = async (endpoint: string) => {
 // params is an array of param-paramValue pair.
 // for example, if my URL parameter is ?param1=pv1&param2=pv2,
 // params = [["param1", "pv1"], ["param2", "pv2"]]
-export const makeDeleteReqWithParam = async (endpoint: string, params: string[][]) => {
+export const makeDeleteReqWithParam = async (
+  endpoint: string,
+  params: string[][]
+) => {
   try {
     let paramStr = "?";
     params.forEach((param) => {
@@ -133,11 +142,12 @@ export const makeDeleteReqWithParam = async (endpoint: string, params: string[][
     paramStr = paramStr.substring(0, paramStr.length - 1);
     console.log(paramStr);
     const url = API_GATEWAY_DEV + endpoint + paramStr;
-    const token = window.localStorage.getItem("accessToken");
+    // const token = window.localStorage.getItem("accessToken");
+    const token = await chrome.storage.local.get(["accessToken"]);
     const resp = await fetch(url, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.accessToken}`,
         Accept: "application/json",
       },
     });

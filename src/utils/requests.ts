@@ -5,7 +5,8 @@ import { API_GATEWAY_DEV } from "./constants";
 export const makePostReq = async (endpoint: string, payload: object) => {
   try {
     const url = API_GATEWAY_DEV + endpoint;
-    const token = window.localStorage.getItem("accessToken");
+    // const token = window.localStorage.getItem("accessToken");
+    const token = await chrome.storage.local.get(["accessToken"]);
     console.log("token from pr:", token);
     const resp = await fetch(url, {
       method: "POST",
@@ -83,11 +84,12 @@ export const makeGetReqWithParam = async (
 export const makePutReq = async (endpoint: string, payload: object) => {
   try {
     const url = API_GATEWAY_DEV + endpoint;
-    const token = window.localStorage.getItem("accessToken");
+    // const token = window.localStorage.getItem("accessToken");
+    const token = await chrome.storage.local.get(["accessToken"]);
     const resp = await fetch(url, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
@@ -106,11 +108,12 @@ export const makePutReq = async (endpoint: string, payload: object) => {
 export const makeDeleteReq = async (endpoint: string) => {
   try {
     const url = API_GATEWAY_DEV + endpoint;
-    const token = window.localStorage.getItem("accessToken");
+    // const token = window.localStorage.getItem("accessToken");
+    const token = await chrome.storage.local.get(["accessToken"]);
     const resp = await fetch(url, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.accessToken}`,
         Accept: "application/json",
       },
     });
@@ -141,11 +144,12 @@ export const makeDeleteReqWithParam = async (
     paramStr = paramStr.substring(0, paramStr.length - 1);
     console.log(paramStr);
     const url = API_GATEWAY_DEV + endpoint + paramStr;
-    const token = window.localStorage.getItem("accessToken");
+    // const token = window.localStorage.getItem("accessToken");
+    const token = await chrome.storage.local.get(["accessToken"]);
     const resp = await fetch(url, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token.accessToken}`,
         Accept: "application/json",
       },
     });

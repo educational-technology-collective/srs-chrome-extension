@@ -1,7 +1,7 @@
 import { User } from "@auth0/auth0-react";
 
-import { LogoutButton } from ".";
-import "../styles/MainPage.css";
+// import { LogoutButton } from ".";
+import "./styles/MainPage.css";
 
 interface Props {
   user: User | undefined;
@@ -31,21 +31,16 @@ const MainPage = ({ user }: Props) => {
         <div id="topBar">
           <p>Hi, {user?.name}!</p>
         </div>
-        <div id="lms">
-          <p>
-            Did you know that you've experienced learning moments from this
-            video?
-          </p>
-        </div>
-        <div id="fcs">
-          <p>I automatically created the relevant flashcards for you.</p>
-          <p>
-            You can open the Ambient Learning app on your phone to review them!
-          </p>
-        </div>
+        <p>You are now logged in. You may now close this tab.</p>
+        <p>
+          To log out, click on the extension icon and click on the Log Out
+          button.
+        </p>
+        {/*
         <div id="logoutBtnContainer">
           <LogoutButton />
         </div>
+        */}
       </div>
     </>
   );
