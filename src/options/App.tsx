@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { makePostReq } from "./utils";
+import { makePostReq } from "../utils";
 
-import { LandingPage, MainPage } from "./components";
+import { LoginPage, MainPage } from "./";
 import "./styles/App.css";
 
 const App = () => {
@@ -56,7 +56,7 @@ const App = () => {
 
   return (
     <>
-      {!isAuthenticated && <LandingPage />}
+      {!isAuthenticated && <LoginPage />}
       {isAuthenticated && <MainPage user={user} />}
     </>
   );
