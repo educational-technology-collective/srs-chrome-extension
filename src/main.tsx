@@ -17,7 +17,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     domain={AUTH0_DOMAIN}
     clientId={AUTH0_CLIENT_ID}
     authorizationParams={{
-      redirect_uri: window.location.origin,
+      // redirect_uri: window.location.origin,
+      redirect_uri:
+        "chrome-extension://bakjlcbdgfgncaminbnhbfjlndmifdli/src/options/index.html",
       audience: AUTH0_AUDIENCE,
     }}
     useRefreshTokens={true}

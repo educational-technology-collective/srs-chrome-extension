@@ -1,4 +1,4 @@
-import { LoginButton } from ".";
+import { DashboardButton } from ".";
 import "../styles/LandingPage.css";
 
 const LandingPage = () => {
@@ -15,8 +15,8 @@ const LandingPage = () => {
         <h1>Ambient Learning</h1>
         <p>Your personalized learning companion.</p>
         <br></br>
-        <div id="loginBtnContainer">
-          <LoginButton />
+        <div id="dashboardBtnContainer">
+          <DashboardButton />
         </div>
       </div>
     </>
